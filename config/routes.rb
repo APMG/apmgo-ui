@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'home/show'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'home#show'
+  mount ApmAccountsComponent::Engine => '/apm_accounts'
 end

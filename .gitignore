@@ -19,3 +19,6 @@
 .byebug_history
 /public/packs
 /node_modules
+
+# Ignore sensitive data
+/config/initializers/apm_accounts_component.rb
