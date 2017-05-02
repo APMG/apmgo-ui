@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project uses rbenv to manage its Ruby version.
 
-Things you may want to cover:
+## SSL setup
 
-* Ruby version
+Set the bash variables `BRAGI_KEY`, `BRAGI_CERT` and `BRAGI_CA` to the paths of those files on your system
 
-* System dependencies
+## Ruby setup
 
-* Configuration
+1. Run `bundle install` to get the Ruby dependencies for this project
+2. Run the `ssl_thin.sh` bash script to start Thin using the certs you set up previously
 
-* Database creation
+## Javascript Setup
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. Run `yarn` to install Javascript dependencies for this project
+2. Run `bin/webpack-dev-server` to run the development server for Webpack
