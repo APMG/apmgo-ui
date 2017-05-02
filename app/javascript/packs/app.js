@@ -4,7 +4,9 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Greeting from './components/Greeting.react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MainMenu from './components/MainMenu.react'
+import Playlist from './components/playlist-item/PlaylistItem'
 
 
 const apm_account = new ApmAccount('/apm_accounts')
@@ -17,9 +19,18 @@ if(!apm_account.is_logged_in()) {
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
+const App = () => (
+  <MuiThemeProvider>
+    <div>
+      <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
+      <Playlist />
+    </div>
+  </MuiThemeProvider>
+)
+
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Greeting name={apm_account.get_name()} />,
+    <App />,
     document.body.appendChild(document.createElement('div')),
   )
 })
