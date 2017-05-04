@@ -23,3 +23,6 @@
 
 # Ignore sensitive data
 /config/initializers/apm_accounts_component.rb
+
+# Ignore files used to source env data.
+/.env.sh
