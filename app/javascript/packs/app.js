@@ -34,3 +34,43 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('div')),
   )
 })
+
+// ********************** A PILE OF RANDOM REDUX TESTING **********************
+
+import { createStore } from 'redux'
+
+let store = createStore(bragiApp)
+
+// Mark as played
+// Delete
+// Fetch items
+
+const FETCH_ITEMS = 'FETCH_ITEMS'
+
+const INITIAL_STATE = {
+  items: [],
+}
+
+function fetchItems() {
+  return {
+    type: FETCH_ITEMS,
+  }
+}
+
+function bragiApp(state = INITIAL_STATE, action) {
+  switch (action.type) {
+  case FETCH_ITEMS:
+    return Object.assign({}, state, {
+      items: {}
+    })
+  default:
+    return state
+  }
+}
+
+store.subscribe(() =>
+  console.log(store.getState())
+)
+
+store.dispatch(fetchItems())
+// store.dispatch({ type: 'INCREMENT' })
