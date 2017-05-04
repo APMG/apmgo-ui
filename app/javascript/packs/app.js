@@ -6,7 +6,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
-import Playlist from './components/playlist-item/PlaylistItem'
+import Playlist from './components/playlist/PlaylistItem'
 
 
 const apm_account = new ApmAccount('/apm_accounts')
