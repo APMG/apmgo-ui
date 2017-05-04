@@ -25,7 +25,9 @@
     "rails-erb-loader": "^5.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
     "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
     "webpack": "^2.4.1",
@@ -38,6 +40,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "jest": "^19.0.2",
     "react-test-renderer": "^15.5.4",
+    "redux-devtools": "^3.4.0",
     "webpack-dev-server": "^2.4.5"
   }
 }
