@@ -18,3 +18,9 @@ This project uses rbenv to manage its Ruby version.
 
 1. Run `yarn` to install Javascript dependencies for this project
 2. Run `bin/webpack-dev-server` to run the development server for Webpack
+
+## Code Structure
+
+React components in this project will be written using the Redux approach of "Container" and "Presentational" components (also referred to as "Smart" and "Dumb"). Where possible, container and presentational components will be grouped together in the same file. Additionally, components will be grouped together into directories by domain.
+
+Redux actions and reducers will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case.
