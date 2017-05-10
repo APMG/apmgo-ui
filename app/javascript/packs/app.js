@@ -1,13 +1,10 @@
-// Run this example by adding <%= javascript_pack_tag 'hello_react' %> to the head of your layout file,
-// like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
-// of the page.
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/PlaylistItem'
-
+import playlistReducer, { fetchPlaylistItems } from './redux/playlist'
+import axios from 'axios'
 
 const apm_account = new ApmAccount('/apm_accounts')
 if(!apm_account.is_logged_in()) {
@@ -18,6 +15,34 @@ if(!apm_account.is_logged_in()) {
 // http://stackoverflow.com/a/34015469/988941
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
+
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+let middleware = [thunkMiddleware]
+const enhancer = composeEnhancers(
+  applyMiddleware(...middleware)
+)
+
+let store = createStore(
+  playlistReducer,
+  enhancer
+)
+
+// Verify we have a current auth token, then fetch data
+if(apm_account.get_expires_at() < Date.now()) {
+  apm_account.refresh()
+    .then(function (token) {
+      store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+    })
+    .catch(function (error) {
+      // TODO: Error handling
+      console.error('Could not refresh access token')
+    })
+} else {
+  store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+}
 
 const App = () => (
   <MuiThemeProvider>
@@ -34,43 +59,3 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(document.createElement('div')),
   )
 })
-
-// ********************** A PILE OF RANDOM REDUX TESTING **********************
-
-import { createStore } from 'redux'
-
-let store = createStore(bragiApp)
-
-// Mark as played
-// Delete
-// Fetch items
-
-const FETCH_ITEMS = 'FETCH_ITEMS'
-
-const INITIAL_STATE = {
-  items: [],
-}
-
-function fetchItems() {
-  return {
-    type: FETCH_ITEMS,
-  }
-}
-
-function bragiApp(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case FETCH_ITEMS:
-    return Object.assign({}, state, {
-      items: {}
-    })
-  default:
-    return state
-  }
-}
-
-store.subscribe(() =>
-  console.log(store.getState())
-)
-
-store.dispatch(fetchItems())
-// store.dispatch({ type: 'INCREMENT' })
