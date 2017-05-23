@@ -4,7 +4,7 @@ import axios from 'axios'
 const RECEIVE_PLAYLIST_ITEMS = 'RECEIVE_PLAYLIST_ITEMS'
 
 // Reducer
-export default function reducer(state = {}, action = {}) {
+export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}, receivedAt: Date.now() }) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return Object.assign({}, {

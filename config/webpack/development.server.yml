@@ -2,7 +2,7 @@
 
 default: &default
   enabled: true
-  host: myplaylist.dev
+  host: bragi.dev
   port: 8080
 
 development:

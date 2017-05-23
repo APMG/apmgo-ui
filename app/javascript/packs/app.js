@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
-import Playlist from './components/playlist/PlaylistItem'
+import Playlist from './components/playlist/Playlist'
 import playlistReducer, { fetchPlaylistItems } from './redux/playlist'
 import axios from 'axios'
+import { Provider } from 'react-redux'
 
 const apm_account = new ApmAccount('/apm_accounts')
 if(!apm_account.is_logged_in()) {
@@ -46,10 +47,12 @@ if(apm_account.get_expires_at() < Date.now()) {
 
 const App = () => (
   <MuiThemeProvider>
-    <div>
-      <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
-      <Playlist />
-    </div>
+    <Provider store={store}>
+      <div>
+        <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
+        <Playlist />
+      </div>
+    </Provider>
   </MuiThemeProvider>
 )
 
