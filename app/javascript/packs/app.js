@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
-import playlistReducer, { fetchPlaylistItems } from './redux/playlist'
+import playlistReducer, { initializePlaylist } from './redux/playlist'
 // import axios from 'axios'
 import { Provider } from 'react-redux'
 
@@ -19,7 +19,7 @@ injectTapEventPlugin()
 
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import rootSaga from "./redux/sagas"
+import rootSaga from "./redux/root-saga"
 const sagaMiddleware = createSagaMiddleware()
 
 // import thunkMiddleware from 'redux-thunk'
@@ -41,14 +41,14 @@ sagaMiddleware.run(rootSaga)
 if(apm_account.get_expires_at() < Date.now()) {
   apm_account.refresh()
     .then(function (token) {
-      store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+      store.dispatch( initializePlaylist(apm_account.get_token()) )
     })
     .catch(function (error) {
       // TODO: Error handling
       console.error('Could not refresh access token')
     })
 } else {
-  store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+  store.dispatch( initializePlaylist(apm_account.get_token()) )
 }
 
 const App = () => (

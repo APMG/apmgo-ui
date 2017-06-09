@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { fetchPlaylistItems } from '../playlist'
+import { fetchPlaylistItems } from '../../service/playlist'
 import * as moxios from 'moxios'
 
 const middlewares = [ thunk ]
