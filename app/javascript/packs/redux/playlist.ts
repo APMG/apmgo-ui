@@ -1,7 +1,14 @@
+import { PlaylistItemType } from './types';
 import axios from 'axios'
+import { put, takeEvery, call } from 'redux-saga/effects'
+
+import { addItemToPlaylist, fetchPlaylistItems } from '../service/playlist'
 
 // Actions
 export const RECEIVE_PLAYLIST_ITEMS = 'RECEIVE_PLAYLIST_ITEMS'
+export const INITIALIZE_PLAYLIST = 'INITIALIZE_PLAYLIST'
+export const ITEM_ADDED_TO_PLAYLIST = 'ITEM_ADDED_TO_PLAYLIST'
+export const FETCHING_PLAYLIST_ITEMS = 'FETCHING_PLAYLIST_ITEMS'
 
 // Reducer
 export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}, receivedAt: Date.now() }) {
@@ -24,24 +31,40 @@ export function receivePlaylistItems (json) {
   }
 }
 
-export function fetchPlaylistItems(access_token) {
-  return function (dispatch) {
-    // TODO: App state update to indicate API call started
-    // dispatch(requestTimelineItems())
-    var instance = axios.create({
-      baseURL: 'https://bragi-api-dev.publicradio.org',
-      timeout: 10000,
-      headers: {'Authorization': `Bearer ${access_token}`}
-    })
-
-    return instance.get('/items')
-      .then(function (response) {
-        return response.data
-      })
-      .then(json => dispatch(receivePlaylistItems(json)))
-      .catch(function (error) {
-        // TODO: Error handling
-        console.log(error)
-      })
+export function addedItemToPlaylist(json) {
+  return {
+    type: ITEM_ADDED_TO_PLAYLIST,
+    data: json.data,
+    receivedAt: Date.now()
   }
 }
+
+export function initializePlaylist(access_token) {
+  return {
+    type: INITIALIZE_PLAYLIST,
+    access_token: access_token,
+    receivedAt: Date.now()
+  }
+}
+
+export function fetchingPlaylistItems() {
+  return {
+    type: FETCHING_PLAYLIST_ITEMS,
+    receivedAt: Date.now()
+  }
+}
+
+// playlist init worker saga
+export function* initializePlaylistItemsSaga(action) {
+  yield put(fetchingPlaylistItems())
+  let playlist = yield call(fetchPlaylistItems, action.access_token)
+  yield put( receivePlaylistItems(playlist) );
+}
+
+// playlist init watcher saga
+export function* watchInitializePlaylist() {
+  yield takeEvery(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga)
+}
+
+
+

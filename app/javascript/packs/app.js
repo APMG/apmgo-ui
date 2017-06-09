@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
 import playlistReducer, { fetchPlaylistItems } from './redux/playlist'
-import axios from 'axios'
+// import axios from 'axios'
 import { Provider } from 'react-redux'
 
 const apm_account = new ApmAccount('/apm_accounts')
@@ -18,10 +18,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from "./redux/sagas"
+const sagaMiddleware = createSagaMiddleware()
+
+// import thunkMiddleware from 'redux-thunk'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-let middleware = [thunkMiddleware]
+let middleware = [sagaMiddleware]
 const enhancer = composeEnhancers(
   applyMiddleware(...middleware)
 )
@@ -30,6 +34,8 @@ let store = createStore(
   playlistReducer,
   enhancer
 )
+
+sagaMiddleware.run(rootSaga)
 
 // Verify we have a current auth token, then fetch data
 if(apm_account.get_expires_at() < Date.now()) {
