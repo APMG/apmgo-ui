@@ -1,35 +1,56 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {
+    INITIALIZE_PLAYLIST,
+    initializePlaylist,
+    initializePlaylistItemsSaga,
+    watchInitializePlaylist,
+    fetchingPlaylistItems,
+    receivePlaylistItems
+} from '../playlist';
 import { fetchPlaylistItems } from '../../service/playlist'
-import * as moxios from 'moxios'
+import { put, call, takeLatest } from "redux-saga/effects"
 
-const middlewares = [ thunk ]
-const mockStore = configureMockStore(middlewares)
+describe('initialize playlist saga', () => {
 
-describe('async actions', () => {
-  beforeEach(() => {
-    moxios.install()
+  const
+    token = 'SAMPLE_TOKEN',
+    watcherSaga = watchInitializePlaylist(), 
+    workerSaga = initializePlaylistItemsSaga(initializePlaylist(token));
+
+  it('waits to respond to INITIALIZE_PLAYLIST action', () => {
+    let 
+      nextVal = watcherSaga.next().value,
+      expected = takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga);
+
+    expect(nextVal).toEqual(expected)
+    expect(watcherSaga.next().done).toBeTruthy()
+  });
+
+  it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
+    let 
+      nextVal = workerSaga.next().value,
+      action = fetchingPlaylistItems(),
+      expected = put(action);
+
+    expect(nextVal).toEqual(expected)
   })
-  afterEach(() => {
-    moxios.uninstall()
+
+  it('receives playlist', () => {
+    let
+      nextVal = workerSaga.next().value,
+      expected = call(fetchPlaylistItems, token)
+
+    expect(nextVal).toEqual(expected)
   })
 
-  it('creates RECEIVE_PLAYLIST_ITEMS when fetching playlist items has been done', () => {
-    moxios.stubRequest(/.*\/items/, {
-        status: 200,
-        response: { data: 'SAMPLE_DATA' }
-      })
+  it('dispatches RECEIVE_PLAYLIST_ITEMS action', () => {
+    let 
+      mockResponse = { data: 'json' },
+      nextVal = workerSaga.next(mockResponse).value,
+      action = receivePlaylistItems(mockResponse),
+      expected = put(action);
 
-    const store = mockStore()
-
-    return store.dispatch(fetchPlaylistItems('SAMPLE_TOKEN'))
-      .then(() => { // return of async actions
-        let actions = store.getActions()
-        expect(store.getActions()).toContainEqual({
-          data: "SAMPLE_DATA",
-          type: "RECEIVE_PLAYLIST_ITEMS",
-          receivedAt: expect.any(Number)
-        })
-      })
+      expect(nextVal).toEqual(expected)
+      expect(workerSaga.next().done).toBeTruthy()
   })
+
 })

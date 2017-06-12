@@ -4,7 +4,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
 import playlistReducer, { initializePlaylist } from './redux/playlist'
-// import axios from 'axios'
 import { Provider } from 'react-redux'
 
 const apm_account = new ApmAccount('/apm_accounts')
@@ -21,8 +20,6 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./redux/root-saga"
 const sagaMiddleware = createSagaMiddleware()
-
-// import thunkMiddleware from 'redux-thunk'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 let middleware = [sagaMiddleware]

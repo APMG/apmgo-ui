@@ -1,8 +1,7 @@
 import { PlaylistItemType } from './types';
-import axios from 'axios'
-import { put, takeLatest, call } from 'redux-saga/effects'
-
 import { addItemToPlaylist, fetchPlaylistItems } from '../service/playlist'
+
+import { put, takeLatest, call } from 'redux-saga/effects'
 
 // Actions
 export const RECEIVE_PLAYLIST_ITEMS = 'RECEIVE_PLAYLIST_ITEMS'
@@ -23,11 +22,11 @@ export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}
       return Object.assign({}, {
         data: action.data,
         receivedAt: action.receivedAt,
-        state: PlaylistStates.DEFAULT
+        status: PlaylistStates.DEFAULT
       })
     case FETCHING_PLAYLIST_ITEMS: 
       return Object.assign({}, {
-        state: PlaylistStates.FETCHING
+        status: PlaylistStates.FETCHING
       })
     default: return state
   }
@@ -65,17 +64,15 @@ export function fetchingPlaylistItems() {
   }
 }
 
+// Sagas 
+
+export function* watchInitializePlaylist() {
+  yield takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga)
+}
+
 // playlist init worker saga
 export function* initializePlaylistItemsSaga(action) {
   yield put( fetchingPlaylistItems() )
   let playlist = yield call(fetchPlaylistItems, action.access_token)
   yield put( receivePlaylistItems(playlist) );
 }
-
-// playlist init watcher saga
-export function* watchInitializePlaylist() {
-  yield takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga)
-}
-
-
-
