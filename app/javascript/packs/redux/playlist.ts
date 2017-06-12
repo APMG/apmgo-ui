@@ -68,13 +68,25 @@ export function fetchingPlaylistItems() {
 // Sagas 
 
 export function* watchInitializePlaylist() {
+  // listen for the "INITIALIZE_PLAYLIST" action type
+  // and pass that action to initializePlaylistItemsSaga
   yield takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga)
 }
 
-// playlist init worker saga
 export function* initializePlaylistItemsSaga(action) {
+  // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
   yield put( fetchingPlaylistItems() )
+
+  // call async fetchPlaylistItems api function.
+  // when the promise returns, yield that value from the generator 
+  // and also store its value to the playlist variable 
+  // (noted bc it was confusing to me that both of those things would happen) 
   let playlist = yield call(fetchPlaylistItems, action.access_token)
+  // TODO: wrap this ^^^ in a try/catch block to handle errors
+
+  // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
   yield put( receivePlaylistItems(playlist) );
 }
+
+
 

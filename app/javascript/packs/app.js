@@ -19,12 +19,11 @@ injectTapEventPlugin()
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./redux/root-saga"
-const sagaMiddleware = createSagaMiddleware()
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-let middleware = [sagaMiddleware]
+let sagaMiddleware = createSagaMiddleware()
 const enhancer = composeEnhancers(
-  applyMiddleware(...middleware)
+  applyMiddleware(sagaMiddleware)
 )
 
 let store = createStore(
@@ -32,6 +31,9 @@ let store = createStore(
   enhancer
 )
 
+// The root saga is composed of all the app's individual 
+// listener sagas - any saga that begins with "take", "takeEvery" or "takeLatest" 
+// this bootstraps it onto the sagaMiddleware
 sagaMiddleware.run(rootSaga)
 
 // Verify we have a current auth token, then fetch data
