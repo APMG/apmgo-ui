@@ -6,8 +6,9 @@ import { put, takeLatest, call } from 'redux-saga/effects'
 // Actions
 export const RECEIVE_PLAYLIST_ITEMS = 'RECEIVE_PLAYLIST_ITEMS'
 export const INITIALIZE_PLAYLIST = 'INITIALIZE_PLAYLIST'
-export const ITEM_ADDED_TO_PLAYLIST = 'ITEM_ADDED_TO_PLAYLIST'
 export const FETCHING_PLAYLIST_ITEMS = 'FETCHING_PLAYLIST_ITEMS'
+export const ITEM_ADDED_TO_PLAYLIST = 'ITEM_ADDED_TO_PLAYLIST'
+
 
 class PlaylistStates {
   static readonly FETCHING = 'FETCHING'
@@ -76,3 +77,4 @@ export function* initializePlaylistItemsSaga(action) {
   let playlist = yield call(fetchPlaylistItems, action.access_token)
   yield put( receivePlaylistItems(playlist) );
 }
+
