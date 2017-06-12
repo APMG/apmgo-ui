@@ -17,10 +17,11 @@ describe('initialize playlist saga', () => {
   it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
     let 
       nextVal = workerSaga.next().value,
-      action = fetchingPlaylistItems(),
-      expected = put(action);
+      expectedAction = fetchingPlaylistItems();
 
-    expect(nextVal).toEqual(expected)
+    expectedAction.receivedAt = expect.any(Number);
+
+    expect(nextVal).toEqual(put(expectedAction))
   })
 
   it('receives playlist', () => {
