@@ -34,10 +34,10 @@ export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}
 }
 
 // Action creators
-export function receivePlaylistItems (json) {
+export function receivePlaylistItems (data) {
   return {
     type: RECEIVE_PLAYLIST_ITEMS,
-    data: json.data,
+    data: data,
     receivedAt: Date.now()
   }
 }
@@ -66,12 +66,6 @@ export function fetchingPlaylistItems() {
 }
 
 // Sagas 
-
-export function* watchInitializePlaylist() {
-  // listen for the "INITIALIZE_PLAYLIST" action type
-  // and pass that action to initializePlaylistItemsSaga
-  yield takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga)
-}
 
 export function* initializePlaylistItemsSaga(action) {
   // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status

@@ -2,7 +2,6 @@ import {
     INITIALIZE_PLAYLIST,
     initializePlaylist,
     initializePlaylistItemsSaga,
-    watchInitializePlaylist,
     fetchingPlaylistItems,
     receivePlaylistItems
 } from '../playlist';
@@ -13,17 +12,7 @@ describe('initialize playlist saga', () => {
 
   const
     token = 'SAMPLE_TOKEN',
-    watcherSaga = watchInitializePlaylist(), 
     workerSaga = initializePlaylistItemsSaga(initializePlaylist(token));
-
-  it('waits to respond to INITIALIZE_PLAYLIST action', () => {
-    let 
-      nextVal = watcherSaga.next().value,
-      expected = takeLatest(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga);
-
-    expect(nextVal).toEqual(expected)
-    expect(watcherSaga.next().done).toBeTruthy()
-  });
 
   it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
     let 

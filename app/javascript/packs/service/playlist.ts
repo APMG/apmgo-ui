@@ -2,11 +2,7 @@ import { BragiApiClient } from "./api";
 import { PlaylistItemType } from '../redux/types'
 
 export function fetchPlaylistItems(access_token) {
-  return function (dispatch) {
-    // TODO: App state update to indicate API call started
-    // dispatch(requestTimelineItems())
     let instance = BragiApiClient.getInstance(access_token);
-
     return instance.get('/items')
       .then(function (response) {
         return response.data.data
@@ -15,11 +11,9 @@ export function fetchPlaylistItems(access_token) {
         // TODO: Error handling
         console.log(error)
     })
-  }
 }
 
 export function addItemToPlaylist(access_token, item: PlaylistItemType) {
-  return function(dispatch) {
   var instance = BragiApiClient.getInstance(access_token);
 
   return instance.post('/items', item)
@@ -28,5 +22,4 @@ export function addItemToPlaylist(access_token, item: PlaylistItemType) {
       // TODO: Error handling
       console.log(error)
     })  
-  }
 }
