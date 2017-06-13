@@ -22,8 +22,8 @@ class Playlist extends React.Component<TimelineListProps, TimelineListState> {
     }
     return (
       <List>
-        {this.props.data.map(item =>
-          <PlaylistItem item={item} />
+        {this.props.data.map((item, i) =>
+          <PlaylistItem item={item} key={i} />
         )}
       </List>
     )

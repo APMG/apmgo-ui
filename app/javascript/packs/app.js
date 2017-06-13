@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
-import playlistReducer, { fetchPlaylistItems } from './redux/playlist'
-import axios from 'axios'
+import playlistReducer, { initializePlaylist } from './redux/playlist'
 import { Provider } from 'react-redux'
 
 const apm_account = new ApmAccount('/apm_accounts')
@@ -18,12 +17,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from "./redux/root-saga"
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-let middleware = [thunkMiddleware]
+let sagaMiddleware = createSagaMiddleware()
 const enhancer = composeEnhancers(
-  applyMiddleware(...middleware)
+  applyMiddleware(sagaMiddleware)
 )
 
 let store = createStore(
@@ -31,18 +31,23 @@ let store = createStore(
   enhancer
 )
 
+// The root saga is composed of all the app's individual 
+// listener sagas - any saga that begins with "take", "takeEvery" or "takeLatest" 
+// this bootstraps it onto the sagaMiddleware
+sagaMiddleware.run(rootSaga)
+
 // Verify we have a current auth token, then fetch data
 if(apm_account.get_expires_at() < Date.now()) {
   apm_account.refresh()
     .then(function (token) {
-      store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+      store.dispatch( initializePlaylist(apm_account.get_token()) )
     })
     .catch(function (error) {
       // TODO: Error handling
       console.error('Could not refresh access token')
     })
 } else {
-  store.dispatch( fetchPlaylistItems(apm_account.get_token()) )
+  store.dispatch( initializePlaylist(apm_account.get_token()) )
 }
 
 const App = () => (

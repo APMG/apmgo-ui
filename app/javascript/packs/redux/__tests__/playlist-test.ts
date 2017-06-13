@@ -1,35 +1,132 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import { fetchPlaylistItems } from '../playlist'
+import {
+    fetchingPlaylistItems,
+    initializePlaylist,
+    initializePlaylistItemsSaga,
+    receivePlaylistItems,
+    removePlaylistItem,
+    removePlaylistItemSaga,
+    removingPlaylistItem,
+    playlistItemRemoved
+} from '../playlist';
+import { fetchPlaylistItems, deletePlaylistItem } from '../../service/playlist'
+import { put, call, takeLatest } from "redux-saga/effects"
 import * as moxios from 'moxios'
+import configureMockStore from 'redux-mock-store'
 
-const middlewares = [ thunk ]
-const mockStore = configureMockStore(middlewares)
+describe('Playlist API suite', () => {
+  const token = 'SAMPLE_TOKEN'
+  
 
-describe('async actions', () => {
-  beforeEach(() => {
-    moxios.install()
-  })
-  afterEach(() => {
-    moxios.uninstall()
+  beforeEach(function() {
+    moxios.install();
   })
 
-  it('creates RECEIVE_PLAYLIST_ITEMS when fetching playlist items has been done', () => {
+  afterEach(function() {
+    moxios.uninstall();
+  });
+
+
+  it('Fetches playlist items', function() {
+    let payload = 'SAMPLE_DATA';
+
     moxios.stubRequest(/.*\/items/, {
-        status: 200,
-        response: { data: 'SAMPLE_DATA' }
-      })
+      status: 200,
+      response: { 
+        data: { 
+          data: payload 
+        } 
+      }
+    })
+  
+  fetchPlaylistItems(token)
+    .then(result => expect(result).toEqual(payload))
+  })
 
-    const store = mockStore()
+  it('Deletes a playlist item', function() {
 
-    return store.dispatch(fetchPlaylistItems('SAMPLE_TOKEN'))
-      .then(() => { // return of async actions
-        let actions = store.getActions()
-        expect(store.getActions()).toContainEqual({
-          data: "SAMPLE_DATA",
-          type: "RECEIVE_PLAYLIST_ITEMS",
-          receivedAt: expect.any(Number)
-        })
-      })
+    let returnStatus = 204
+
+    moxios.stubOnce('DELETE', /.*\/items\/d+/, {
+      status: returnStatus
+    })
+
+    deletePlaylistItem(token, 12345)
+      .then(response => expect(response).toEqual(returnStatus));
+  })
+})
+
+describe('initialize playlist saga', () => {
+
+  const
+    token = 'SAMPLE_TOKEN', 
+    saga = initializePlaylistItemsSaga(initializePlaylist(token));
+
+  it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
+    let 
+      nextVal = saga.next().value,
+      expectedAction = fetchingPlaylistItems();
+
+    expectedAction.receivedAt = expect.any(Number);
+
+    expect(nextVal).toEqual(put(expectedAction))
+  })
+
+  it('receives playlist', () => {
+    let
+      nextVal = saga.next().value,
+      expected = call(fetchPlaylistItems, token)
+
+    expect(nextVal).toEqual(expected)
+  })
+
+  it('dispatches RECEIVE_PLAYLIST_ITEMS action', () => {
+    let 
+      mockResponse = { data: 'json' },
+      nextVal = saga.next(mockResponse).value,
+      expectedAction = receivePlaylistItems(mockResponse);
+
+      expectedAction.receivedAt = expect.any(Number);
+
+      expect(nextVal).toEqual(put(expectedAction))
+      expect(saga.next().done).toBeTruthy()
+  })
+
+})
+
+
+
+describe('remove playlist item saga', () => {
+
+  const
+    token = 'SAMPLE_TOKEN',
+    item_id = 12345, 
+    saga = removePlaylistItemSaga(removePlaylistItem(token, item_id))
+
+  it('dispatches REMOVING_PLAYLIST_ITEM action', function() {
+    let 
+      nextVal = saga.next().value,
+      expectedAction = removingPlaylistItem(item_id);
+
+    expectedAction.receivedAt = expect.any(Number)
+
+    expect(nextVal).toEqual(put(expectedAction))
+  })
+
+  it('deletes item', function() {
+    let
+      nextVal = saga.next().value,
+      expected = call(deletePlaylistItem, token, item_id)
+
+    expect(nextVal).toEqual(expected)
+  })
+
+  it('dispatches PLAYLIST_ITEM_REMOVED action', function() {
+    let 
+      nextVal = saga.next().value,
+      expectedAction = playlistItemRemoved(item_id)
+
+      expectedAction.receivedAt = expect.any(Number)
+
+      expect(nextVal).toEqual(put(expectedAction))
   })
 })

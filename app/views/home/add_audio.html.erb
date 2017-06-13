@@ -9,6 +9,7 @@ console.log(apm_account)
 <% @entries.each do |entry| %>
   <h2><%= entry.headline %></h2>
   <p><%= entry.teaser %></p>
+  <p><%= entry.slug %></p>
   <% entry.audio.each do |audio| %>
     <h3><%= audio.title %></h3>
     <audio controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
