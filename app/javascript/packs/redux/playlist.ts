@@ -25,7 +25,7 @@ class PlaylistStatuses {
 }
 
 // Reducer
-export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}, receivedAt: Date.now() }) {
+export default function reducer(state = { data: [], errorMessage: '' }, action = { type: 'DEFAULT', data: {}, receivedAt: Date.now(), item_id: null, message: '' }) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
@@ -48,7 +48,7 @@ export default function reducer(state = {}, action = { type: 'DEFAULT', data: {}
     case REMOVE_PLAYLIST_ITEM:
       return Object.assign({}, state, {
         data: state.data.filter(item => {
-          return item.id !== action.id
+          return item.id !== action.item_id
         })
       })
 
@@ -131,7 +131,7 @@ export function fetchingPlaylistItems() {
 
 export function playlistErrorOccured(message) {
   return {
-    type: PLAYLIST_ERROR_OCCURED,
+    type: PLAYLIST_ERROR_OCCURRED,
     message: message,
     receivedAt: Date.now()
   }
@@ -161,7 +161,7 @@ export function* initializePlaylistItemsSaga(action) {
     // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
     yield put( receivePlaylistItems(playlist) );
   } catch (e) {
-    yield put( playlistErrorOccured(e.message) ;
+    yield put( playlistErrorOccured(e.message) ) ;
   }
 }
 

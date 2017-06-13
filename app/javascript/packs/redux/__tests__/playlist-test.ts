@@ -14,48 +14,51 @@ import * as moxios from 'moxios'
 import configureMockStore from 'redux-mock-store'
 
 describe('Playlist API suite', () => {
-
-    beforeEach(function() {
-      moxios.install();
-    })
-
-    afterEach(function() {
-      moxios.uninstall();
-    });
-
-    it('Fetches playlist items', function() {
-      let payload = 'SAMPLE_DATA';
-
-      moxios.stubRequest(/.*\/items/, {
-        status: 200,
-        response: { 
-          data: { 
-            data: payload 
-          } 
-        }
-      })
+  const token = 'SAMPLE_TOKEN'
   
-      fetchPlaylistItems('SAMPLE_TOKEN')
-        .then(result => expect(result).toEqual(payload))
+
+  beforeEach(function() {
+    moxios.install();
+  })
+
+  afterEach(function() {
+    moxios.uninstall();
+  });
+
+
+  it('Fetches playlist items', function() {
+    let payload = 'SAMPLE_DATA';
+
+    moxios.stubRequest(/.*\/items/, {
+      status: 200,
+      response: { 
+        data: { 
+          data: payload 
+        } 
+      }
+    })
+  
+  fetchPlaylistItems(token)
+    .then(result => expect(result).toEqual(payload))
+  })
+
+  it('Deletes a playlist item', function() {
+
+    let returnStatus = 204
+
+    moxios.stubOnce('DELETE', /.*\/items\/d+/, {
+      status: returnStatus
     })
 
-    it('Deletes a playlist item', function() {
-
-      let returnStatus = 204
-
-      moxios.stubOnce('DELETE', /.*\/items\/d+/, {
-        status: returnStatus
-      })
-
-      deletePlaylistItem(12345)
+    deletePlaylistItem(token, 12345)
       .then(response => expect(response).toEqual(returnStatus));
-    })
+  })
 })
 
 describe('initialize playlist saga', () => {
 
   const
-    token = 'SAMPLE_TOKEN',
+    token = 'SAMPLE_TOKEN', 
     saga = initializePlaylistItemsSaga(initializePlaylist(token));
 
   it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
@@ -95,8 +98,8 @@ describe('initialize playlist saga', () => {
 describe('remove playlist item saga', () => {
 
   const
-    item_id = 12345, 
     token = 'SAMPLE_TOKEN',
+    item_id = 12345, 
     saga = removePlaylistItemSaga(removePlaylistItem(token, item_id))
 
   it('dispatches REMOVING_PLAYLIST_ITEM action', function() {

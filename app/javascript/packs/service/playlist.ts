@@ -29,7 +29,7 @@ function handleError(error) {
   // TODO: handle error 
   console.log(error)
   if (!!error.request) {
-    throw "We were unable to process this request - no server response"
+    throw "We were unable to process this request"
   } else if (!!error.message) {
     throw error.message;
   }
