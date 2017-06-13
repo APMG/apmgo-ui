@@ -24,8 +24,21 @@ class PlaylistStatuses {
   static readonly ERROR = 'ERROR'
 }
 
+class DefaultState {
+  data: Array<PlaylistItemType> = []
+  errorMessage: string = ''
+}
+
+class ActionType {
+  type: string = 'DEFAULT'
+  data: Array<{}> = []
+  receivedAt: Number
+  item_id : Number
+  message: string
+}
+
 // Reducer
-export default function reducer(state = { data: [], errorMessage: '' }, action = { type: 'DEFAULT', data: {}, receivedAt: Date.now(), item_id: null, message: '' }) {
+export default function reducer(state : DefaultState = new DefaultState, action : ActionType = new ActionType) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
