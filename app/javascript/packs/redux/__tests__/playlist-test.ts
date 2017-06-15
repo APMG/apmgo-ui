@@ -15,21 +15,20 @@ import configureMockStore from 'redux-mock-store'
 
 describe('Playlist API suite', () => {
   const token = 'SAMPLE_TOKEN'
-  
 
   beforeEach(function() {
-    moxios.install();
+    moxios.install()
   })
 
   afterEach(function() {
-    moxios.uninstall();
-  });
+    moxios.uninstall()
+  })
 
+  it('Fetches playlist items', async () => {
+    expect.assertions(1)
+    let payload = 'SAMPLE_DATA'
 
-  it('Fetches playlist items', function() {
-    let payload = 'SAMPLE_DATA';
-
-    moxios.stubRequest(/.*\/items/, {
+    moxios.stubOnce('GET', /.*\/items/, {
       status: 200,
       response: { 
         data: { 
@@ -37,21 +36,21 @@ describe('Playlist API suite', () => {
         } 
       }
     })
-  
-  fetchPlaylistItems(token)
-    .then(result => expect(result).toEqual(payload))
+
+    let result = await fetchPlaylistItems(token)
+    expect(result.data).toEqual(payload)
   })
 
-  it('Deletes a playlist item', function() {
-
+  it('Deletes a playlist item', async () => {
+    expect.assertions(1)
     let returnStatus = 204
 
-    moxios.stubOnce('DELETE', /.*\/items\/d+/, {
+    moxios.stubOnce('DELETE', /.*\/items\/\d+/, {
       status: returnStatus
     })
 
-    deletePlaylistItem(token, 12345)
-      .then(response => expect(response).toEqual(returnStatus));
+    let result = await deletePlaylistItem(token, 12345)
+    expect(result).toEqual(true)
   })
 })
 
