@@ -25,8 +25,32 @@ export function deletePlaylistItem(access_token, item_id) {
     .catch(handleError)
 }
 
+export async function apiArchivePlaylistItem(access_token, item) {
+  item = {
+    ...item,
+    attributes: {
+      ...item.attributes,
+      status: "played",
+      finished: new Date().toString()
+    }
+  }
+  let responseCode = await updatePlaylistItem(access_token, item)
+  if (responseCode === 204) {
+    return item
+  }
+  throw Error("Could not update item")
+}
+
+function updatePlaylistItem(access_token, item: PlaylistItemType) {
+  let instance = BragiApiClient.getInstance(access_token)
+
+  return instance.put(`/items/${item.id}`, item)
+    .then(response => response.status)
+    .catch(handleError)
+}
+
 function handleError(error) {
-  // TODO: handle error 
+  // TODO: handle error
   console.log(error)
   if (!!error.request) {
     throw "We were unable to process this request"
