@@ -6,12 +6,35 @@ import {
     removePlaylistItem,
     removePlaylistItemSaga,
     removingPlaylistItem,
-    playlistItemRemoved
+    playlistItemRemoved,
+    archivePlaylistItemSaga,
+    archivingPlaylistItem,
+    archivePlaylistItem,
+    playlistItemArchived
 } from '../playlist';
-import { fetchPlaylistItems, deletePlaylistItem } from '../../service/playlist'
+import { fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../../service/playlist'
 import { put, call, takeLatest } from "redux-saga/effects"
 import * as moxios from 'moxios'
 import configureMockStore from 'redux-mock-store'
+
+const PLAYLIST_ITEM_MOCK = {
+  attributes: {
+    after: "todo",
+    "audio-description": "My boss told me to make a long description, so I did.",
+    "audio-hosts": "John Doe",
+    "audio-identifier": "2016/01/01/smart-audio",
+    "audio-program": "Spending Money",
+    "audio-title": "Smart Audio",
+    "audio-url": "https://ondemand.npr.org/anon.npr-mp3/npr/atc/2017/04/20170417_atc_schools_will_soon_have_to_put_in_writing_if_they_lunch_shame.mp3?orgId=227&topicId=1013&d=217&p=2&story=524234563&t=progseg&e=524383015&seg=14&ft=nprml&f=524234563",
+    "finished": null,
+    "origin-url": "https://example.com/smart-audio",
+    "playtime": 123456,
+    "source": "example",
+    "status": "unplayed"
+  },
+  id: 1,
+  type: "bragi-items"
+}
 
 describe('Playlist API suite', () => {
   const token = 'SAMPLE_TOKEN'
@@ -51,6 +74,26 @@ describe('Playlist API suite', () => {
 
     let result = await deletePlaylistItem(token, 12345)
     expect(result).toEqual(true)
+  })
+
+  it('Archives a playlist item', async () => {
+    expect.assertions(1)
+    let returnStatus = 204,
+      postArchiveItem = {
+        ...PLAYLIST_ITEM_MOCK,
+        attributes: {
+          ...PLAYLIST_ITEM_MOCK.attributes,
+          status: "played",
+          finished: new Date().toString()
+        }
+      }
+
+    moxios.stubOnce('PUT', /.*\/items\/\d+/, {
+      status: returnStatus
+    })
+
+    let result = await apiArchivePlaylistItem(token, PLAYLIST_ITEM_MOCK)
+    expect(result).toEqual(postArchiveItem)
   })
 })
 
@@ -127,5 +170,44 @@ describe('remove playlist item saga', () => {
       expectedAction.receivedAt = expect.any(Number)
 
       expect(nextVal).toEqual(put(expectedAction))
+  })
+})
+
+describe('archive playlist item saga', () => {
+  const
+    token = 'SAMPLE_TOKEN',
+    preArchiveItem = PLAYLIST_ITEM_MOCK,
+    postArchiveItem = {
+        ...PLAYLIST_ITEM_MOCK,
+        attributes: {
+          ...PLAYLIST_ITEM_MOCK.attributes,
+          status: "played",
+          finished: new Date().toString()
+        }
+      },
+    saga = archivePlaylistItemSaga(archivePlaylistItem(token, preArchiveItem))
+
+  it('dispatches ARCHIVING_PLAYLIST_ITEM action', function() {
+    let
+      nextVal = saga.next().value,
+      expectedAction = archivingPlaylistItem(preArchiveItem)
+
+    expect(nextVal).toEqual(put(expectedAction))
+  })
+
+  it('archives item', function() {
+    let
+      nextVal = saga.next().value,
+      expected = call(apiArchivePlaylistItem, token, preArchiveItem)
+
+    expect(nextVal).toEqual(expected)
+  })
+
+  it('dispatches PLAYLIST_ITEM_ARCHIVED action', function() {
+    let
+      nextVal = saga.next(postArchiveItem).value,
+      expectedAction = playlistItemArchived(postArchiveItem)
+
+    expect(nextVal).toEqual(put(expectedAction))
   })
 })
