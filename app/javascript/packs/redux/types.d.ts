@@ -14,5 +14,11 @@ export interface PlaylistItemType {
     "status": string
   },
   id: number,
-  type: string
+  type: string,
+  player?: AudioPlayerType
+}
+
+export interface AudioPlayerType {
+  paused: boolean
+  item_id: number
 }

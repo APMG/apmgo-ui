@@ -31,7 +31,7 @@ class Playlist extends React.Component<TimelineListProps, TimelineListState> {
 }
 
 const mapStateToProps = (state) => {
-  let playlistItems = state.data
+  let playlistItems = state.data.data
 
   return { data: playlistItems }
 }

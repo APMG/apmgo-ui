@@ -1,5 +1,6 @@
 import { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
+import { DefaultState, ActionType } from './defaults'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
@@ -20,6 +21,8 @@ export const PLAYLIST_ITEM_ARCHIVED = 'PLAYLIST_ITEM_ARCHIVED'
 export const PLAYLIST_ERROR_OCCURRED = 'PLAYLIST_ERROR_OCCURED'
 export const CLEAR_PLAYLIST_ERROR = 'CLEAR_PLAYLIST_ERROR'
 
+export const UPDATE_PLAYLIST_ITEM = 'UPDATE_PLAYLIST_ITEM'
+
 // Statuses
 class PlaylistStatuses {
   static readonly ARCHIVING_ITEM = 'ARCHIVING_ITEM'
@@ -29,22 +32,10 @@ class PlaylistStatuses {
   static readonly ERROR = 'ERROR'
 }
 
-class DefaultState {
-  data: Array<PlaylistItemType> = []
-  errorMessage: string = ''
-}
 
-class ActionType {
-  type: string = 'DEFAULT'
-  data: Array<{}> = []
-  receivedAt: Number
-  item_id : Number
-  message: string
-  item: PlaylistItemType
-}
 
 // Reducer
-export default function reducer(state : DefaultState = new DefaultState, action : ActionType = new ActionType) {
+export default function reducer(state : {data: Array<PlaylistItemType>, errorMessage: string} = {data: [], errorMessage: ''}, action : ActionType = new ActionType) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
@@ -103,7 +94,17 @@ export default function reducer(state : DefaultState = new DefaultState, action 
     case CLEAR_PLAYLIST_ERROR:
       let result = Object.assign({}, state);
       delete result.errorMessage;
-      return result;
+      return result
+
+    case UPDATE_PLAYLIST_ITEM:
+      return Object.assign({}, state, {
+        data: state.data.map(item => {
+          if (item.id === action.item.id) {
+            return Object.assign({}, item, action.item)
+          }
+          return item;
+        })      
+      })
 
     default: return state
   }
@@ -202,6 +203,13 @@ export function clearPlaylistError() {
   return {
     type: CLEAR_PLAYLIST_ERROR,
     receivedAt: Date.now()
+  }
+}
+
+export function updatePlaylistItem(item) {
+  return {
+    type: UPDATE_PLAYLIST_ITEM,
+    item: item
   }
 }
 

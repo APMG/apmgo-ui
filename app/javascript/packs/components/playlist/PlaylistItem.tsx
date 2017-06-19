@@ -11,7 +11,9 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
 
+
 import { PlaylistItemType } from '../../redux/types'
+import PlayPauseButton from "../player/PlayPauseButton"
 
 import {
   grey400,
@@ -42,13 +44,14 @@ const rightIconMenu = (
 )
 
 const PlaylistItem = (props: { item: PlaylistItemType }) => (
-  <ListItem
-    leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
-    rightIconButton={rightIconMenu}
-    primaryText={props.item.attributes['audio-title']}
-    secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
-    secondaryTextLines={1}
-  />
+  // <ListItem
+  //   leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
+  //   rightIconButton={rightIconMenu}
+  //   primaryText={props.item.attributes['audio-title']}
+  //   secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
+  //   secondaryTextLines={1}
+  // />
+  <PlayPauseButton item_id={ props.item.id } />
 )
 
 export default PlaylistItem

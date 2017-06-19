@@ -4,7 +4,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
 import playlistReducer, { initializePlaylist } from './redux/playlist'
+import playerReducer from './redux/audio-player'
 import { Provider } from 'react-redux'
+import { combineReducers } from 'redux'
 
 const apm_account = new ApmAccount('/apm_accounts')
 if(!apm_account.is_logged_in()) {
@@ -27,7 +29,10 @@ const enhancer = composeEnhancers(
 )
 
 let store = createStore(
-  playlistReducer,
+  combineReducers({
+    data: playlistReducer, 
+    audioPlayers: playerReducer
+  }),
   enhancer
 )
 
