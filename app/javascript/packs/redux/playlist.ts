@@ -1,5 +1,5 @@
 import { PlaylistItemType } from './types';
-import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem } from '../service/playlist'
+import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
@@ -13,11 +13,16 @@ export const REMOVING_PLAYLIST_ITEM = 'REMOVING_ITEM_FROM_PLAYLIST'
 export const REMOVE_PLAYLIST_ITEM = 'REMOVE_PLAYLIST_ITEM'
 export const PLAYLIST_ITEM_REMOVED = 'PLAYLIST_ITEM_REMOVED'
 
+export const ARCHIVING_PLAYLIST_ITEM = 'ARCHIVING_PLAYLIST_ITEM'
+export const ARCHIVE_PLAYLIST_ITEM = 'ARCHIVE_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_ARCHIVED = 'PLAYLIST_ITEM_ARCHIVED'
+
 export const PLAYLIST_ERROR_OCCURRED = 'PLAYLIST_ERROR_OCCURED'
 export const CLEAR_PLAYLIST_ERROR = 'CLEAR_PLAYLIST_ERROR'
 
 // Statuses
 class PlaylistStatuses {
+  static readonly ARCHIVING_ITEM = 'ARCHIVING_ITEM'
   static readonly REMOVING_ITEM = 'REMOVING_ITEM'
   static readonly FETCHING = 'FETCHING'
   static readonly DEFAULT = 'DEFAULT'
@@ -35,6 +40,7 @@ class ActionType {
   receivedAt: Number
   item_id : Number
   message: string
+  item: PlaylistItemType
 }
 
 // Reducer
@@ -66,6 +72,25 @@ export default function reducer(state : DefaultState = new DefaultState, action 
       })
 
     case PLAYLIST_ITEM_REMOVED:
+      return Object.assign({}, state, {
+        status: PlaylistStatuses.DEFAULT
+      })
+
+    case ARCHIVING_PLAYLIST_ITEM:
+      return Object.assign({}, state, {
+        status: PlaylistStatuses.ARCHIVING_ITEM
+      })
+
+    case ARCHIVE_PLAYLIST_ITEM:
+      return Object.assign({}, state, {
+        data: state.data.map(item => {
+          if (item.id === action.item.id) {
+            return Object.assign({}, item, action.item)
+          }
+        })
+      })
+
+    case PLAYLIST_ITEM_ARCHIVED:
       return Object.assign({}, state, {
         status: PlaylistStatuses.DEFAULT
       })
@@ -116,6 +141,29 @@ export function playlistItemRemoved(item_id) {
     type: PLAYLIST_ITEM_REMOVED,
     item_id: item_id,
     receivedAt: Date.now()
+  }
+}
+
+// Archiving
+export function archivingPlaylistItem(item) {
+  return {
+    type: ARCHIVING_PLAYLIST_ITEM,
+    item: item,
+  }
+}
+
+export function archivePlaylistItem (access_token, item) {
+  return {
+    type: ARCHIVE_PLAYLIST_ITEM,
+    access_token: access_token,
+    item: item
+  }
+}
+
+export function playlistItemArchived(item) {
+  return {
+    type: PLAYLIST_ITEM_ARCHIVED,
+    item: item
   }
 }
 
@@ -187,5 +235,15 @@ export function* removePlaylistItemSaga(action) {
   } catch (e) {
     yield put( playlistErrorOccured( e.message ) )
   }
+}
 
+export function* archivePlaylistItemSaga(action) {
+  yield put ( archivingPlaylistItem(action.item) );
+
+  try {
+    let itemResult = yield call( apiArchivePlaylistItem, action.access_token, action.item )
+    yield put ( playlistItemArchived( itemResult ) )
+  } catch (e) {
+    yield put( playlistErrorOccured( e.message ) )
+  }
 }
