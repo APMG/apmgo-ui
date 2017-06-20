@@ -25,11 +25,11 @@ export const UPDATE_PLAYLIST_ITEM = 'UPDATE_PLAYLIST_ITEM'
 
 // Statuses
 class PlaylistStatuses {
-  static readonly ARCHIVING_ITEM = 'ARCHIVING_ITEM'
-  static readonly REMOVING_ITEM = 'REMOVING_ITEM'
-  static readonly FETCHING = 'FETCHING'
-  static readonly DEFAULT = 'DEFAULT'
-  static readonly ERROR = 'ERROR'
+  ARCHIVING_ITEM = 'ARCHIVING_ITEM'
+  REMOVING_ITEM = 'REMOVING_ITEM'
+  FETCHING = 'FETCHING'
+  DEFAULT = 'DEFAULT'
+  ERROR = 'ERROR'
 }
 
 
@@ -44,7 +44,7 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
         status: PlaylistStatuses.DEFAULT
       })
 
-    case FETCHING_PLAYLIST_ITEMS: 
+    case FETCHING_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
         status: PlaylistStatuses.FETCHING,
         receivedAt: action.receivedAt
@@ -86,11 +86,11 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
         status: PlaylistStatuses.DEFAULT
       })
 
-    case PLAYLIST_ERROR_OCCURRED: 
+    case PLAYLIST_ERROR_OCCURRED:
       return Object.assign({}, state, {
         errorMessage: action.message
       })
-    
+
     case CLEAR_PLAYLIST_ERROR:
       let result = Object.assign({}, state);
       delete result.errorMessage;
@@ -103,7 +103,7 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
             return Object.assign({}, item, action.item)
           }
           return item;
-        })      
+        })
       })
 
     default: return state
@@ -131,7 +131,7 @@ export function removingPlaylistItem(item_id) {
 export function removePlaylistItem (access_token, item_id) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
-    access_token: access_token,    
+    access_token: access_token,
     item_id: item_id,
     receivedAt: Date.now()
   }
@@ -213,7 +213,7 @@ export function updatePlaylistItem(item) {
   }
 }
 
-// Sagas 
+// Sagas
 
 export function* initializePlaylistItemsSaga(action) {
   // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
@@ -221,9 +221,9 @@ export function* initializePlaylistItemsSaga(action) {
 
   try {
     // call async fetchPlaylistItems api function.
-    // when the promise returns, yield that value from the generator 
-    // and also store its value to the playlist variable 
-    // (noted bc it was confusing to me that both of those things would happen) 
+    // when the promise returns, yield that value from the generator
+    // and also store its value to the playlist variable
+    // (noted bc it was confusing to me that both of those things would happen)
     let playlist = yield call( fetchPlaylistItems, action.access_token )
     // TODO: wrap this ^^^ in a try/catch block to handle errors
 

@@ -1,26 +1,27 @@
+// @flow
 import * as React from 'react';
 import { connect } from 'react-redux'
 import ReactAudioPlayer from 'react-audio-player';
 
 import AudioPlayerModel from '../../models/AudioPlayerModel';
 import { PlaylistItemType } from '../../redux/types';
-import PlayPauseButton from './PlayPauseButton';
+import PlayPauseButton from './PlayPauseButton'
+import { deletePlaylistItem } from '../../service/playlist'
 
-
-class InlineAudioPlayer extends React.Component<{},{}> {
+class InlineAudioPlayer extends React.Component {
 
   audio: HTMLAudioElement
-  private _rap: ReactAudioPlayer
-  private _timer: number
+  _rap: ReactAudioPlayer
+  _timer: number = 12345678
   props:  {
-    item: PlaylistItemType
-    player?: AudioPlayerModel
+    item: PlaylistItemType,
+    player: AudioPlayerModel
   }
   state: {
     currentTime: number
   }
 
-  constructor(props) {
+  constructor(props: {item: PlaylistItemType}) {
     super(props)
     this.state = {
       currentTime: 0
@@ -32,13 +33,13 @@ class InlineAudioPlayer extends React.Component<{},{}> {
       <div>
         {
           // when the player is rendered, the audioEl attribute
-          // is mapped onto the actual HTMLAudioElement 
-          this._rap.render() 
+          // is mapped onto the actual HTMLAudioElement
+          this._rap.render()
         }
-        { this.state && Math.floor(this.state.currentTime) }
-        <PlayPauseButton 
-          item_id={this.props.item.id} 
-          paused={this.audio ? this.audio.paused : true } 
+        { this.state && this.state.currentTime }
+        <PlayPauseButton
+          item_id={this.props.item.id}
+          paused={this.audio ? this.audio.paused : true }
         />
       </div>
     )
@@ -54,23 +55,23 @@ class InlineAudioPlayer extends React.Component<{},{}> {
   componentDidMount() {
       this.audio = this._rap.audioEl
       this._updateTimeInState()
-  } 
+  }
 
   componentWillReceiveProps(nextProps) {
     this._setPlayPaused(nextProps.player.paused);
   }
 
 
-  //  Managing 
-  //  Internal 
-  //  Component 
-  //  State 
+  //  Managing
+  //  Internal
+  //  Component
+  //  State
   ///////
   /////
   ///
   //
 
-  private _setPlayPaused(newPaused: boolean) {
+  _setPlayPaused(newPaused: boolean) {
     if (!this.audio || (newPaused !== this.audio.paused)) {
       if (newPaused) {
         this._pause()
@@ -80,31 +81,30 @@ class InlineAudioPlayer extends React.Component<{},{}> {
     }
   }
 
-  private _pause() {
+  _pause() {
     this.audio.pause()
     this._stopTimer()
   }
 
-  private _play() {
+  _play() {
     this.audio.play()
     this._startTimer()
   }
 
-  private _startTimer() {
-    this._timer = setTimeout(() => {
+  _startTimer() {
+    this._timer = setInterval(() => {
       this._updateTimeInState()
     }, 1000)
   }
 
-  private _stopTimer() {
-    clearTimeout(this._timer)
+  _stopTimer() {
+    clearInterval(this._timer)
   }
 
-  private _updateTimeInState() {
+  _updateTimeInState() {
     this.setState({
-      currentTime: Math.floor(this.audio.currentTime)
+      currentTime: Math.ceil(this.audio.currentTime)
     })
-    console.log(this.audio.currentTime)
   }
 }
 

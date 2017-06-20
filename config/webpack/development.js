@@ -2,9 +2,12 @@
 
 const merge = require('webpack-merge')
 const sharedConfig = require('./shared.js')
+const webpack = require('webpack')
+const path = require('path')
+
 
 module.exports = merge(sharedConfig, {
-  devtool: 'sourcemap',
+  devtool: 'eval-source-map',
 
   stats: {
     errorDetails: true

@@ -1,12 +1,22 @@
 {
+  "passPerPreset": true,
   "presets": [
-    [ "es2015", { "modules": false } ],
-    "stage-1",
-    "react"
+    { "plugins": [ "transform-runtime" ] },
+    {
+        "passPerPreset": false,
+        "presets": [
+          "flow",
+          [ "es2015", { "modules": false } ],
+          "stage-1",
+          "react"
+        ]
+    }
   ],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ]
     }
   }
 }

@@ -1,7 +1,9 @@
 import { AudioPlayerType } from '../redux/types'
 
 class AudioPlayerModelParams {
-
+  item_id: number
+  paused: boolean
+  currentTime: number
 }
 
 export default class AudioPlayerModel implements AudioPlayerType {
@@ -10,11 +12,7 @@ export default class AudioPlayerModel implements AudioPlayerType {
   paused: boolean
   currentTime: number
 
-  constructor(params: {
-    item_id: number
-    paused?: boolean
-    currentTime?: number
-  }) {
+  constructor(params: AudioPlayerModelParams) {
     this.item_id = params.item_id
     this.paused = !!params.paused
     this.currentTime = params.currentTime || 0
@@ -25,7 +23,7 @@ export default class AudioPlayerModel implements AudioPlayerType {
   }
 
   setPaused(paused: Boolean) : AudioPlayerModel {
-    return this._make({paused: this.paused})
+    return this._make({paused: paused})
   }
 
   // static fromAudioEl(item_id, audioEl: HTMLAudioElement) {
@@ -42,17 +40,14 @@ export default class AudioPlayerModel implements AudioPlayerType {
     Object.keys(this).forEach(key => {
       result[key]= this[key]
     })
-    console.log(result)
     return result
   }
 
-  private _make(params: {}) : AudioPlayerModel {
+  _make(params: {}) : AudioPlayerModel {
     let newParams = {
-      item_id: this.item_id,
       ...this._thisProps(),
-      params
+      ...params
     }
-    debugger
     return new AudioPlayerModel(newParams)
   }
 }

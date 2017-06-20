@@ -5,16 +5,16 @@ import { AudioPlayerType } from '../../redux/types';
 import AudioPlayerModel from '../../models/AudioPlayerModel'
 import { DefaultState } from '../../redux/defaults'
 
-interface PlayPauseProps {
-  item_id: number
-  paused: boolean
-  play?: () => void
-  pause?: () => void
-}
+// interface PlayPauseProps {
+//   item_id: number
+//   paused: boolean
+//   play?: () => void
+//   pause?: () => void
+// }
 
-class PlayPauseButton extends React.Component<PlayPauseProps, {}> {
+class PlayPauseButton extends React.Component {
 
-  props: PlayPauseProps
+  // props: PlayPauseProps
 
   render() {
     if (this.props.paused) {
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch, ownProps: PlayPauseProps) => {
 //     player: newPlayer
 //   }
 // }
-export default connect<{}, {}, PlayPauseProps>(
-  null, 
+export default connect(
+  null,
   mapDispatchToProps
 )(PlayPauseButton)

@@ -51,7 +51,10 @@ const PlaylistItem = (props: { item: PlaylistItemType }) => (
   //   secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
   //   secondaryTextLines={1}
   // />
-  <InlineAudioPlayer item={props.item} />
+  <div>
+    <h1>Whoa!</h1>
+    <InlineAudioPlayer item={props.item} />
+  </div>
 )
 
 export default PlaylistItem

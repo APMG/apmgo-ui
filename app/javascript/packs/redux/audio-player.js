@@ -2,8 +2,8 @@ import { ActionType, DefaultState } from './defaults';
 import { PlaylistItemType } from './types';
 import AudioPlayerModel from '../models/AudioPlayerModel';
 
-export const PLAY_AUDIO_PLAYER = 'PLAY_AUDIO_PLAYER'
-export const PAUSE_AUDIO_PLAYER = 'PAUSE_AUDIO_PLAYER'
+export const PLAY_AUDIO_PLAYER: string = 'PLAY_AUDIO_PLAYER'
+export const PAUSE_AUDIO_PLAYER: string = 'PAUSE_AUDIO_PLAYER'
 
 export default function reducer(state : Array<AudioPlayerModel> = [], action : ActionType = new ActionType) {
 
@@ -21,13 +21,15 @@ export default function reducer(state : Array<AudioPlayerModel> = [], action : A
           return player.setPaused(paused)
       })
 
-    case PAUSE_AUDIO_PLAYER: 
-      return state.map((player: AudioPlayerModel )=> {
+    case PAUSE_AUDIO_PLAYER:
+      let newState = state.map((player: AudioPlayerModel )=> {
         if (player.item_id === action.item_id) {
-          return player.setPaused(true)
+          let pausedPlayer = player.setPaused(true)
+          return pausedPlayer
         }
         return player
       })
+      return newState
 
     default:
       return state

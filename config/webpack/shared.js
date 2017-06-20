@@ -11,6 +11,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const extname = require('path-complete-extname')
 const { env, paths, publicPath, loadersDir } = require('./configuration.js')
+const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
+
 
 const walkSync = function(dir, filelist) {
   files = fs.readdirSync(dir);
@@ -52,8 +54,9 @@ module.exports = {
   module: {
     rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
   },
-  
+
   plugins: [
+    new FlowBabelWebpackPlugin(),
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
     new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
     new ManifestPlugin({ fileName: paths.manifest, publicPath, writeToFileEmit: true })
