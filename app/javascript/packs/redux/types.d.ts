@@ -21,4 +21,5 @@ export interface PlaylistItemType {
 export interface AudioPlayerType {
   paused: boolean
   item_id: number
+  currentTime: number
 }

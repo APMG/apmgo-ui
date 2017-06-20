@@ -13,7 +13,7 @@ import Done from 'material-ui/svg-icons/action/done'
 
 
 import { PlaylistItemType } from '../../redux/types'
-import PlayPauseButton from "../player/PlayPauseButton"
+import InlineAudioPlayer from '../../components/player/InlineAudioPlayer'
 
 import {
   grey400,
@@ -51,7 +51,7 @@ const PlaylistItem = (props: { item: PlaylistItemType }) => (
   //   secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
   //   secondaryTextLines={1}
   // />
-  <PlayPauseButton item_id={ props.item.id } />
+  <InlineAudioPlayer item={props.item} />
 )
 
 export default PlaylistItem
