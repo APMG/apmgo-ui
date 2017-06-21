@@ -13,7 +13,7 @@ import Done from 'material-ui/svg-icons/action/done'
 
 
 import { PlaylistItemType } from '../../redux/types'
-import InlineAudioPlayer from '../../components/player/InlineAudioPlayer'
+import AudioPlayer from '../../components/player/AudioPlayer'
 
 import {
   grey400,
@@ -44,17 +44,13 @@ const rightIconMenu = (
 )
 
 const PlaylistItem = (props: { item: PlaylistItemType }) => (
-  // <ListItem
-  //   leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
-  //   rightIconButton={rightIconMenu}
-  //   primaryText={props.item.attributes['audio-title']}
-  //   secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
-  //   secondaryTextLines={1}
-  // />
-  <div>
-    <h1>Whoa!</h1>
-    <InlineAudioPlayer item={props.item} />
-  </div>
+  <ListItem
+    leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
+    rightIconButton={rightIconMenu}
+    primaryText={props.item.attributes['audio-title']}
+    secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
+    secondaryTextLines={1}
+  />
 )
 
 export default PlaylistItem

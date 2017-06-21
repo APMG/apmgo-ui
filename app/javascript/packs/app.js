@@ -30,14 +30,14 @@ const enhancer = composeEnhancers(
 
 let store = createStore(
   combineReducers({
-    data: playlistReducer, 
-    audioPlayers: playerReducer
+    data: playlistReducer,
+    audioPlayer: playerReducer
   }),
   enhancer
 )
 
-// The root saga is composed of all the app's individual 
-// listener sagas - any saga that begins with "take", "takeEvery" or "takeLatest" 
+// The root saga is composed of all the app's individual
+// listener sagas - any saga that begins with "take", "takeEvery" or "takeLatest"
 // this bootstraps it onto the sagaMiddleware
 sagaMiddleware.run(rootSaga)
 

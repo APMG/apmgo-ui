@@ -1,23 +1,20 @@
+// @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { pauseAudioPlayer, playAudioPlayer } from '../../redux/audio-player';
-import { AudioPlayerType } from '../../redux/types';
-import AudioPlayerModel from '../../models/AudioPlayerModel'
-import { DefaultState } from '../../redux/defaults'
 
-// interface PlayPauseProps {
-//   item_id: number
-//   paused: boolean
-//   play?: () => void
-//   pause?: () => void
-// }
+class PlayPauseProps {
+  audio: HTMLAudioElement
+  play: () => {}
+  pause: () => {}
+}
 
 class PlayPauseButton extends React.Component {
 
-  // props: PlayPauseProps
+  props: PlayPauseProps
 
   render() {
-    if (this.props.paused) {
+    if (!this.audio || this.props.audio.paused ) {
       return (
         <button onClick={this.props.play}>Play</button>
       )
@@ -32,24 +29,14 @@ class PlayPauseButton extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps: PlayPauseProps) => {
   return {
     play: () : void => {
-      dispatch(playAudioPlayer(ownProps.item_id))
+      dispatch(playAudioPlayer())
     },
     pause: (): void => {
-      dispatch(pauseAudioPlayer(ownProps.item_id))
+      dispatch(pauseAudioPlayer())
     }
   }
 }
 
-// const mapStateToProps = (state : any, ownProps: PlayPauseProps) => {
-//   let player = state.audioPlayers.find(player => player.item_id === ownProps.item_id),
-//       newPlayer = new AudioPlayerModel(ownProps.item_id)
-
-//   newPlayer.paused = player ? player.paused : true;
-
-//   return {
-//     player: newPlayer
-//   }
-// }
 export default connect(
   null,
   mapDispatchToProps

@@ -1,7 +1,7 @@
 import { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
 import { DefaultState, ActionType } from './defaults'
-
+import { setCurrentTrack } from './audio-player'
 import { put, takeLatest, call } from 'redux-saga/effects'
 
 // Actions
@@ -225,10 +225,23 @@ export function* initializePlaylistItemsSaga(action) {
     // and also store its value to the playlist variable
     // (noted bc it was confusing to me that both of those things would happen)
     let playlist = yield call( fetchPlaylistItems, action.access_token )
-    // TODO: wrap this ^^^ in a try/catch block to handle errors
-
+// debugger
+//     // initialize audio player with first unfinished track
+//     if (playlist.length) {
+//       let initialTrack = playlist.find((item) => {
+//         item.attributes.finished !== true
+//       })
+//
+//       if (!initialTrack) {
+//         initialTrack = playlist[0]
+//       }
+    // }
+    debugger
+    yield put ( setCurrentTrack(playlist[0]) )
     // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
     yield put( receivePlaylistItems(playlist) );
+
+
   } catch (e) {
     yield put( playlistErrorOccured(e.message) ) ;
   }

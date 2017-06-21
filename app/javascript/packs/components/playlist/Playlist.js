@@ -1,17 +1,23 @@
+// @flow
 import * as React from 'react'
 import { connect } from 'react-redux'
 import PlaylistItem from './PlaylistItem'
 import List from 'material-ui/List'
 import ListItem from 'material-ui/List/ListItem'
-import { PlaylistItemType } from '../../redux/types'
+import type { PlaylistItemType } from '../../redux/types'
+import AudioPlayer from '../player/AudioPlayer'
 
-interface TimelineListProps {
-  data: Array<PlaylistItemType>
+type TimelineListProps = {
+  data: Array<PlaylistItemType>,
+  activeItem?: PlaylistItemType
 }
 
 interface TimelineListState {}
 
-class Playlist extends React.Component<TimelineListProps, TimelineListState> {
+class Playlist extends React.Component {
+
+  currentTrack: PlaylistItemType
+
   constructor(props) {
     super(props)
   }
@@ -20,12 +26,19 @@ class Playlist extends React.Component<TimelineListProps, TimelineListState> {
     if (!this.props.data) {
       return <h1>Loading ...</h1>
     }
+    if (!this.props.data.length) {
+      return <h1>Your playlist is empty</h1>
+    }
     return (
-      <List>
-        {this.props.data.map((item, i) =>
-          <PlaylistItem item={item} key={i} />
-        )}
-      </List>
+      <div>
+        <AudioPlayer item/>
+        <List>
+          {this.props.data.map((item, i) =>
+            <PlaylistItem item={item} key={i} />
+          )}
+        </List>
+      </div>
+
     )
   }
 }

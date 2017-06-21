@@ -1,8 +1,9 @@
-import { PlaylistItemType, AudioPlayerType } from './types'
+import { PlaylistItemType } from './types'
+import AudioPlayerModel from '../models/AudioPlayerModel'
 
 export class DefaultState {
   data: Array<PlaylistItemType> = []
-  audioPlayers: Array<AudioPlayerType> = []
+  audioPlayers: Array<AudioPlayerModel> = []
   errorMessage: string = ''
 }
 

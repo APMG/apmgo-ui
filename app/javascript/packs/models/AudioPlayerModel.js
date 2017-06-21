@@ -1,51 +1,66 @@
-import { AudioPlayerType } from '../redux/types'
+// @flow
 
-class AudioPlayerModelParams {
-  item_id: number
-  paused: boolean
-  currentTime: number
+import type { PlaylistItemType } from '../redux/types'
+
+type AudioPlayerModelParams = {
+  // item_id: number,
+  currentTrackId?: number,
+  paused?: boolean,
+  muted?: boolean
 }
 
-export default class AudioPlayerModel implements AudioPlayerType {
-
-  item_id: number
+export default class AudioPlayerModel {
+  currentTrackId: number | typeof undefined
   paused: boolean
-  currentTime: number
+  muted: boolean
 
   constructor(params: AudioPlayerModelParams) {
-    this.item_id = params.item_id
+
+    this.currentTrackId = params.currentTrackId
     this.paused = !!params.paused
-    this.currentTime = params.currentTime || 0
+    this.muted = !!params.muted
   }
 
-  toggledPaused() {
-    return this._make({paused: !this.paused})
+  setTrack(track: number) {
+    return this._make({
+      currentTrackId: track
+     })
   }
 
-  setPaused(paused: Boolean) : AudioPlayerModel {
-    return this._make({paused: paused})
-  }
-
-  // static fromAudioEl(item_id, audioEl: HTMLAudioElement) {
-  //   let instance = new AudioPlayerModel(item_id)
-
-  //   instance.paused = audioEl.paused
-  //   instance.currentTime = audioEl.currentTime
-
-  //   return instance
-  // }
-
-  _thisProps() {
-    let result = {}
-    Object.keys(this).forEach(key => {
-      result[key]= this[key]
+  setTrack(track: PlaylistItemType) {
+    return this._make({
+      currentTrackId: track.id
     })
-    return result
+  }
+
+  play(currentTrackId?: number) {
+    let params : {paused: boolean, currentTrackId?: number} = { paused: false }
+
+    if (currentTrackId) {
+      params.currentTrackId = currentTrackId
+    }
+
+    return this._make(params)
+  }
+
+  pause() {
+    return this._make({paused: true})
+  }
+
+  mute() {
+    return this._make({muted: true})
+  }
+
+  unmute() {
+    return this._make({muted: false})
   }
 
   _make(params: {}) : AudioPlayerModel {
     let newParams = {
-      ...this._thisProps(),
+      // item_id: this.item_id,
+      currentTrackId: this.currentTrackId,
+      paused: this.paused,
+      muted: this.muted,
       ...params
     }
     return new AudioPlayerModel(newParams)
