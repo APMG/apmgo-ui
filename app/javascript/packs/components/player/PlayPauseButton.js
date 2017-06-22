@@ -15,18 +15,6 @@ class PlayPauseButton extends React.Component {
 
   props: PlayPauseProps
 
-  render() {
-    if (this.props.paused || typeof this.props.paused === 'undefined') {
-      return (
-        <button onClick={this.props.play}>Play</button>
-      )
-    } else {
-      return (
-        <button onClick={this.props.pause}>Pause</button>
-      )
-    }
-  }
-
   componentWillReceiveProps(newProps) {
     if (this.props.paused === newProps.paused) {
       return
@@ -36,6 +24,18 @@ class PlayPauseButton extends React.Component {
       newProps.audio.pause()
     } else {
       newProps.audio.play()
+    }
+  }
+
+  render() {
+    if (this.props.paused || typeof this.props.paused === 'undefined') {
+      return (
+        <button onClick={this.props.play}>Play</button>
+      )
+    } else {
+      return (
+        <button onClick={this.props.pause}>Pause</button>
+      )
     }
   }
 }

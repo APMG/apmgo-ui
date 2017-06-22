@@ -44,8 +44,6 @@ export async function apiArchivePlaylistItem(access_token: string, item: {}) : P
 function updatePlaylistItem(access_token, item: PlaylistItemType) {
   let instance = BragiApiClient.getInstance(access_token)
 
-  delete item.player
-
   return instance.put(`/items/${item.id}`, item)
     .then(response => response.status)
     .catch(handleError)

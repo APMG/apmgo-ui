@@ -1,5 +1,5 @@
 // @flow
-import AudioPlayerModel from '../models/AudioPlayerModel'
+import AudioPlayerState from '../models/AudioPlayerState'
 
 export type PlaylistItemType = {
   attributes: {

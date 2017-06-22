@@ -1,23 +1,25 @@
+// @flow
 import * as React from 'react'
 import { dispatch, connect } from 'react-redux'
 import Slider from 'material-ui/Slider';
 
-type TimeSliderProps = {
+type TimeScrubberProps = {
   audio: HTMLAudioElement,
   paused: boolean
 }
 
-class TimeSlider extends React.Component {
+class TimeScrubber extends React.Component {
 
-  props: TimeSliderProps
+  props: TimeScrubberProps
   timeDraggingPoint: number
   updatingWithDrag: boolean
+  _timer: number
   state: {
     currentTime: number,
-    timer: number
+    timer?: number
   }
 
-  constructor(props: TimeSliderProps) {
+  constructor(props: TimeScrubberProps) {
     let currentTime = 0;
     if(props.audio && props.audio.currentTime && !isNaN(props.audio.currentTime)) {
       currentTime = props.audio.currentTime
@@ -29,19 +31,6 @@ class TimeSlider extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div>
-        { this.playTimeDisplay() }
-        <Slider
-          value={ this.timeSliderValue() }
-          onChange={ this._timeChange.bind(this) }
-          onDragStart={ this._timeChangeDragStart.bind(this) }
-          onDragStop={this._timeChangeDragStop.bind(this) }
-        />
-      </div>
-    )
-  }
 
   componentWillReceiveProps(newProps) {
     if (newProps.paused === this.props.paused) {
@@ -72,7 +61,7 @@ class TimeSlider extends React.Component {
     return minutes + ":" + seconds.toString().padStart(2, '0')
   }
 
-  timeSliderValue() {
+  timeScrubberValue() {
     if(!this.props.audio || isNaN(this.props.audio.duration)) {
       return 0
     }
@@ -86,7 +75,6 @@ class TimeSlider extends React.Component {
   _timeChange(event, newValue: number) {
     if (this.timeDraggingPoint) {
       this.timeDraggingPoint = newValue
-      console.log('change with drag', newValue)
       this.updatingWithDrag = true
     } else {
       // newValue is between 0 and 1
@@ -134,6 +122,20 @@ class TimeSlider extends React.Component {
       currentTime: Math.ceil(this.props.audio.currentTime)
     })
   }
+  
+  render() {
+    return (
+      <div>
+        { this.playTimeDisplay() }
+        <Slider
+          value={ this.timeScrubberValue() }
+          onChange={ this._timeChange.bind(this) }
+          onDragStart={ this._timeChangeDragStart.bind(this) }
+          onDragStop={this._timeChangeDragStop.bind(this) }
+        />
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (newState) => {
@@ -142,4 +144,4 @@ const mapStateToProps = (newState) => {
   }
 }
 
-export default connect(mapStateToProps)(TimeSlider)
+export default connect(mapStateToProps)(TimeScrubber)

@@ -3,17 +3,15 @@ import * as React from 'react';
 import { connect } from 'react-redux'
 import ReactAudioPlayer from 'react-audio-player';
 
-import Slider from 'material-ui/Slider';
-
-import AudioPlayerModel from '../../models/AudioPlayerModel';
+import AudioPlayerState from '../../models/AudioPlayerState';
 import type { PlaylistItemType } from '../../redux/types';
 import PlayPauseButton from './PlayPauseButton'
 import MuteButton from './MuteButton'
-import TimeSlider from './TimeSlider'
+import TimeScrubber from './TimeScrubber'
 import VolumeSlider from './VolumeSlider'
 
 type AudioPlayerProps = {
-  player: AudioPlayerModel,
+  player: AudioPlayerState,
   item: PlaylistItemType
 }
 
@@ -22,36 +20,12 @@ class AudioPlayer extends React.Component {
   audioEl: HTMLAudioElement
   _rap: ReactAudioPlayer
   props: AudioPlayerProps
-  state: {
-
-  }
-
-  render() {
-    return (
-      <div>
-        {/* when the player (_rap) is rendered, the audioEl attribute */ }
-        {/* is mapped onto the actual HTMLAudioElement */}
-        { this._rap.render() }
-        <h2>My Custom Playlist</h2>
-
-        <PlayPauseButton audio={ this.audioEl } />
-        <MuteButton audio={ this.audioEl } />
-
-        <h3>Time Control</h3>
-        <TimeSlider audio={ this.audioEl }/>
-
-        <h3>Volume Control</h3>
-        <VolumeSlider audio={ this.audioEl } />
-      </div>
-    )
-  }
 
   componentWillMount() {
     this.refreshAudioPlayer(this.props.item)
   }
 
   componentWillReceiveProps(newProps) {
-    debugger
     if(newProps.item.id !== this.props.item.id) {
       this.refreshAudioPlayer(newProps.item)
     }
@@ -78,6 +52,25 @@ class AudioPlayer extends React.Component {
     }))
   }
 
+  render() {
+    return (
+      <div>
+        {/* when the player (_rap) is rendered, the audioEl attribute */ }
+        {/* is mapped onto the actual HTMLAudioElement */}
+        { this._rap.render() }
+        <h2>My Custom Playlist</h2>
+
+        <PlayPauseButton audio={ this.audioEl } />
+        <MuteButton audio={ this.audioEl } />
+
+        <h3>Time Control</h3>
+        <TimeScrubber audio={ this.audioEl }/>
+
+        <h3>Volume Control</h3>
+        <VolumeSlider audio={ this.audioEl } />
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) : AudioPlayerProps => {
@@ -85,7 +78,7 @@ const mapStateToProps = (state) : AudioPlayerProps => {
       item = state.data.data.find(item => {
         return item.id === player.currentTrackId
       });
-debugger
+
   return {
     item: item,
     player: player

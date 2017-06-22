@@ -1,7 +1,7 @@
 // @flow
-import { ActionType, DefaultState } from './defaults'
+import { ActionType } from './defaults'
 import type { PlaylistItemType } from './types'
-import AudioPlayerModel from '../models/AudioPlayerModel'
+import AudioPlayerState from '../models/AudioPlayerState'
 import { RECEIVE_PLAYLIST_ITEMS } from './playlist'
 
 export const PLAY_AUDIO_PLAYER: string = 'PLAY_AUDIO_PLAYER'
@@ -14,26 +14,26 @@ const defaultProps = {
   paused: true,
   muted: false
 }
-const defaultPlayer = new AudioPlayerModel(defaultProps)
+const defaultPlayer = new AudioPlayerState(defaultProps)
 
-export default function reducer(player : AudioPlayerModel = defaultPlayer, action : ActionType = new ActionType) {
+export default function reducer(playerState : AudioPlayerState = defaultPlayer, action : ActionType = new ActionType) {
 
   switch(action.type) {
 
     case SET_CURRENT_TRACK:
-      return player.setCurrentTrackId(action.item_id)
+      return playerState.setCurrentTrackId(action.item_id)
 
     case PLAY_AUDIO_PLAYER:
-      return player.play()
+      return playerState.play()
 
     case PAUSE_AUDIO_PLAYER:
-      return player.pause()
+      return playerState.pause()
 
     case MUTE_AUDIO_PLAYER:
-      return player.mute()
+      return playerState.mute()
 
     case UNMUTE_AUDIO_PLAYER:
-      return player.unmute()
+      return playerState.unmute()
 
     case RECEIVE_PLAYLIST_ITEMS:
       // we need to initialize the audio player here
@@ -48,14 +48,14 @@ export default function reducer(player : AudioPlayerModel = defaultPlayer, actio
 
       // if there are no tracks, just return the player unmodified
       if (!first) {
-        return player
+        return playerState
       }
 
       // otherwise set the track
-      return player.setCurrentTrackId(first.id)
+      return playerState.setCurrentTrackId(first.id)
 
     default:
-      return player
+      return playerState
   }
 }
 
@@ -67,11 +67,17 @@ export function setCurrentTrack(item_id: number) {
 }
 
 export function playAudioPlayer (item_id: number) {
-  return { type: PLAY_AUDIO_PLAYER }
+  return {
+    type: PLAY_AUDIO_PLAYER,
+    item_id: item_id
+  }
 }
 
 export function pauseAudioPlayer (item_id: number) {
-  return { type: PAUSE_AUDIO_PLAYER }
+  return {
+    type: PAUSE_AUDIO_PLAYER,
+    item_id: item_id
+  }
 }
 
 export function muteAudioPlayer() {

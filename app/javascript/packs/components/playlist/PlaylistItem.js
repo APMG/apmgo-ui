@@ -3,9 +3,6 @@
 import * as React from 'react'
 import { connect, dispatch } from 'react-redux'
 
-
-import * as ReactDOM from 'react-dom'
-import List from 'material-ui/List'
 import ListItem from 'material-ui/List/ListItem'
 import Avatar from 'material-ui/Avatar'
 import IconMenu from 'material-ui/IconMenu'
@@ -16,16 +13,11 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
 
-
 import type { PlaylistItemType } from '../../redux/types'
-import AudioPlayer from '../../components/player/AudioPlayer'
 import { setCurrentTrack } from '../../redux/audio-player'
 
 import {
   grey400,
-  lightGreen50,
-  lightGreen400,
-  lightBlue50,
   lightBlue400,
   red50,
   red700

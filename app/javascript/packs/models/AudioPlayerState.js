@@ -1,20 +1,17 @@
 // @flow
 
-import type { PlaylistItemType } from '../redux/types'
-
-type AudioPlayerModelParams = {
-  // item_id: number,
+type AudioPlayerStateParams = {
   currentTrackId?: number,
   paused?: boolean,
   muted?: boolean
 }
 
-export default class AudioPlayerModel {
+export default class AudioPlayerState {
   currentTrackId: number | typeof undefined
   paused: boolean
   muted: boolean
 
-  constructor(params: AudioPlayerModelParams) {
+  constructor(params: AudioPlayerStateParams) {
 
     this.currentTrackId = params.currentTrackId
     this.paused = !!params.paused
@@ -49,13 +46,13 @@ export default class AudioPlayerModel {
     return this._make({muted: false})
   }
 
-  _make(params: {}) : AudioPlayerModel {
+  _make(params: {}) : AudioPlayerState {
     let newParams = {
       currentTrackId: this.currentTrackId,
       paused: this.paused,
       muted: this.muted,
       ...params
     }
-    return new AudioPlayerModel(newParams)
+    return new AudioPlayerState(newParams)
   }
 }

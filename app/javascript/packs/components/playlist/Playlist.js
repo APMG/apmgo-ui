@@ -3,7 +3,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import PlaylistItem from './PlaylistItem'
 import List from 'material-ui/List'
-import ListItem from 'material-ui/List/ListItem'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 
@@ -15,8 +14,6 @@ type TimelineListProps = {
 interface TimelineListState {}
 
 class Playlist extends React.Component {
-
-  currentTrack: PlaylistItemType
 
   constructor(props) {
     super(props)
@@ -38,19 +35,12 @@ class Playlist extends React.Component {
           )}
         </List>
       </div>
-
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  let playlistItems = state.data.data
-
-  return { data: playlistItems }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  
+  return { data: state.data.data }
 }
 
 const PlaylistContainer = connect(
