@@ -21,7 +21,7 @@ export default function reducer(player : AudioPlayerModel = defaultPlayer, actio
   switch(action.type) {
 
     case SET_CURRENT_TRACK:
-      return player.setCurrentTrackId(action.id)
+      return player.setCurrentTrackId(action.item_id)
 
     case PLAY_AUDIO_PLAYER:
       return player.play()
@@ -59,10 +59,10 @@ export default function reducer(player : AudioPlayerModel = defaultPlayer, actio
   }
 }
 
-export function setCurrentTrack(item: PlaylistItemType) {
+export function setCurrentTrack(item_id: number) {
   return {
     type: SET_CURRENT_TRACK,
-    item: item
+    item_id: item_id
   }
 }
 

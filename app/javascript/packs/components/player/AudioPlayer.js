@@ -51,6 +51,7 @@ class AudioPlayer extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    debugger
     if(newProps.item.id !== this.props.item.id) {
       this.refreshAudioPlayer(newProps.item)
     }
@@ -84,7 +85,7 @@ const mapStateToProps = (state) : AudioPlayerProps => {
       item = state.data.data.find(item => {
         return item.id === player.currentTrackId
       });
-
+debugger
   return {
     item: item,
     player: player
