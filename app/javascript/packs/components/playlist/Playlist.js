@@ -31,7 +31,7 @@ class Playlist extends React.Component {
     }
     return (
       <div>
-        <AudioPlayer item/>
+        <AudioPlayer />
         <List>
           {this.props.data.map((item, i) =>
             <PlaylistItem item={item} key={i} />
@@ -47,6 +47,10 @@ const mapStateToProps = (state) => {
   let playlistItems = state.data.data
 
   return { data: playlistItems }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  
 }
 
 const PlaylistContainer = connect(

@@ -21,16 +21,10 @@ export default class AudioPlayerModel {
     this.muted = !!params.muted
   }
 
-  setTrack(track: number) {
+  setCurrentTrackId(track: number) {
     return this._make({
       currentTrackId: track
      })
-  }
-
-  setTrack(track: PlaylistItemType) {
-    return this._make({
-      currentTrackId: track.id
-    })
   }
 
   play(currentTrackId?: number) {
@@ -57,7 +51,6 @@ export default class AudioPlayerModel {
 
   _make(params: {}) : AudioPlayerModel {
     let newParams = {
-      // item_id: this.item_id,
       currentTrackId: this.currentTrackId,
       paused: this.paused,
       muted: this.muted,

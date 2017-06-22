@@ -1,4 +1,9 @@
+// @flow
+
 import * as React from 'react'
+import { connect, dispatch } from 'react-redux'
+
+
 import * as ReactDOM from 'react-dom'
 import List from 'material-ui/List'
 import ListItem from 'material-ui/List/ListItem'
@@ -12,8 +17,9 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
 
 
-import { PlaylistItemType } from '../../redux/types'
+import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../../components/player/AudioPlayer'
+import { setCurrentTrack } from '../../redux/audio-player'
 
 import {
   grey400,
@@ -43,14 +49,35 @@ const rightIconMenu = (
   </IconMenu>
 )
 
-const PlaylistItem = (props: { item: PlaylistItemType }) => (
-  <ListItem
-    leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
-    rightIconButton={rightIconMenu}
-    primaryText={props.item.attributes['audio-title']}
-    secondaryText={ <p>{props.item.attributes['audio-description']}</p> }
-    secondaryTextLines={1}
-  />
-)
+type PlaylistItemProps = {
+  item: PlaylistItemType,
+  setAsCurrent: () => {}
+}
 
-export default PlaylistItem
+class PlaylistItem extends React.Component {
+
+  props: PlaylistItemProps
+
+  render() {
+    return (
+      <ListItem
+        onClick={this.props.setAsCurrent.bind(this)}
+        leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
+        rightIconButton={rightIconMenu}
+        primaryText={this.props.item.attributes['audio-title']}
+        secondaryText={ <p>{this.props.item.attributes['audio-description']}</p> }
+        secondaryTextLines={1}
+      />
+    )
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setAsCurrent: () => {
+      dispatch(setCurrentTrack(ownProps.item.id))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(PlaylistItem)
