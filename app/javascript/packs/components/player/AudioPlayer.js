@@ -9,29 +9,21 @@ import AudioPlayerModel from '../../models/AudioPlayerModel';
 import type { PlaylistItemType } from '../../redux/types';
 import PlayPauseButton from './PlayPauseButton'
 import MuteButton from './MuteButton'
+import TimeSlider from './TimeSlider'
+import VolumeSlider from './VolumeSlider'
 
 type AudioPlayerProps = {
+  player: AudioPlayerModel,
   item: PlaylistItemType
 }
 
 class AudioPlayer extends React.Component {
 
-  audio: HTMLAudioElement
+  audioEl: HTMLAudioElement
   _rap: ReactAudioPlayer
-  _timer: number = 12345
-  // player: AudioPlayerModel
   props: AudioPlayerProps
   state: {
-    currentTime: number,
-    volume?: number,
-    timeDraggingPoint?: number
-  }
 
-  constructor(props: {item: PlaylistItemType}) {
-    super(props)
-    this.state = {
-      currentTime: 0
-    }
   }
 
   render() {
@@ -39,190 +31,64 @@ class AudioPlayer extends React.Component {
       <div>
         {/* when the player (_rap) is rendered, the audioEl attribute */ }
         {/* is mapped onto the actual HTMLAudioElement */}
-        {/* { this._rap } */}
+        { this._rap.render() }
         <h2>My Custom Playlist</h2>
 
-        <PlayPauseButton audio={ this.audio } />
-        <MuteButton audio={ this.audio } />
-        <br/>
-        <h3>Volume Control</h3>
-        <Slider
-          value={ this.state.volume }
-          onChange={ this._volumeChange.bind(this)}
-        />
+        <PlayPauseButton audio={ this.audioEl } />
+        <MuteButton audio={ this.audioEl } />
 
         <h3>Time Control</h3>
-        { this.state && this.playTime() }
+        <TimeSlider audio={ this.audioEl }/>
 
-        <Slider
-          value={ this.timeSliderValue() }
-          onChange={ this._timeChange.bind(this)}
-          onDragStop={this._timeChangeDragStop.bind(this) }
-        />
-
+        <h3>Volume Control</h3>
+        <VolumeSlider audio={ this.audioEl } />
       </div>
     )
   }
 
   componentWillMount() {
-    debugger
-    if (!this.item) {
-      return
-    }
-    this.refreshAudioPlayer()
+    this.refreshAudioPlayer(this.props.item)
   }
 
-  componentWillUpdate(nextProps) {
-    if (!this.item) {
-      return
-    }
-    if (nextProps.item.id ) {
-      this.refreshAudioPlayer()
+  componentWillReceiveProps(newProps) {
+    if(newProps.item.id !== this.props.item.id) {
+      this.refreshAudioPlayer(newProps.item)
     }
   }
 
   componentDidMount() {
-    if (!this.item) {
-      return
-    }
-      this._updateTimeInState()
-      this._updateVolumeInState()
+    this.audioEl = this._rap.audioEl
+  }
+  componentDidUpdate() {
+
+    this.audioEl = this._rap.audioEl
   }
 
-  componentWillReceiveProps(nextProps: AudioPlayerProps) {
-
-  }
-
-  refreshAudioPlayer() {
-    if (!this.props.item) {
+  refreshAudioPlayer(item?: PlaylistItemType) {
+    if (!item) {
       return
     }
     this._rap = (new ReactAudioPlayer({
-      src: this.props.item.attributes['audio-url'],
-      muted: this.audio ? this.audio.muted : false,
-      volume: this.audio ? this.audio.volume : null,
+      src: item.attributes['audio-url'],
+      muted: this.audioEl ? this.audioEl.muted : false,
+      volume: this.audioEl ? this.audioEl.volume : null,
+      currentTime: item.attributes['playtime'] || 0,
       controls: false
-    })).render()
-
-    this.audio = this._rap.audioEl
+    }))
   }
 
-  playTime() {
-    if (!this.state.currentTime) {
-      return "0:00"
-    }
-
-    let baseTime = this.state.currentTime;
-
-    if (this.state.timeDraggingPoint) {
-      baseTime = Math.floor(this.audio.duration * this.state.timeDraggingPoint)
-    }
-
-    let minutes = Math.floor(baseTime / 60),
-        seconds = baseTime - (minutes * 60)
-
-    return minutes + ":" + seconds.toString().padStart(2, '0')
-  }
-
-  timeSliderValue() {
-    if(!this.audio) {
-      return 0
-    }
-    let val = this.state.currentTime / this.audio.duration
-
-    return val <= 1 ? val : 1
-  }
-
-  //  Managing
-  //  Internal
-  //  Component
-  //  State
-  ///////
-  /////
-  ///
-  //
-
-
-  // PLAYING AND PAUSING
-  _setPlayPaused(newPaused: boolean) {
-    if (!this.audio || (newPaused !== this.audio.paused)) {
-      if (newPaused) {
-        this._pause()
-      } else {
-        this._play()
-      }
-    }
-  }
-
-  _pause() {
-    this.audio.pause()
-    this._stopTimer()
-  }
-
-  _play() {
-    this.audio.play()
-    this._startTimer()
-  }
-
-  _startTimer() {
-    this._timer = setInterval(() => {
-      this._updateTimeInState()
-    }, 1000)
-  }
-
-  _stopTimer() {
-    clearInterval(this._timer)
-  }
-
-  _updateTimeInState() {
-    this.setState({
-      currentTime: Math.ceil(this.audio.currentTime)
-    })
-  }
-
-  _updateVolumeInState() {
-    this.setState({
-      volume: this.audio.volume
-    })
-  }
-
-  // TODO: do we want all the players to share a single volume slider?
-  // if so hook this up to redux ...
-  _volumeChange(event, newValue: number) {
-    if (!this.audio) {
-      return
-    }
-
-    this.audio.volume = newValue
-    this._updateVolumeInState()
-  }
-
-  _timeChange(event, newValue: number) {
-    this.setState({
-      timeDraggingPoint: newValue
-    })
-  }
-
-  _timeChangeDragStop(event) {
-    if (!this.audio || !this.state.timeDraggingPoint) {
-      return
-    }
-    // newValue is between 0 and 1
-    this.audio.currentTime = this.audio.duration * this.state.timeDraggingPoint
-    this._updateTimeInState()
-    delete this.state.timeDraggingPoint
-  }
 }
 
 const mapStateToProps = (state) : AudioPlayerProps => {
-debugger
+  let player = state.audioPlayer,
+      item = state.data.data.find(item => {
+        return item.id === player.currentTrackId
+      });
+
   return {
-    item: state.data.data.find(item => item.id === state.audioPlayer.currentTrack)
+    item: item,
+    player: player
   }
-}
-
-const mapDispatchToProps = (dispatch, ownProps: AudioPlayerProps) => {
-
 }
 
 export default connect(mapStateToProps, null)(AudioPlayer)

@@ -3,7 +3,10 @@ import { dispatch, connect } from 'react-redux'
 import { muteAudioPlayer, unmuteAudioPlayer } from '../../redux/audio-player'
 
 type MuteButtonProps = {
-  muted: boolean
+  audio: HTMLAudioElement,
+  muted: boolean,
+  mute: () => {},
+  unmute: () => {}
 }
 
 class MuteButton extends React.Component {
@@ -21,17 +24,34 @@ class MuteButton extends React.Component {
       )
     }
   }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.muted === newProps.muted) {
+      return
+    }
+
+    this.props.audio.muted = newProps.muted
+  }
 }
 
-const mapDispatchToProps = (dispatch, ownProps: MuteButtonProps ) => {
+const mapStateToProps = (newState) => {
+  return {
+    muted: newState.audioPlayer.muted
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
   return {
     mute: () => {
-      dispatch(muteAudioPlayer(ownProps.item_id))
+      dispatch(muteAudioPlayer())
     },
     unmute: () => {
-      dispatch(unmuteAudioPlayer(ownProps.item_id))
+      dispatch(unmuteAudioPlayer())
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(MuteButton)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MuteButton)
