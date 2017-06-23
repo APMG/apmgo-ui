@@ -16,10 +16,6 @@ class PlayPauseButton extends React.Component {
   props: PlayPauseProps
 
   componentWillReceiveProps(newProps) {
-    if (this.props.paused === newProps.paused) {
-      return
-    }
-
     if(newProps.paused) {
       newProps.audio.pause()
     } else {
@@ -41,6 +37,7 @@ class PlayPauseButton extends React.Component {
 }
 
 const mapStateToProps = (newState) => {
+  console.log(newState)
   return {
     paused: newState.audioPlayer.paused,
     item_id: newState.audioPlayer.currentTrackId

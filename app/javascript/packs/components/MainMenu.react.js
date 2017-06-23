@@ -24,7 +24,7 @@ const Logged = (props) => (
 
 Logged.muiName = 'IconMenu'
 
-type MainMenuPropTypes = {
+type MainMenuProps = {
   name: string,
   logoutPath?: string
 }
@@ -33,21 +33,12 @@ let mainMenuDefaultProps = {
   name: 'Listener'
 }
 
-const MainMenu = (props: MainMenuPropTypes = mainMenuDefaultProps) => (
+const MainMenu = (props: MainMenuProps = mainMenuDefaultProps) => (
   <AppBar
     title={`${props.name}'s Playlist`}
     iconElementLeft={<div></div>}
     iconElementRight={<Logged logoutPath={props.logoutPath} />}
   />
 )
-
-MainMenu.defaultProps = {
-  name: 'Listener'
-}
-
-MainMenu.propTypes = {
-  name: PropTypes.string,
-  logoutPath: PropTypes.string
-}
 
 export default MainMenu
