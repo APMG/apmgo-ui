@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react'
-import { connect } from 'react-redux'
 import Slider from 'material-ui/Slider'
 
 type VolumeSliderProps = {

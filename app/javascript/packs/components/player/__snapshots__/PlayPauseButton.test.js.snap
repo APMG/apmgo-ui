@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Play/Pause Button Component Presenter Displays a Pause Button When Playing 1`] = `
+<button
+  onClick={undefined}
+>
+  Pause
+</button>
+`;
+
+exports[`Play/Pause Button Component Presenter Displays a Play Button When Paused 1`] = `
+<button
+  onClick={undefined}
+>
+  Play
+</button>
+`;

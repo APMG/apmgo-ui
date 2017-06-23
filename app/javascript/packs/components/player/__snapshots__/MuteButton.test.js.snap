@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mute Button Component Presenter Displays a Mute Button When Unmuted 1`] = `
+<button
+  onClick={undefined}
+>
+  Mute
+</button>
+`;
+
+exports[`Mute Button Component Presenter Displays an Unmute Button When Muted 1`] = `
+<button
+  onClick={undefined}
+>
+  Unmute
+</button>
+`;
