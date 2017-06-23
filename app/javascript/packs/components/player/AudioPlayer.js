@@ -15,7 +15,7 @@ type AudioPlayerProps = {
   item: PlaylistItemType
 }
 
-class AudioPlayer extends React.Component {
+export class AudioPlayerPresenter extends React.Component {
 
   audioEl: HTMLAudioElement
   _rap: ReactAudioPlayer
@@ -25,7 +25,7 @@ class AudioPlayer extends React.Component {
     this.refreshAudioPlayer(this.props.item)
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: AudioPlayerProps) {
     if(newProps.item.id !== this.props.item.id) {
       this.refreshAudioPlayer(newProps.item)
     }
@@ -84,5 +84,4 @@ const mapStateToProps = (state) : AudioPlayerProps => {
     player: player
   }
 }
-
-export default connect(mapStateToProps, null)(AudioPlayer)
+export default connect(mapStateToProps, null)(AudioPlayerPresenter)
