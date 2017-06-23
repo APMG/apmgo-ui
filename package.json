@@ -72,7 +72,7 @@
     "test:debug": "node --debug-brk ./node_modules/.bin/jest --runInBand"
   },
   "jest": {
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js)$",
+    "testRegex": "(\\.(test|spec))\\.(js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",

@@ -1,28 +1,17 @@
+
 import React from 'react'
-import { shallow } from 'enzyme'
+import getSnapshotJson from '../../redux/__tests__/mock-initial-state'
 import MuteButton, { MuteButtonPresenter } from './MuteButton'
 
 describe('Mute Button Component', () => {
-
   describe('Presenter', () => {
-
-    let wrapper
-
-    beforeEach(() => {
+    it('Displays a Mute Button When Unmuted', () => {
+      let tree = getSnapshotJson(<MuteButtonPresenter muted={false}/>)
+      expect(tree).toMatchSnapshot()
     })
-
-    it('Displays a Mute button', () => {
-      wrapper = shallow(<MuteButtonPresenter muted={false}/>)
-      expect(wrapper.text()).toContain('Mute')
-      expect(wrapper.text()).not.toContain('Unmute')
+    it('Displays an Unmute Button When Muted', () => {
+      let tree = getSnapshotJson(<MuteButtonPresenter muted={true}/>)
+      expect(tree).toMatchSnapshot()
     })
-
-    it('Displays an Unmute button', () => {
-      wrapper = shallow(<MuteButtonPresenter muted={true}/>)
-      expect(wrapper.text()).toContain('Unmute')
-      expect(wrapper.text()).not.toContain('Mute')
-    })
-
   })
-
 })

@@ -46,7 +46,7 @@ type PlaylistItemProps = {
   setAsCurrent: () => {}
 }
 
-class PlaylistItem extends React.Component {
+export class PlaylistItemPresenter extends React.Component {
 
   props: PlaylistItemProps
 
@@ -72,4 +72,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(PlaylistItem)
+export default connect(null, mapDispatchToProps)(PlaylistItemPresenter)

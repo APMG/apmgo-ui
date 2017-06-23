@@ -11,11 +11,11 @@ type PlayPauseProps = {
   pause: () => {}
 }
 
-class PlayPauseButton extends React.Component {
+export class PlayPauseButtonPresenter extends React.Component {
 
   props: PlayPauseProps
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: PlayPauseProps) {
     if(newProps.paused) {
       newProps.audio.pause()
     } else {
@@ -37,7 +37,6 @@ class PlayPauseButton extends React.Component {
 }
 
 const mapStateToProps = (newState) => {
-  console.log(newState)
   return {
     paused: newState.audioPlayer.paused,
     item_id: newState.audioPlayer.currentTrackId
@@ -58,4 +57,4 @@ const mapDispatchToProps = (dispatch, ownProps: PlayPauseProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlayPauseButton)
+)(PlayPauseButtonPresenter)

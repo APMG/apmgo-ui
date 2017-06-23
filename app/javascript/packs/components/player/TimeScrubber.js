@@ -8,7 +8,7 @@ type TimeScrubberProps = {
   paused: boolean
 }
 
-class TimeScrubber extends React.Component {
+export class TimeScrubberPresenter extends React.Component {
 
   props: TimeScrubberProps
   timeDraggingPoint: number
@@ -32,7 +32,7 @@ class TimeScrubber extends React.Component {
   }
 
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: TimeScrubberProps) {
     if (newProps.paused === this.props.paused) {
       return
     }
@@ -72,7 +72,7 @@ class TimeScrubber extends React.Component {
 
   // EVENT HANDLERS
 
-  _timeChange(event, newValue: number) {
+  _timeChange(event: Event, newValue: number) {
     if (this.timeDraggingPoint) {
       this.timeDraggingPoint = newValue
       this.updatingWithDrag = true
@@ -122,7 +122,7 @@ class TimeScrubber extends React.Component {
       currentTime: Math.ceil(this.props.audio.currentTime)
     })
   }
-  
+
   render() {
     return (
       <div>
@@ -144,4 +144,4 @@ const mapStateToProps = (newState) => {
   }
 }
 
-export default connect(mapStateToProps)(TimeScrubber)
+export default connect(mapStateToProps)(TimeScrubberPresenter)

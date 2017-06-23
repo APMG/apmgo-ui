@@ -7,16 +7,16 @@ import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import Async from 'react-code-splitting'
 
-type TimelineListProps = {
+type PlaylistProps = {
   data: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType
 }
 
 interface TimelineListState {}
 
-class Playlist extends React.Component {
+export class PlaylistPresenter extends React.Component {
 
-  constructor(props) {
+  constructor(props: PlaylistProps) {
     super(props)
   }
 
@@ -43,6 +43,6 @@ const mapStateToProps = (state) => {
 
 const PlaylistContainer = connect(
   mapStateToProps
-)(Playlist)
+)(PlaylistPresenter)
 
 export default PlaylistContainer
