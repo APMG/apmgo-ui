@@ -53,10 +53,10 @@ describe('Playlist API suite', () => {
 
     moxios.stubOnce('GET', /.*\/items/, {
       status: 200,
-      response: { 
-        data: { 
-          data: payload 
-        } 
+      response: {
+        data: {
+          data: payload
+        }
       }
     })
 
@@ -100,11 +100,11 @@ describe('Playlist API suite', () => {
 describe('initialize playlist saga', () => {
 
   const
-    token = 'SAMPLE_TOKEN', 
+    token = 'SAMPLE_TOKEN',
     saga = initializePlaylistItemsSaga(initializePlaylist(token));
 
   it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
-    let 
+    let
       nextVal = saga.next().value,
       expectedAction = fetchingPlaylistItems();
 
@@ -122,7 +122,7 @@ describe('initialize playlist saga', () => {
   })
 
   it('dispatches RECEIVE_PLAYLIST_ITEMS action', () => {
-    let 
+    let
       mockResponse = { data: 'json' },
       nextVal = saga.next(mockResponse).value,
       expectedAction = receivePlaylistItems(mockResponse);
@@ -141,11 +141,11 @@ describe('remove playlist item saga', () => {
 
   const
     token = 'SAMPLE_TOKEN',
-    item_id = 12345, 
+    item_id = 12345,
     saga = removePlaylistItemSaga(removePlaylistItem(token, item_id))
 
   it('dispatches REMOVING_PLAYLIST_ITEM action', function() {
-    let 
+    let
       nextVal = saga.next().value,
       expectedAction = removingPlaylistItem(item_id);
 
@@ -163,7 +163,7 @@ describe('remove playlist item saga', () => {
   })
 
   it('dispatches PLAYLIST_ITEM_REMOVED action', function() {
-    let 
+    let
       nextVal = saga.next().value,
       expectedAction = playlistItemRemoved(item_id)
 

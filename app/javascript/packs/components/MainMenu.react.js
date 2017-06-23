@@ -1,5 +1,5 @@
+// @flow
 import React from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
@@ -24,7 +24,16 @@ const Logged = (props) => (
 
 Logged.muiName = 'IconMenu'
 
-const MainMenu = props => (
+type MainMenuPropTypes = {
+  name: string,
+  logoutPath?: string
+}
+
+let mainMenuDefaultProps = {
+  name: 'Listener'
+}
+
+const MainMenu = (props: MainMenuPropTypes = mainMenuDefaultProps) => (
   <AppBar
     title={`${props.name}'s Playlist`}
     iconElementLeft={<div></div>}

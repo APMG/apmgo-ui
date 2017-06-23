@@ -1,4 +1,7 @@
-export interface PlaylistItemType {
+// @flow
+import AudioPlayerState from '../models/AudioPlayerState'
+
+export type PlaylistItemType = {
   attributes: {
     after: string,
     "audio-description": string,

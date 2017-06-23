@@ -1,5 +1,7 @@
-import { PlaylistItemType } from './types';
+import type { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
+import { ActionType } from './defaults'
+import { PAUSE_AUDIO_PLAYER } from './audio-player'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
@@ -20,31 +22,21 @@ export const PLAYLIST_ITEM_ARCHIVED = 'PLAYLIST_ITEM_ARCHIVED'
 export const PLAYLIST_ERROR_OCCURRED = 'PLAYLIST_ERROR_OCCURED'
 export const CLEAR_PLAYLIST_ERROR = 'CLEAR_PLAYLIST_ERROR'
 
+export const UPDATE_PLAYLIST_ITEM = 'UPDATE_PLAYLIST_ITEM'
+
 // Statuses
 class PlaylistStatuses {
-  static readonly ARCHIVING_ITEM = 'ARCHIVING_ITEM'
-  static readonly REMOVING_ITEM = 'REMOVING_ITEM'
-  static readonly FETCHING = 'FETCHING'
-  static readonly DEFAULT = 'DEFAULT'
-  static readonly ERROR = 'ERROR'
+  ARCHIVING_ITEM = 'ARCHIVING_ITEM'
+  REMOVING_ITEM = 'REMOVING_ITEM'
+  FETCHING = 'FETCHING'
+  DEFAULT = 'DEFAULT'
+  ERROR = 'ERROR'
 }
 
-class DefaultState {
-  data: Array<PlaylistItemType> = []
-  errorMessage: string = ''
-}
 
-class ActionType {
-  type: string = 'DEFAULT'
-  data: Array<{}> = []
-  receivedAt: Number
-  item_id : Number
-  message: string
-  item: PlaylistItemType
-}
 
 // Reducer
-export default function reducer(state : DefaultState = new DefaultState, action : ActionType = new ActionType) {
+export default function reducer(state : {data: Array<PlaylistItemType>, errorMessage: string} = {data: [], errorMessage: ''}, action : ActionType = new ActionType) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
@@ -53,7 +45,7 @@ export default function reducer(state : DefaultState = new DefaultState, action 
         status: PlaylistStatuses.DEFAULT
       })
 
-    case FETCHING_PLAYLIST_ITEMS: 
+    case FETCHING_PLAYLIST_ITEMS:
       return Object.assign({}, state, {
         status: PlaylistStatuses.FETCHING,
         receivedAt: action.receivedAt
@@ -95,15 +87,28 @@ export default function reducer(state : DefaultState = new DefaultState, action 
         status: PlaylistStatuses.DEFAULT
       })
 
-    case PLAYLIST_ERROR_OCCURRED: 
+    case PLAYLIST_ERROR_OCCURRED:
       return Object.assign({}, state, {
         errorMessage: action.message
       })
-    
+
     case CLEAR_PLAYLIST_ERROR:
       let result = Object.assign({}, state);
       delete result.errorMessage;
-      return result;
+      return result
+
+    case UPDATE_PLAYLIST_ITEM:
+      return Object.assign({}, state, {
+        data: state.data.map(item => {
+          if (item.id === action.item.id) {
+            return Object.assign({}, item, action.item)
+          }
+          return item;
+        })
+      })
+
+    case PAUSE_AUDIO_PLAYER:
+
 
     default: return state
   }
@@ -130,7 +135,7 @@ export function removingPlaylistItem(item_id) {
 export function removePlaylistItem (access_token, item_id) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
-    access_token: access_token,    
+    access_token: access_token,
     item_id: item_id,
     receivedAt: Date.now()
   }
@@ -205,7 +210,14 @@ export function clearPlaylistError() {
   }
 }
 
-// Sagas 
+export function updatePlaylistItem(item) {
+  return {
+    type: UPDATE_PLAYLIST_ITEM,
+    item: item
+  }
+}
+
+// Sagas
 
 export function* initializePlaylistItemsSaga(action) {
   // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
@@ -213,11 +225,10 @@ export function* initializePlaylistItemsSaga(action) {
 
   try {
     // call async fetchPlaylistItems api function.
-    // when the promise returns, yield that value from the generator 
-    // and also store its value to the playlist variable 
-    // (noted bc it was confusing to me that both of those things would happen) 
+    // when the promise returns, yield that value from the generator
+    // and also store its value to the playlist variable
+    // (noted bc it was confusing to me that both of those things would happen)
     let playlist = yield call( fetchPlaylistItems, action.access_token )
-    // TODO: wrap this ^^^ in a try/catch block to handle errors
 
     // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
     yield put( receivePlaylistItems(playlist) );

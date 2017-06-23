@@ -29,6 +29,8 @@
     "prop-types": "^15.5.8",
     "rails-erb-loader": "^5.0.0",
     "react": "^15.5.4",
+    "react-audio-player": "^0.5.0",
+    "react-code-splitting": "^1.1.1",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-tap-event-plugin": "^2.0.1",
@@ -43,17 +45,22 @@
   "devDependencies": {
     "@types/jest": "^19.2.3",
     "@types/redux-mock-store": "^0.0.7",
+    "babel-cli": "^6.24.1",
     "babel-jest": "^20.0.3",
+    "babel-plugin-transform-regenerator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-1": "^6.24.1",
+    "flow-babel-webpack-plugin": "^1.0.1",
+    "flow-bin": "^0.48.0",
+    "flow-loader": "^1.0.2",
     "jest": "^19.0.2",
     "moxios": "^0.4.0",
     "react-test-renderer": "^15.5.4",
     "redux-devtools": "^3.4.0",
     "redux-mock-store": "^1.2.3",
     "regenerator-runtime": "^0.10.5",
-    "ts-jest": "^20.0.4",
-    "ts-loader": "^2.0.3",
     "typescript": "^2.3.3",
     "webpack-dev-server": "^2.4.5"
   },
@@ -63,10 +70,7 @@
     "test:debug": "node --debug-brk ./node_modules/.bin/jest --runInBand"
   },
   "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",

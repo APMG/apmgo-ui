@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 export class BragiApiClient {
 
-  private instance: AxiosInstance;
+  instance: AxiosInstance;
 
   static getInstance = function (access_token: string) : AxiosInstance {
     if (!!this.instance) {
