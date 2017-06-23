@@ -5,6 +5,7 @@ import PlaylistItem from './PlaylistItem'
 import List from 'material-ui/List'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
+import Async from 'react-code-splitting'
 
 type TimelineListProps = {
   data: Array<PlaylistItemType>,
@@ -20,11 +21,8 @@ class Playlist extends React.Component {
   }
 
   render () {
-    if (!this.props.data) {
+    if (!this.props.data || !this.props.data.length) {
       return <h1>Loading ...</h1>
-    }
-    if (!this.props.data.length) {
-      return <h1>Your playlist is empty</h1>
     }
     return (
       <div>
