@@ -10,11 +10,11 @@ type MuteButtonProps = {
   unmute: () => {}
 }
 
-class MuteButton extends React.Component {
+export class MuteButtonPresenter extends React.Component {
 
   props: MuteButtonProps
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: MuteButtonProps) {
     if (this.props.muted === newProps.muted) {
       return
     }
@@ -55,4 +55,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MuteButton)
+)(MuteButtonPresenter)
