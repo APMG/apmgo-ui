@@ -3,25 +3,32 @@
 type AudioPlayerStateParams = {
   currentTrackId?: number,
   paused?: boolean,
-  muted?: boolean
+  muted?: boolean,
+  currentTime?: number
 }
 
 export default class AudioPlayerState {
   currentTrackId: number | typeof undefined
   paused: boolean
   muted: boolean
+  currentTime: number
 
   constructor(params: AudioPlayerStateParams) {
 
     this.currentTrackId = params.currentTrackId
     this.paused = !!params.paused
     this.muted = !!params.muted
+    this.currentTime = params.currentTime || 0
   }
 
   setCurrentTrackId(track: number) {
     return this._make({
       currentTrackId: track
      })
+  }
+
+  setTime(time: number) {
+    return this._make({currentTime: time})
   }
 
   play(currentTrackId?: number) {
@@ -51,6 +58,7 @@ export default class AudioPlayerState {
       currentTrackId: this.currentTrackId,
       paused: this.paused,
       muted: this.muted,
+      currentTime: this.currentTime,
       ...params
     }
     return new AudioPlayerState(newParams)

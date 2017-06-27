@@ -65,7 +65,7 @@ export class AudioPlayerPresenter extends React.Component {
         <MuteButton audio={ this.audioEl } />
 
         <h3>Time Control</h3>
-        <TimeScrubber audio={ this.audioEl }/>
+        <TimeScrubber audio={ this.audioEl } item_id={ this.props.item.id }/>
 
         <h3>Volume Control</h3>
         <VolumeSlider audio={ this.audioEl } />

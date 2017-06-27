@@ -5,10 +5,12 @@ import AudioPlayerState from '../models/AudioPlayerState'
 import { RECEIVE_PLAYLIST_ITEMS } from './playlist'
 
 export const PLAY_AUDIO_PLAYER: string = 'PLAY_AUDIO_PLAYER'
+export const PLAY_TRACK: string = 'PLAY_TRACK'
 export const PAUSE_AUDIO_PLAYER: string = 'PAUSE_AUDIO_PLAYER'
 export const MUTE_AUDIO_PLAYER:  string = 'MUTE_AUDIO_PLAYER'
 export const UNMUTE_AUDIO_PLAYER: string = 'UNMUTE_AUDIO_PLAYER'
 export const SET_CURRENT_TRACK: string = 'SET_CURRENT_TRACK'
+export const UPDATE_PLAYTIME: string = 'UPDATE_PLAYTIME'
 
 const defaultProps = {
   paused: true,
@@ -22,6 +24,9 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
 
     case SET_CURRENT_TRACK:
       return playerState.setCurrentTrackId(action.item_id)
+
+    case PLAY_TRACK:
+      return playerState.setCurrentTrackId(action.item_id).play()
 
     case PLAY_AUDIO_PLAYER:
       return playerState.play()
@@ -54,6 +59,9 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
       // otherwise set the track
       return playerState.setCurrentTrackId(first.id)
 
+    case UPDATE_PLAYTIME:
+      return playerState.setTime(action.currentTime)
+
     default:
       return playerState
   }
@@ -62,6 +70,21 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
 export function setCurrentTrack(item_id: number) {
   return {
     type: SET_CURRENT_TRACK,
+    item_id: item_id
+  }
+}
+
+export function updatePlayTime(item_id: number, currentTime: number) {
+  return {
+    type: UPDATE_PLAYTIME,
+    item_id: item_id,
+    currentTime: currentTime
+  }
+}
+
+export function playTrack(item_id: number) {
+  return {
+    type: PLAY_TRACK,
     item_id: item_id
   }
 }

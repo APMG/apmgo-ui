@@ -14,7 +14,7 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
 
 import type { PlaylistItemType } from '../../redux/types'
-import { setCurrentTrack } from '../../redux/audio-player'
+import { playTrack } from '../../redux/audio-player'
 
 import {
   grey400,
@@ -43,7 +43,7 @@ const rightIconMenu = (
 
 type PlaylistItemProps = {
   item: PlaylistItemType,
-  setAsCurrent: () => {}
+  playTrack: () => {}
 }
 
 export class PlaylistItemPresenter extends React.Component {
@@ -53,7 +53,7 @@ export class PlaylistItemPresenter extends React.Component {
   render() {
     return (
       <ListItem
-        onClick={this.props.setAsCurrent.bind(this)}
+        onClick={this.props.playTrack.bind(this)}
         leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
         rightIconButton={rightIconMenu}
         primaryText={this.props.item.attributes['audio-title']}
@@ -66,8 +66,8 @@ export class PlaylistItemPresenter extends React.Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setAsCurrent: () => {
-      dispatch(setCurrentTrack(ownProps.item.id))
+    playTrack: () => {
+      dispatch(playTrack(ownProps.item.id))
     }
   }
 }

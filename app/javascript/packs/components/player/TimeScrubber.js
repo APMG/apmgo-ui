@@ -1,22 +1,23 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import { dispatch, connect } from 'react-redux'
-import Slider from 'material-ui/Slider';
+import { updatePlayTime } from '../../redux/audio-player'
+import Slider from 'material-ui/Slider'
 
 type TimeScrubberProps = {
   audio: HTMLAudioElement,
-  paused: boolean
+  paused: boolean,
+  item_id: number,
+  currentTime: number,
+  updatePlayTime: () => {}
 }
 
 export class TimeScrubberPresenter extends React.Component {
 
   props: TimeScrubberProps
-  timeDraggingPoint: number
-  updatingWithDrag: boolean
-  _timer: number
   state: {
-    currentTime: number,
-    timer?: number
+    timer: number|false,
+    timeDraggingPoint: number|false
   }
 
   constructor(props: TimeScrubberProps) {
@@ -27,32 +28,28 @@ export class TimeScrubberPresenter extends React.Component {
 
     super(props)
     this.state = {
-      currentTime: currentTime
+      timeDraggingPoint: false,
+      timer: false
     }
   }
 
-
   componentWillReceiveProps(newProps: TimeScrubberProps) {
-    if (newProps.paused === this.props.paused) {
-      return
-    }
-
-    if(!newProps.paused) {
-      this._startTimer()
-    } else {
+    if(newProps.paused) {
       this._stopTimer()
+    } else {
+      this._startTimer()
     }
   }
 
   playTimeDisplay() {
-    if (!this.state.currentTime) {
+    if (!this.props.currentTime) {
       return "0:00"
     }
 
-    let baseTime = this.state.currentTime;
+    let baseTime : number = this.props.currentTime;
 
-    if (this.timeDraggingPoint) {
-      baseTime = Math.floor(this.props.audio.duration * this.timeDraggingPoint)
+    if (this.state.timeDraggingPoint) {
+      baseTime = Math.floor(this.props.audio.duration * this.state.timeDraggingPoint)
     }
 
     let minutes = Math.floor(baseTime / 60),
@@ -66,60 +63,72 @@ export class TimeScrubberPresenter extends React.Component {
       return 0
     }
 
-    let val = this.state.currentTime / this.props.audio.duration
+    let val = this.props.currentTime / this.props.audio.duration
     return val <= 1 ? val : 1
   }
 
   // EVENT HANDLERS
 
   _timeChange(event: Event, newValue: number) {
-    if (this.timeDraggingPoint) {
-      this.timeDraggingPoint = newValue
-      this.updatingWithDrag = true
+    if (this.state.timeDraggingPoint) {
+      this.setState({
+        timeDraggingPoint: newValue
+      })
     } else {
       // newValue is between 0 and 1
       this.props.audio.currentTime = this.props.audio.duration * newValue
-      this.updatingWithDrag = false
-      this._updateTimeInState()
+      this.props.updatePlayTime()
     }
   }
 
   _timeChangeDragStart() {
-    this.timeDraggingPoint = this.props.audio.currentTime / this.props.audio.duration
+    this.setState({
+      timeDraggingPoint: this.props.audio.currentTime / this.props.audio.duration
+    })
   }
 
   _timeChangeDragStop() {
 
-    if (!this.props.audio || typeof this.timeDraggingPoint === 'undefined') {
+    if (!this.props.audio || !this.state.timeDraggingPoint) {
       return
     }
 
-    if (this.updatingWithDrag) {
-      this.props.audio.currentTime = this.props.audio.duration * this.timeDraggingPoint
-      this._updateTimeInState()
+    if (this.state.timeDraggingPoint) {
+      this.props.audio.currentTime = this.props.audio.duration * this.state.timeDraggingPoint
+      this.props.updatePlayTime()
     }
 
-    delete this.timeDraggingPoint
+    this.setState({
+      timeDraggingPoint: false
+    })
   }
 
   // TIMERS
 
   _startTimer() {
-    this._timer = setInterval(() => {
-      this._updateTimeInState()
+    if (this.state.timer) {
+      return
+    }
+    
+    let timer = setInterval(() => {
+      this.props.updatePlayTime()
     }, 1000)
+
+    this.setState({
+      timer: timer
+    })
   }
 
   _stopTimer() {
-    if(this._timer) {
-      clearInterval(this._timer)
-      delete this._timer
+    debugger
+    if (!this.state.timer) {
+      return
     }
-  }
 
-  _updateTimeInState() {
+    clearInterval(this.state.timer)
+
     this.setState({
-      currentTime: Math.ceil(this.props.audio.currentTime)
+      timer: false
     })
   }
 
@@ -138,10 +147,26 @@ export class TimeScrubberPresenter extends React.Component {
   }
 }
 
-const mapStateToProps = (newState) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    paused: newState.audioPlayer.paused
+    updatePlayTime: () => {
+      if (!ownProps.item_id) {
+        return
+      }
+      let currentTime = Math.ceil(ownProps.audio.currentTime),
+          action = updatePlayTime(ownProps.item_id, currentTime)
+
+      dispatch(action)
+    }
   }
 }
 
-export default connect(mapStateToProps)(TimeScrubberPresenter)
+const mapStateToProps = (newState) => {
+  return {
+    paused: newState.audioPlayer.paused,
+    currentTime: Math.ceil(newState.audioPlayer.currentTime) || 0
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeScrubberPresenter)
