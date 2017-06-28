@@ -1,12 +1,15 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
+import { connect, dispatch } from 'react-redux'
 import Slider from 'material-ui/Slider'
+import { volumeChange } from '../../redux/audio-player'
 
 type VolumeSliderProps = {
-  audio: HTMLAudioElement
+  updateVolume: () => {}
+  // audio: HTMLAudioElement
 }
 
-export default class VolumeSlider extends React.Component {
+export class VolumeSliderPresenter extends React.Component {
 
   props: VolumeSliderProps
 
@@ -16,9 +19,6 @@ export default class VolumeSlider extends React.Component {
 
   constructor(props: VolumeSliderProps) {
     let volume = 1
-    if (props.audio && props.audio.volume) {
-      volume = props.audio.volume
-    }
 
     super(props)
     this.state = {
@@ -28,7 +28,7 @@ export default class VolumeSlider extends React.Component {
 
   _updateVolumeInState() {
     this.setState({
-      volume: this.props.audio.volume
+      volume: this.state.volume
     })
   }
 
@@ -37,7 +37,7 @@ export default class VolumeSlider extends React.Component {
       return
     }
 
-    this.props.audio.volume = newValue
+    this.state.volume = newValue
     this._updateVolumeInState()
   }
 
@@ -45,8 +45,18 @@ export default class VolumeSlider extends React.Component {
     return (
       <Slider
         value={ this.state.volume }
-        onChange={ this._volumeChange.bind(this)}
+        onChange={ this.props.updateVolume }
       />
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateVolume: (event, newVolume) => {
+      dispatch(volumeChange(newVolume))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(VolumeSliderPresenter)

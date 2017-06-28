@@ -4993,10 +4993,6 @@ react-addons-transition-group@^15.4.0:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-audio-player@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.5.0.tgz#c13be7cfbc09e46503b44ac42a043e48dc952e5c"
-
 react-code-splitting@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-code-splitting/-/react-code-splitting-1.1.1.tgz#35a8003f6a15aa2362d53137f51c72800f3d5b5c"

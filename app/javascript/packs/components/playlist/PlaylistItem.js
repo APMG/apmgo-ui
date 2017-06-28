@@ -14,7 +14,7 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
 
 import type { PlaylistItemType } from '../../redux/types'
-import { playTrack } from '../../redux/audio-player'
+import { changeTrack } from '../../redux/audio-player'
 
 import {
   grey400,
@@ -56,8 +56,8 @@ export class PlaylistItemPresenter extends React.Component {
         onClick={this.props.playTrack.bind(this)}
         leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
         rightIconButton={rightIconMenu}
-        primaryText={this.props.item.attributes['audio-title']}
-        secondaryText={ <p>{this.props.item.attributes['audio-description']}</p> }
+        primaryText={this.props.item.attributes.audio_title}
+        secondaryText={ <p>{this.props.item.attributes.audio_description}</p> }
         secondaryTextLines={1}
       />
     )
@@ -67,7 +67,7 @@ export class PlaylistItemPresenter extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     playTrack: () => {
-      dispatch(playTrack(ownProps.item.id))
+      dispatch(changeTrack(ownProps.item))
     }
   }
 }

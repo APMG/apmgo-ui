@@ -1,7 +1,7 @@
 import type { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
-import { PAUSE_AUDIO_PLAYER, UPDATE_PLAYTIME } from './audio-player'
+import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
@@ -118,10 +118,7 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
           }
         })
       })
-      console.log(updated)
       return updated
-
-    case PAUSE_AUDIO_PLAYER:
 
     default: return state
   }
