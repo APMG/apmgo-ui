@@ -1,5 +1,4 @@
 // @flow
-
 import * as React from 'react'
 import { connect, dispatch } from 'react-redux'
 
@@ -8,13 +7,10 @@ import Avatar from 'material-ui/Avatar'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
-
-import type { PlaylistItemType } from '../../redux/types'
-import { changeTrack } from '../../redux/audio-player'
 
 import {
   grey400,
@@ -22,6 +18,9 @@ import {
   red50,
   red700
 } from 'material-ui/styles/colors'
+
+import type { PlaylistItemType } from '../../redux/types'
+import { changeTrack } from '../../redux/audio-player'
 
 const iconButtonElement = (
   <IconButton

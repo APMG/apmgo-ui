@@ -6,7 +6,6 @@ import { volumeChange } from '../../redux/audio-player'
 
 type VolumeSliderProps = {
   updateVolume: () => {}
-  // audio: HTMLAudioElement
 }
 
 export class VolumeSliderPresenter extends React.Component {

@@ -14,12 +14,6 @@ export const UNMUTE_CLICK: string = 'UNMUTE_CLICK'
 export const VOLUME_CHANGE: string = 'VOLUME_CHANGE'
 export const TIME_SCRUBBER_CHANGE: string = 'TIME_SCRUBBER_CHANGE'
 export const CHANGE_TRACK: string = 'CHANGE_TRACK'
-
-
-
-export const PLAY_TRACK: string = 'PLAY_TRACK'
-
-export const SET_CURRENT_TRACK: string = 'SET_CURRENT_TRACK'
 export const UPDATE_PLAYTIME: string = 'UPDATE_PLAYTIME'
 
 const defaultProps = {
@@ -76,16 +70,6 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
         .pause()  // pause while loading new audio
         .instanceUpdatesAudioElementTime() // tell state that actual audio element needs to be updated
       return newplayer
-
-    case SET_CURRENT_TRACK:
-      return playerState.setCurrentTrackId(action.item_id)
-
-    case PLAY_TRACK:
-      let newPlayer = playerState
-        .setCurrentTrackId(action.item.id)
-        .setTime(action.item.attributes.playtime)
-        .play()
-      return newPlayer
 
     case RECEIVE_PLAYLIST_ITEMS:
       // we need to initialize the audio player here
@@ -178,27 +162,4 @@ export function changeTrack(item: PlaylistItemType) {
     type: CHANGE_TRACK,
     item: item
   }
-}
-
-export function setCurrentTrack(item_id: number) {
-  return {
-    type: SET_CURRENT_TRACK,
-    item_id: item_id
-  }
-}
-
-
-export function playTrack(item: PlaylistItemType) {
-  return {
-    type: PLAY_TRACK,
-    item: item
-  }
-}
-
-
-
-export function* audioPlayerSaga() {
-
-
-
 }

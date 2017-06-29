@@ -29,8 +29,9 @@ export class AudioPlayerPresenter extends React.Component {
   }
 
   componentDidMount() {
-    // by now, audio is an HTMLAudioElement ref
-    // it is set when the component renders
+    // by now, this.audio is an HTMLAudioElement ref
+    // it gets set when the component renders...
+    // see the audio element's `ref` attribute
     this.audio.src = this.props.item.attributes.audio_url
   }
 
