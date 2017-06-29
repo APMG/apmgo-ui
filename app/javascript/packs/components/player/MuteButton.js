@@ -1,10 +1,9 @@
 // @flow
 import * as React from 'react'
 import { dispatch, connect } from 'react-redux'
-import { muteAudioPlayer, unmuteAudioPlayer } from '../../redux/audio-player'
+import { muteClick, unmuteClick } from '../../redux/audio-player'
 
 type MuteButtonProps = {
-  audio: HTMLAudioElement,
   muted: boolean,
   mute: () => {},
   unmute: () => {}
@@ -13,14 +12,6 @@ type MuteButtonProps = {
 export class MuteButtonPresenter extends React.Component {
 
   props: MuteButtonProps
-
-  componentWillReceiveProps(newProps: MuteButtonProps) {
-    if (this.props.muted === newProps.muted) {
-      return
-    }
-
-    this.props.audio.muted = newProps.muted
-  }
 
   render() {
     if (this.props.muted) {
@@ -44,10 +35,10 @@ const mapStateToProps = (newState) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     mute: () => {
-      dispatch(muteAudioPlayer())
+      dispatch(muteClick())
     },
     unmute: () => {
-      dispatch(unmuteAudioPlayer())
+      dispatch(unmuteClick())
     }
   }
 }

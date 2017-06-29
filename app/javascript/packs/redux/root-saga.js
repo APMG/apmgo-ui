@@ -1,11 +1,11 @@
 import { all, takeEvery } from "redux-saga/effects"
-import { 
-  INITIALIZE_PLAYLIST, 
-  REMOVE_PLAYLIST_ITEM, 
+import {
+  INITIALIZE_PLAYLIST,
+  REMOVE_PLAYLIST_ITEM,
   ARCHIVE_PLAYLIST_ITEM,
-  initializePlaylistItemsSaga, 
+  initializePlaylistItemsSaga,
   removePlaylistItemSaga,
-  archivePlaylistItemSaga 
+  archivePlaylistItemSaga
 } from "./playlist"
 
 // Take all the individual sagas and compose them into one root saga to bootstrap onto the saga middleware

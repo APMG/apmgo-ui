@@ -1,39 +1,37 @@
 import type { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
-import { PAUSE_AUDIO_PLAYER } from './audio-player'
+import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
 // Actions
-export const RECEIVE_PLAYLIST_ITEMS = 'RECEIVE_PLAYLIST_ITEMS'
-export const INITIALIZE_PLAYLIST = 'INITIALIZE_PLAYLIST'
-export const FETCHING_PLAYLIST_ITEMS = 'FETCHING_PLAYLIST_ITEMS'
-export const ITEM_ADDED_TO_PLAYLIST = 'ITEM_ADDED_TO_PLAYLIST'
+export const RECEIVE_PLAYLIST_ITEMS : string = 'RECEIVE_PLAYLIST_ITEMS'
+export const INITIALIZE_PLAYLIST : string = 'INITIALIZE_PLAYLIST'
+export const FETCHING_PLAYLIST_ITEMS : string = 'FETCHING_PLAYLIST_ITEMS'
+export const ITEM_ADDED_TO_PLAYLIST : string = 'ITEM_ADDED_TO_PLAYLIST'
 
-export const REMOVING_PLAYLIST_ITEM = 'REMOVING_ITEM_FROM_PLAYLIST'
-export const REMOVE_PLAYLIST_ITEM = 'REMOVE_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_REMOVED = 'PLAYLIST_ITEM_REMOVED'
+export const REMOVING_PLAYLIST_ITEM : string = 'REMOVING_ITEM_FROM_PLAYLIST'
+export const REMOVE_PLAYLIST_ITEM : string = 'REMOVE_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_REMOVED : string = 'PLAYLIST_ITEM_REMOVED'
 
-export const ARCHIVING_PLAYLIST_ITEM = 'ARCHIVING_PLAYLIST_ITEM'
-export const ARCHIVE_PLAYLIST_ITEM = 'ARCHIVE_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_ARCHIVED = 'PLAYLIST_ITEM_ARCHIVED'
+export const ARCHIVING_PLAYLIST_ITEM : string = 'ARCHIVING_PLAYLIST_ITEM'
+export const ARCHIVE_PLAYLIST_ITEM : string = 'ARCHIVE_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_ARCHIVED : string = 'PLAYLIST_ITEM_ARCHIVED'
 
-export const PLAYLIST_ERROR_OCCURRED = 'PLAYLIST_ERROR_OCCURED'
-export const CLEAR_PLAYLIST_ERROR = 'CLEAR_PLAYLIST_ERROR'
+export const PLAYLIST_ERROR_OCCURRED : string = 'PLAYLIST_ERROR_OCCURED'
+export const CLEAR_PLAYLIST_ERROR : string = 'CLEAR_PLAYLIST_ERROR'
 
-export const UPDATE_PLAYLIST_ITEM = 'UPDATE_PLAYLIST_ITEM'
+export const UPDATE_PLAYLIST_ITEM : string = 'UPDATE_PLAYLIST_ITEM'
 
 // Statuses
 class PlaylistStatuses {
-  ARCHIVING_ITEM = 'ARCHIVING_ITEM'
-  REMOVING_ITEM = 'REMOVING_ITEM'
-  FETCHING = 'FETCHING'
-  DEFAULT = 'DEFAULT'
-  ERROR = 'ERROR'
+  ARCHIVING_ITEM : string = 'ARCHIVING_ITEM'
+  REMOVING_ITEM : string = 'REMOVING_ITEM'
+  FETCHING : string = 'FETCHING'
+  DEFAULT : string = 'DEFAULT'
+  ERROR : string = 'ERROR'
 }
-
-
 
 // Reducer
 export default function reducer(state : {data: Array<PlaylistItemType>, errorMessage: string} = {data: [], errorMessage: ''}, action : ActionType = new ActionType) {
@@ -78,6 +76,8 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
         data: state.data.map(item => {
           if (item.id === action.item.id) {
             return Object.assign({}, item, action.item)
+          } else {
+            return item
           }
         })
       })
@@ -107,8 +107,18 @@ export default function reducer(state : {data: Array<PlaylistItemType>, errorMes
         })
       })
 
-    case PAUSE_AUDIO_PLAYER:
-
+    case UPDATE_PLAYTIME:
+      let updated = Object.assign({}, state, {
+        data: state.data.map(item => {
+          if (item.id === action.item_id) {
+            item.attributes.playtime = action.currentTime
+            return {...item}
+          } else {
+            return item
+          }
+        })
+      })
+      return updated
 
     default: return state
   }

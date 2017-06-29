@@ -1,87 +1,120 @@
 // @flow
-import * as React from 'react';
-import { connect } from 'react-redux'
-import ReactAudioPlayer from 'react-audio-player';
+import React from 'react';
+import { connect, dispatch } from 'react-redux'
 
 import AudioPlayerState from '../../models/AudioPlayerState';
 import type { PlaylistItemType } from '../../redux/types';
 import PlayPauseButton from './PlayPauseButton'
 import MuteButton from './MuteButton'
 import TimeScrubber from './TimeScrubber'
+import TimeKeeper from './TimeKeeper'
 import VolumeSlider from './VolumeSlider'
+import PlayTimeDisplay from './PlayTimeDisplay'
+import { audioMetaDataLoaded, audioCanPlay } from '../../redux/audio-player'
 
 type AudioPlayerProps = {
-  item: PlaylistItemType
+  item: PlaylistItemType,
+  audioPlayer: AudioPlayerState,
+  audioCanPlay: () => {},
+  audioMetaDataLoaded: () => {}
 }
 
 export class AudioPlayerPresenter extends React.Component {
 
-  audioEl: HTMLAudioElement
-  _rap: ReactAudioPlayer
+  audio: HTMLAudioElement
   props: AudioPlayerProps
 
-  componentWillMount() {
-    this.refreshAudioPlayer(this.props.item)
-  }
-
-  componentWillReceiveProps(newProps: AudioPlayerProps) {
-    if(newProps.item.id !== this.props.item.id) {
-      this.refreshAudioPlayer(newProps.item)
-    }
+  constructor(props: AudioPlayerProps) {
+    super(props)
   }
 
   componentDidMount() {
-    this.audioEl = this._rap.audioEl
+    // by now, this.audio is an HTMLAudioElement ref
+    // it gets set when the component renders...
+    // see the audio element's `ref` attribute
+    this.audio.src = this.props.item.attributes.audio_url
   }
 
-  componentDidUpdate() {
-    this.audioEl = this._rap.audioEl
-  }
+  componentWillReceiveProps(newProps: AudioPlayerProps) {
+    this._setPlayPaused(newProps.audioPlayer.paused)
+    this.audio.muted = newProps.audioPlayer.muted
+    this.audio.volume = newProps.audioPlayer.volume
 
-  refreshAudioPlayer(item?: PlaylistItemType) {
-    if (!item) {
-      return
+    if(newProps.item.id !== this.props.item.id) {
+      this.audio.src = newProps.item.attributes.audio_url
     }
-    this._rap = (new ReactAudioPlayer({
-      src: item.attributes['audio-url'],
-      muted: this.audioEl ? this.audioEl.muted : false,
-      volume: this.audioEl ? this.audioEl.volume : null,
-      paused: this.audioEl ? this.audioEl.paused : true,
-      currentTime: item.attributes['playtime'] || 0,
-      controls: false
-    }))
+
+    if(newProps.audioPlayer.updateAudioElementTime) {
+      this.audio.currentTime = newProps.audioPlayer.currentTime
+    }
+  }
+
+  _setPlayPaused(paused: boolean) {
+    if (paused !== this.audio.paused) {
+      if (paused) {
+        this.audio.pause()
+      } else {
+        this.audio.play()
+      }
+    }
+  }
+
+  metaDataLoaded(a:any,b:any,c:any) {
+    this.audio.currentTime = this.props.item.attributes.playtime
+    this.props.audioMetaDataLoaded(this.audio.duration)
   }
 
   render() {
     return (
       <div>
-        {/* when the player (_rap) is rendered, the audioEl attribute */ }
-        {/* is mapped onto the actual HTMLAudioElement */}
-        { this._rap.render() }
         <h2>My Custom Playlist</h2>
-        <h3>Now playing: { this.props.item ? this.props.item.attributes['audio-title'] : 'Loading ...'}</h3>
+        <h3>
+            { this.props.item
+              ? 'Now playing: ' + this.props.item.attributes.audio_title
+              : 'Loading ...' }
+        </h3>
 
-        <PlayPauseButton audio={ this.audioEl } />
-        <MuteButton audio={ this.audioEl } />
+        <audio
+          ref={ (ref) => this.audio = ref }
+          onCanPlay={ this.props.audioCanPlay }
+          onLoadedMetadata={ this.metaDataLoaded.bind(this) }>
+        </audio>
+
+        <PlayPauseButton />
+        <MuteButton />
 
         <h3>Time Control</h3>
-        <TimeScrubber audio={ this.audioEl }/>
+        <TimeKeeper // this component is invisible
+          audio={ this.audio }
+          item_id={ this.props.item.id }
+        />
+        <PlayTimeDisplay />
+        <TimeScrubber
+          item_id={ this.props.item.id }
+        />
 
         <h3>Volume Control</h3>
-        <VolumeSlider audio={ this.audioEl } />
+        <VolumeSlider />
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) : AudioPlayerProps => {
-  let player = state.audioPlayer,
-      item = state.data.data.find(item => {
-        return item.id === player.currentTrackId
-      });
-
+const mapDispatchToProps = (dispatch) => {
   return {
-    item: Object.assign({}, item)
+    audioCanPlay: () => {
+      dispatch(audioCanPlay())
+    },
+    audioMetaDataLoaded: (duration) => {
+      dispatch(audioMetaDataLoaded(duration))
+    }
   }
 }
-export default connect(mapStateToProps, null)(AudioPlayerPresenter)
+
+const mapStateToProps = (newState) => {
+  return {
+    audioPlayer: newState.audioPlayer
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayerPresenter)

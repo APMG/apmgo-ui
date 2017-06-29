@@ -1,5 +1,4 @@
 // @flow
-
 import * as React from 'react'
 import { connect, dispatch } from 'react-redux'
 
@@ -8,13 +7,10 @@ import Avatar from 'material-ui/Avatar'
 import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Done from 'material-ui/svg-icons/action/done'
-
-import type { PlaylistItemType } from '../../redux/types'
-import { setCurrentTrack } from '../../redux/audio-player'
 
 import {
   grey400,
@@ -22,6 +18,9 @@ import {
   red50,
   red700
 } from 'material-ui/styles/colors'
+
+import type { PlaylistItemType } from '../../redux/types'
+import { changeTrack } from '../../redux/audio-player'
 
 const iconButtonElement = (
   <IconButton
@@ -43,7 +42,7 @@ const rightIconMenu = (
 
 type PlaylistItemProps = {
   item: PlaylistItemType,
-  setAsCurrent: () => {}
+  playTrack: () => {}
 }
 
 export class PlaylistItemPresenter extends React.Component {
@@ -53,11 +52,11 @@ export class PlaylistItemPresenter extends React.Component {
   render() {
     return (
       <ListItem
-        onClick={this.props.setAsCurrent.bind(this)}
+        onClick={this.props.playTrack.bind(this)}
         leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
         rightIconButton={rightIconMenu}
-        primaryText={this.props.item.attributes['audio-title']}
-        secondaryText={ <p>{this.props.item.attributes['audio-description']}</p> }
+        primaryText={this.props.item.attributes.audio_title}
+        secondaryText={ <p>{this.props.item.attributes.audio_description}</p> }
         secondaryTextLines={1}
       />
     )
@@ -66,8 +65,8 @@ export class PlaylistItemPresenter extends React.Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setAsCurrent: () => {
-      dispatch(setCurrentTrack(ownProps.item.id))
+    playTrack: () => {
+      dispatch(changeTrack(ownProps.item))
     }
   }
 }

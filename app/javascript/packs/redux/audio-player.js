@@ -1,18 +1,25 @@
-// @flow
+import { take, call, put } from 'redux-saga/effects'
+
 import { ActionType } from './defaults'
 import type { PlaylistItemType } from './types'
 import AudioPlayerState from '../models/AudioPlayerState'
 import { RECEIVE_PLAYLIST_ITEMS } from './playlist'
 
-export const PLAY_AUDIO_PLAYER: string = 'PLAY_AUDIO_PLAYER'
-export const PAUSE_AUDIO_PLAYER: string = 'PAUSE_AUDIO_PLAYER'
-export const MUTE_AUDIO_PLAYER:  string = 'MUTE_AUDIO_PLAYER'
-export const UNMUTE_AUDIO_PLAYER: string = 'UNMUTE_AUDIO_PLAYER'
-export const SET_CURRENT_TRACK: string = 'SET_CURRENT_TRACK'
+export const AUDIO_META_DATA_LOADED: string = 'AUDIO_META_DATA_LOADED'
+export const AUDIO_CAN_PLAY: string = 'AUDIO_CAN_PLAY'
+export const PLAY_CLICK: string = 'PLAY_CLICK'
+export const PAUSE_CLICK: string = 'PAUSE_CLICK'
+export const MUTE_CLICK:  string = 'MUTE_CLICK'
+export const UNMUTE_CLICK: string = 'UNMUTE_CLICK'
+export const VOLUME_CHANGE: string = 'VOLUME_CHANGE'
+export const TIME_SCRUBBER_CHANGE: string = 'TIME_SCRUBBER_CHANGE'
+export const CHANGE_TRACK: string = 'CHANGE_TRACK'
+export const UPDATE_PLAYTIME: string = 'UPDATE_PLAYTIME'
 
 const defaultProps = {
   paused: true,
-  muted: false
+  muted: false,
+  canPlay: false
 }
 const defaultPlayer = new AudioPlayerState(defaultProps)
 
@@ -20,20 +27,49 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
 
   switch(action.type) {
 
-    case SET_CURRENT_TRACK:
-      return playerState.setCurrentTrackId(action.item_id)
+    case AUDIO_META_DATA_LOADED:
+      return playerState.setDuration(action.duration)
 
-    case PLAY_AUDIO_PLAYER:
+    case AUDIO_CAN_PLAY:
+      let canPlayState = playerState
+        .setCanPlay(true)
+
+      return canPlayState.playWhenCan
+        ? canPlayState.play()
+        : canPlayState
+
+    case PLAY_CLICK:
       return playerState.play()
 
-    case PAUSE_AUDIO_PLAYER:
+    case PAUSE_CLICK:
       return playerState.pause()
 
-    case MUTE_AUDIO_PLAYER:
+    case MUTE_CLICK:
       return playerState.mute()
 
-    case UNMUTE_AUDIO_PLAYER:
+    case UNMUTE_CLICK:
       return playerState.unmute()
+
+    case VOLUME_CHANGE:
+      return playerState.setVolume(action.volume)
+
+    case TIME_SCRUBBER_CHANGE:
+      return playerState
+        .setTime(action.currentTime)
+        .instanceUpdatesAudioElementTime()
+
+    case UPDATE_PLAYTIME:
+      return playerState.setTime(action.currentTime)
+
+    case CHANGE_TRACK:
+      let newplayer = playerState
+        .setCanPlay(false)  // this will change when the audio element canplay event fires
+        .setPlayWhenCan(!playerState.paused) // and if the player is currently playing, it will restart on canPlay
+        .setCurrentTrackId(action.item.id)
+        .setTime(action.item.attributes.playtime)
+        .pause()  // pause while loading new audio
+        .instanceUpdatesAudioElementTime() // tell state that actual audio element needs to be updated
+      return newplayer
 
     case RECEIVE_PLAYLIST_ITEMS:
       // we need to initialize the audio player here
@@ -48,42 +84,82 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
 
       // if there are no tracks, just return the player unmodified
       if (!first) {
-        return playerState
+        return playerState._make({})
       }
 
       // otherwise set the track
-      return playerState.setCurrentTrackId(first.id)
+      return playerState.setCurrentTrackId(first.id).setTime(first.attributes.playtime)
 
     default:
       return playerState
   }
 }
 
-export function setCurrentTrack(item_id: number) {
+export function audioMetaDataLoaded(duration) {
   return {
-    type: SET_CURRENT_TRACK,
+    type: AUDIO_META_DATA_LOADED,
+    duration: duration // so far this is the only param we need ...
+  }
+}
+
+export function audioCanPlay() {
+  return {
+    type: AUDIO_CAN_PLAY
+  }
+}
+
+export function playClick(item_id: number) {
+  return {
+    type: PLAY_CLICK,
     item_id: item_id
   }
 }
 
-export function playAudioPlayer (item_id: number) {
+export function pauseClick(item_id: number) {
   return {
-    type: PLAY_AUDIO_PLAYER,
+    type: PAUSE_CLICK,
     item_id: item_id
   }
 }
 
-export function pauseAudioPlayer (item_id: number) {
+export function muteClick() {
   return {
-    type: PAUSE_AUDIO_PLAYER,
-    item_id: item_id
+    type: MUTE_CLICK
   }
 }
 
-export function muteAudioPlayer() {
-  return { type: MUTE_AUDIO_PLAYER }
+export function unmuteClick() {
+  return {
+    type: UNMUTE_CLICK
+  }
 }
 
-export function unmuteAudioPlayer() {
-  return { type: UNMUTE_AUDIO_PLAYER }
+export function volumeChange(volume) {
+  return {
+    type: VOLUME_CHANGE,
+    volume: volume
+  }
+}
+
+export function timeScrubberChange(item_id: number, currentTime: number) {
+  return {
+    type: TIME_SCRUBBER_CHANGE,
+    item_id: item_id,
+    currentTime: currentTime
+  }
+}
+
+export function updatePlayTime(item_id: number, currentTime: number) {
+  return {
+    type: UPDATE_PLAYTIME,
+    item_id: item_id,
+    currentTime: currentTime
+  }
+}
+
+export function changeTrack(item: PlaylistItemType) {
+  return {
+    type: CHANGE_TRACK,
+    item: item
+  }
 }

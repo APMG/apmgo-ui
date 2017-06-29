@@ -26,7 +26,7 @@ export class PlaylistPresenter extends React.Component {
     }
     return (
       <div>
-        <AudioPlayer />
+        <AudioPlayer item={this.props.activeItem}/>
         <List>
           {this.props.data.map((item, i) =>
             <PlaylistItem item={item} key={i} />
@@ -38,7 +38,11 @@ export class PlaylistPresenter extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return { data: state.data.data }
+  let activeItem = state.data.data.find(item => item.id === state.audioPlayer.currentTrackId)
+  return {
+    data: state.data.data,
+    activeItem: Object.assign({}, activeItem)
+  }
 }
 
 const PlaylistContainer = connect(

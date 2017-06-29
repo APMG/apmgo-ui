@@ -2,7 +2,6 @@
 
 exports[`Time Scrubber Component Presenter Renders 1`] = `
 <div>
-  0:00
   <div
     style={
       Object {
