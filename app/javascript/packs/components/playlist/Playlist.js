@@ -38,7 +38,7 @@ export class PlaylistPresenter extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let activeItem = state.data.data.find(item => item.id = state.audioPlayer.currentTrackId)
+  let activeItem = state.data.data.find(item => item.id === state.audioPlayer.currentTrackId)
   return {
     data: state.data.data,
     activeItem: Object.assign({}, activeItem)

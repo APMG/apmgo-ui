@@ -37,7 +37,12 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
       return playerState.setDuration(action.duration)
 
     case AUDIO_CAN_PLAY:
-      return playerState.setCanPlay(true)
+      let canPlayState = playerState
+        .setCanPlay(true)
+
+      return canPlayState.playWhenCan
+        ? canPlayState.play()
+        : canPlayState
 
     case PLAY_CLICK:
       return playerState.play()
@@ -63,12 +68,14 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
       return playerState.setTime(action.currentTime)
 
     case CHANGE_TRACK:
-      return playerState
-        .pause()  // pause while loading new audio
+      let newplayer = playerState
+        .setCanPlay(false)  // this will change when the audio element canplay event fires
+        .setPlayWhenCan(!playerState.paused) // and if the player is currently playing, it will restart on canPlay
         .setCurrentTrackId(action.item.id)
         .setTime(action.item.attributes.playtime)
-        .setCanPlay(false)  // this will change when the audio element canplay event fires
-        .instanceUpdatesAudioElementTime()
+        .pause()  // pause while loading new audio
+        .instanceUpdatesAudioElementTime() // tell state that actual audio element needs to be updated
+      return newplayer
 
     case SET_CURRENT_TRACK:
       return playerState.setCurrentTrackId(action.item_id)
@@ -98,8 +105,6 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
 
       // otherwise set the track
       return playerState.setCurrentTrackId(first.id).setTime(first.attributes.playtime)
-
-
 
     default:
       return playerState

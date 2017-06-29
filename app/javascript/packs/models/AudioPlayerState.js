@@ -9,7 +9,8 @@ type AudioPlayerStateParams = {
   canPlay?: boolean,
   volume?: number,
   duration?: number,
-  isDragging?: boolean
+  isDragging?: boolean,
+  playWhenCan?: boolean
 }
 
 export default class AudioPlayerState {
@@ -22,6 +23,7 @@ export default class AudioPlayerState {
   volume: number
   duration: number
   isDragging: boolean
+  playWhenCan: boolean
 
   constructor(params: AudioPlayerStateParams) {
     this.currentTrackId = params.currentTrackId
@@ -32,6 +34,7 @@ export default class AudioPlayerState {
     this.canPlay = params.canPlay || false
     this.duration = params.duration || 0
     this.isDragging = params.isDragging || false
+    this.playWhenCan = params.playWhenCan || false
 
     if (params.volume === 0) {
       this.volume = 0
@@ -91,6 +94,10 @@ export default class AudioPlayerState {
     return this._make({duration: duration})
   }
 
+  setPlayWhenCan(playWhenCan: boolean) {
+    return this._make({playWhenCan: playWhenCan})
+  }
+
   _make(params: {}) : AudioPlayerState {
     let newParams = {
       currentTrackId: this.currentTrackId,
@@ -101,6 +108,7 @@ export default class AudioPlayerState {
       volume: this.volume,
       duration: this.duration,
       isDragging: this.isDragging,
+      playWhenCan: this.playWhenCan,
       // note doUpdateTime is not here by default,
       // it must be set explicitly, meaning that if
       // methods are chained, it will be overwritten

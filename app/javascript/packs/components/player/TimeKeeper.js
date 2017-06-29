@@ -62,7 +62,8 @@ export class TimeKeeperPresenter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    item_id: state.audioPlayer.currentTrackId
+    item_id: state.audioPlayer.currentTrackId,
+    paused: state.audioPlayer.paused
   }
 }
 

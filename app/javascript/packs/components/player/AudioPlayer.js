@@ -102,7 +102,7 @@ export class AudioPlayerPresenter extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    audioCanPlay: (a,b,c) => {
+    audioCanPlay: () => {
       dispatch(audioCanPlay())
     },
     audioMetaDataLoaded: (duration) => {
