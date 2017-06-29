@@ -11,22 +11,22 @@ export const itemFixtures = [
   {
     "id": 1,
     "attributes": {
-      "audio-title": 'Test Audio',
-      "audio-url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
+      "audio_title": 'Test Audio',
+      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
     }
   },
   {
     "id": 2,
     "attributes": {
-      "audio-title": 'Another Test Audio',
-      "audio-url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
+      "audio_title": 'Another Test Audio',
+      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
     }
   }
 ]
 
 export const defaultTestState = {
   data: itemFixtures,
-  audioPlayer: new AudioPlayerState({currentTrackId: 1})
+  audioPlayer: new AudioPlayerState({currentTrackId: itemFixtures[0].id})
 }
 
 export default function getSnapshotJson(Component: Component<*,*,*>, customTestState?: any = {}) {
@@ -44,8 +44,7 @@ export function getRenderedComponent(Component: Component<*,*,*>, customTestStat
           </Provider>
         </MuiThemeProvider>
       )
-
-    return component
+  return component
 }
 
 export function getMockStore(customTestState?: any = {}) {
@@ -57,5 +56,5 @@ export function getMockStore(customTestState?: any = {}) {
 }
 
 export function getInitialState(customTestState?: any = {}) {
-  return Object.assign(defaultTestState, customTestState)
+  return Object.assign({}, defaultTestState, customTestState)
 }

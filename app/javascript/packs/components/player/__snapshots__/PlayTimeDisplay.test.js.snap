@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Play Time Display Component Presenter Displays currentTime When Prop is Passed 1`] = `
+<div>
+  1:00
+</div>
+`;
+
+exports[`Play Time Display Component Presenter Works Without currentTime Prop and Displays 0:00 1`] = `
+<div>
+  0:00
+</div>
+`;

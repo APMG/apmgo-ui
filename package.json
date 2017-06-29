@@ -69,7 +69,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "npm test -- --watch",
-    "test:debug": "node --debug-brk ./node_modules/.bin/jest --runInBand",
+    "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand",
     "dev": "concurrently --kill-others \"./ssl_thin.sh\" \"./bin/webpack-dev-server\""
   },
   "jest": {

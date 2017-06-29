@@ -10,6 +10,7 @@ exports[`Play/Pause Button Component Presenter Displays a Pause Button When Play
 
 exports[`Play/Pause Button Component Presenter Displays a Play Button When Paused 1`] = `
 <button
+  disabled={true}
   onClick={undefined}
 >
   Play

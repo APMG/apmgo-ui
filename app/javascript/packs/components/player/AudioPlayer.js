@@ -14,7 +14,7 @@ import { audioMetaDataLoaded, audioCanPlay } from '../../redux/audio-player'
 
 type AudioPlayerProps = {
   item: PlaylistItemType,
-  playerState: AudioPlayerState,
+  audioPlayer: AudioPlayerState,
   audioCanPlay: () => {},
   audioMetaDataLoaded: () => {}
 }
@@ -30,20 +30,21 @@ export class AudioPlayerPresenter extends React.Component {
 
   componentDidMount() {
     // by now, audio is an HTMLAudioElement ref
+    // it is set when the component renders
     this.audio.src = this.props.item.attributes.audio_url
   }
 
   componentWillReceiveProps(newProps: AudioPlayerProps) {
-    this._setPlayPaused(newProps.playerState.paused)
-    this.audio.muted = newProps.playerState.muted
-    this.audio.volume = newProps.playerState.volume
+    this._setPlayPaused(newProps.audioPlayer.paused)
+    this.audio.muted = newProps.audioPlayer.muted
+    this.audio.volume = newProps.audioPlayer.volume
 
     if(newProps.item.id !== this.props.item.id) {
       this.audio.src = newProps.item.attributes.audio_url
     }
 
-    if(newProps.playerState.updateAudioElementTime) {
-      this.audio.currentTime = newProps.playerState.currentTime
+    if(newProps.audioPlayer.updateAudioElementTime) {
+      this.audio.currentTime = newProps.audioPlayer.currentTime
     }
   }
 
@@ -67,15 +68,15 @@ export class AudioPlayerPresenter extends React.Component {
       <div>
         <h2>My Custom Playlist</h2>
         <h3>
-            {this.props.item
+            { this.props.item
               ? 'Now playing: ' + this.props.item.attributes.audio_title
-              : 'Loading ...'}
+              : 'Loading ...' }
         </h3>
 
         <audio
-          ref={(ref) => this.audio = ref }
-          onCanPlay={this.props.audioCanPlay}
-          onLoadedMetadata={this.metaDataLoaded.bind(this)}>
+          ref={ (ref) => this.audio = ref }
+          onCanPlay={ this.props.audioCanPlay }
+          onLoadedMetadata={ this.metaDataLoaded.bind(this) }>
         </audio>
 
         <PlayPauseButton />
@@ -84,13 +85,11 @@ export class AudioPlayerPresenter extends React.Component {
         <h3>Time Control</h3>
         <TimeKeeper // this component is invisible
           audio={ this.audio }
-          item_id={this.props.item.id}
+          item_id={ this.props.item.id }
         />
-        <PlayTimeDisplay currentTime={this.props.playerState.currentTime} />
+        <PlayTimeDisplay />
         <TimeScrubber
           item_id={ this.props.item.id }
-          currentTime={ this.props.playerState.currentTime }
-          paused={ this.props.playerState.paused }
         />
 
         <h3>Volume Control</h3>
@@ -113,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (newState) => {
   return {
-    playerState: Object.assign({}, newState.audioPlayer)
+    audioPlayer: newState.audioPlayer
   }
 }
 

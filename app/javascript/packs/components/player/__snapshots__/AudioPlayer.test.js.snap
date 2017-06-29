@@ -2,32 +2,16 @@
 
 exports[`AudioPlayer Component Test Presenter Renders 1`] = `
 <div>
-  <audio
-    autoPlay={undefined}
-    className="react-audio-player undefined"
-    controls={false}
-    loop={undefined}
-    muted={false}
-    onPlay={undefined}
-    preload={undefined}
-    src="https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3"
-    style={undefined}
-  >
-    <p>
-      Your browser does not support the 
-      <code>
-        audio
-      </code>
-       element.
-    </p>
-  </audio>
   <h2>
     My Custom Playlist
   </h2>
   <h3>
-    Now playing: 
-    Test Audio
+    Now playing: Test Audio
   </h3>
+  <audio
+    onCanPlay={undefined}
+    onLoadedMetadata={[Function]}
+  />
   <button
     onClick={[Function]}
   >
@@ -41,8 +25,11 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
   <h3>
     Time Control
   </h3>
+  <div />
   <div>
     0:00
+  </div>
+  <div>
     <div
       style={
         Object {

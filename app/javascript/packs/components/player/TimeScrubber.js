@@ -92,7 +92,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state) => {
   return {
     currentTime: state.audioPlayer.currentTime,
-    duration: state.audioPlayer.duration
+    duration: state.audioPlayer.duration,
+    paused: state.audioPlayer.paused
   }
 }
 
