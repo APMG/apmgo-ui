@@ -8,7 +8,7 @@
       <% audio_data = audio.apm_api.stream %>
       <% duration = audio_data.duration_time.split(':') %>
       <li>
-        <script type="application/ld+json">
+        <script data-bragi-audio=true type="application/ld+json">
         {
           "@type": "AudioObject",
           "contentUrl": "<%= audio_data.http_file_path.sub(/^http/, 'https') %>",
@@ -32,8 +32,7 @@
         }
         </script>
         <h3>Listen: <%= audio_data.title %></h3>
-        <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio> 
-        <button>Add</button>
+        <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
       </li>
     <% end %>
   <% else %>
@@ -43,66 +42,4 @@
   <hr />
 <% end %>
 
-<script type="text/javascript">
-var apm_account = new ApmAccount('/apm_accounts')
-if(!apm_account.is_logged_in()) {
-  window.location.href = apm_account.log_in_path()
-}
-var buttons = document.getElementsByTagName('button')
-Array.prototype.forEach.call(buttons, function(button, idx){
-  button.addEventListener("click", function() {
-    var jsonldTag = this.parentElement.querySelector('script[type="application/ld+json"]')
-    var metadata = JSON.parse(jsonldTag.innerText)
-    var payload = buildPayload(metadata)
-    var request = new XMLHttpRequest();
-    request.open('POST', '//bragi-api-dev.publicradio.org/items', true);
-    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    request.setRequestHeader('Authorization', 'Bearer ' + apm_account.get_token());
-    request.send(payload);
-    request.onload = function(err) {
-      if (request.status >= 200 && request.status < 400) {
-        // Success!
-        var resp = request.responseText;
-        console.log("Request success")
-        debugger
-      } else {
-        // We reached our target server, but it returned an error
-        console.error("Server error")
-        debugger
-      }
-    };
-
-    request.onerror = function() {
-      // There was a connection error of some sort
-      console.error("Connection failed")
-      debugger
-    };
-
-    button.innerText = 'Added'
-    button.disabled = true
-  })
-})
-
-function buildPayload(metadata) {
-  var payload = {
-    "data": {
-        "attributes": {
-            "after": null,
-            "audio_description": metadata.description,
-            "audio_hosts": metadata.creator.name,
-            "audio_identifier": metadata.identifier,
-            "audio_program": null,
-            "audio_title": metadata.name,
-            "audio_url": metadata.contentUrl,
-            "finished": null,
-            "origin_url": metadata.isPartOf.url,
-            "playtime": 0,
-            "source": metadata.creator.url,
-            "status": "unplayed"
-        },
-        "type": "bragi-items"
-    }
-  }
-  return JSON.stringify(payload)
-}
-</script>
+<%= javascript_include_tag 'add_audio' %>
