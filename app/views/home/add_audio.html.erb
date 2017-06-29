@@ -1,18 +1,108 @@
+<% @entries.each do |entry| %>
+  <h2><%= entry.headline %></h2>
+  <p><%= entry.teaser %></p>
+  <p><%= entry.slug %></p>
+  <ol class="audiosList" aria-label="List of audio">
+  <% if entry.respond_to?(:audio) %>
+    <% entry.audio.each do |audio| %>
+      <% audio_data = audio.apm_api.stream %>
+      <% duration = audio_data.duration_time.split(':') %>
+      <li>
+        <script type="application/ld+json">
+        {
+          "@type": "AudioObject",
+          "contentUrl": "<%= audio_data.http_file_path.sub(/^http/, 'https') %>",
+          "description": "<%= audio_data.description %>",
+          <% # Rolling my own iso8601 duration converter %>
+          "duration": "PT<%= duration.zip(%w(H M S)).flatten.join %>",
+          "encodingFormat": "<%= audio_data.http_file_path.split('.').last %>",
+          "name": "<%= audio_data.title %>",
+          "identifier": "<%= audio_data.filename %>",
+          "uploadDate": "<%= DateTime.strptime(audio_data.pub_date.concat(Time.now.getlocal.formatted_offset), '%Y-%m-%d %H:%M:%S %Z').rfc3339() %>",
+          "isPartOf": {
+            "@type": "Article",
+            "url": "//mprnews.org/story/<%= entry.slug %>",
+            "headline": "<%= entry.headline %>"
+          },
+          "creator": {
+            "@type": "Organization",
+            "name": "MPR News",
+            "url": "//mprnews.org"
+          }
+        }
+        </script>
+        <h3>Listen: <%= audio_data.title %></h3>
+        <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio> 
+        <button>Add</button>
+      </li>
+    <% end %>
+  <% else %>
+   <% binding.pry %>
+  <% end %>
+  </ol>
+  <hr />
+<% end %>
+
 <script type="text/javascript">
 var apm_account = new ApmAccount('/apm_accounts')
 if(!apm_account.is_logged_in()) {
   window.location.href = apm_account.log_in_path()
 }
-console.log(apm_account)
-</script>
+var buttons = document.getElementsByTagName('button')
+Array.prototype.forEach.call(buttons, function(button, idx){
+  button.addEventListener("click", function() {
+    var jsonldTag = this.parentElement.querySelector('script[type="application/ld+json"]')
+    var metadata = JSON.parse(jsonldTag.innerText)
+    var payload = buildPayload(metadata)
+    var request = new XMLHttpRequest();
+    request.open('POST', '//bragi-api-dev.publicradio.org/items', true);
+    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    request.setRequestHeader('Authorization', 'Bearer ' + apm_account.get_token());
+    request.send(payload);
+    request.onload = function(err) {
+      if (request.status >= 200 && request.status < 400) {
+        // Success!
+        var resp = request.responseText;
+        console.log("Request success")
+        debugger
+      } else {
+        // We reached our target server, but it returned an error
+        console.error("Server error")
+        debugger
+      }
+    };
 
-<% @entries.each do |entry| %>
-  <h2><%= entry.headline %></h2>
-  <p><%= entry.teaser %></p>
-  <p><%= entry.slug %></p>
-  <% entry.audio.each do |audio| %>
-    <h3><%= audio.title %></h3>
-    <audio controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
-  <% end %>
-  <hr />
-<% end %>
+    request.onerror = function() {
+      // There was a connection error of some sort
+      console.error("Connection failed")
+      debugger
+    };
+
+    button.innerText = 'Added'
+    button.disabled = true
+  })
+})
+
+function buildPayload(metadata) {
+  var payload = {
+    "data": {
+        "attributes": {
+            "after": null,
+            "audio_description": metadata.description,
+            "audio_hosts": metadata.creator.name,
+            "audio_identifier": metadata.identifier,
+            "audio_program": null,
+            "audio_title": metadata.name,
+            "audio_url": metadata.contentUrl,
+            "finished": null,
+            "origin_url": metadata.isPartOf.url,
+            "playtime": 0,
+            "source": metadata.creator.url,
+            "status": "unplayed"
+        },
+        "type": "bragi-items"
+    }
+  }
+  return JSON.stringify(payload)
+}
+</script>
