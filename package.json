@@ -52,6 +52,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-1": "^6.24.1",
     "concurrently": "^3.5.0",
+    "enzyme": "^2.9.1",
     "flow-babel-webpack-plugin": "^1.0.1",
     "flow-bin": "0.33.0",
     "flow-loader": "^1.0.2",

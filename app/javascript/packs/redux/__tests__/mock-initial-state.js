@@ -36,15 +36,32 @@ export default function getSnapshotJson(Component: Component<*,*,*>, customTestS
 }
 
 export function getRenderedComponent(Component: Component<*,*,*>, customTestState?: any = {}) {
+  let wrappedComponent = getWrappedComponent(Component, customTestState)
+
+  return renderer.create(wrappedComponent)
+}
+
+export function getWrappedComponent(Component: Component<*,*,*>, customTestState?: any = {}) {
+  let store = getMockStore(customTestState)
+  return wrapComponent(Component, store)
+}
+
+export function getWrappedComponentWithStore(Component: Component<*,*,*>, customTestState?: any = {}) {
   let store = getMockStore(customTestState),
-      component = renderer.create(
-        <MuiThemeProvider>
+      component = wrapComponent(Component, store)
+
+  return {
+    component: component,
+    store: store
+  }
+}
+
+export function wrapComponent(Component: Component<*,*,*>, store:any) {
+  return <MuiThemeProvider>
           <Provider store={store}>
             { Component }
           </Provider>
         </MuiThemeProvider>
-      )
-  return component
 }
 
 export function getMockStore(customTestState?: any = {}) {

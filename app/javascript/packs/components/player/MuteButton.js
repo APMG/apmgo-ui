@@ -16,11 +16,11 @@ export class MuteButtonPresenter extends React.Component {
   render() {
     if (this.props.muted) {
       return (
-        <button onClick={this.props.unmute}>Unmute</button>
+        <button id="unmute-button" onClick={this.props.unmute}>Unmute</button>
       )
     } else {
       return (
-        <button onClick={this.props.mute}>Mute</button>
+        <button id="mute-button" onClick={this.props.mute}>Mute</button>
       )
     }
   }
@@ -32,7 +32,7 @@ const mapStateToProps = (newState) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch: dispatch) => {
   return {
     mute: () => {
       dispatch(muteClick())

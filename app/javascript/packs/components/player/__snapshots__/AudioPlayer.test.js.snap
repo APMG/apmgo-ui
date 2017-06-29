@@ -18,6 +18,7 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
     Pause
   </button>
   <button
+    id="mute-button"
     onClick={[Function]}
   >
     Mute

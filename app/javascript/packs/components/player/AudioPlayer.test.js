@@ -14,7 +14,6 @@ class TestAudioPlayerPresenter extends AudioPlayerPresenter {
 describe('AudioPlayer Component Test', () => {
   describe('Presenter', () => {
     it('Renders', () => {
-
       let tree = getSnapshotJson(<TestAudioPlayerPresenter item={ itemFixtures[0] } />)
       expect(tree).toMatchSnapshot();
     })
