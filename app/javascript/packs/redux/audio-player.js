@@ -56,6 +56,7 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
     case TIME_SCRUBBER_CHANGE:
       return playerState
         .setTime(action.currentTime)
+        .setCanPlay(false)
         .instanceUpdatesAudioElementTime()
 
     case UPDATE_PLAYTIME:

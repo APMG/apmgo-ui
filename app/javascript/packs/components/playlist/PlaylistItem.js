@@ -52,7 +52,7 @@ export class PlaylistItemPresenter extends React.Component {
   render() {
     return (
       <ListItem
-        onClick={this.props.playTrack.bind(this)}
+        onClick={() => this.props.playTrack(this.props.item)}
         leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
         rightIconButton={rightIconMenu}
         primaryText={this.props.item.attributes.audio_title}
