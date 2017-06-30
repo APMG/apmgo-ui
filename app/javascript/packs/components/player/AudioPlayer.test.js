@@ -5,6 +5,8 @@ import AudioPlayerState from '../../models/AudioPlayerState'
 
 class TestAudioPlayerPresenter extends AudioPlayerPresenter {
   componentDidMount() {
+    this.audio = {}
+    super()
     // noop
     // because the audio element ref that is set during render()
     // is not getting set by jest, and this method throws an error
