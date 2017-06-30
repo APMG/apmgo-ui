@@ -2,125 +2,61 @@ import type { PlaylistItemType } from './types';
 import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
 import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
+import {
+  fetchingPlaylistItems,
+  removingPlaylistItem,
+  playlistErrorOccured,
+  archivingPlaylistItem,
+  playlistItemRemoved,
+  playlistItemArchived
+} from './data'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
 
 // Actions
 export const RECEIVE_PLAYLIST_ITEMS : string = 'RECEIVE_PLAYLIST_ITEMS'
 export const INITIALIZE_PLAYLIST : string = 'INITIALIZE_PLAYLIST'
-export const FETCHING_PLAYLIST_ITEMS : string = 'FETCHING_PLAYLIST_ITEMS'
-export const ITEM_ADDED_TO_PLAYLIST : string = 'ITEM_ADDED_TO_PLAYLIST'
-
-export const REMOVING_PLAYLIST_ITEM : string = 'REMOVING_ITEM_FROM_PLAYLIST'
 export const REMOVE_PLAYLIST_ITEM : string = 'REMOVE_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_REMOVED : string = 'PLAYLIST_ITEM_REMOVED'
-
-export const ARCHIVING_PLAYLIST_ITEM : string = 'ARCHIVING_PLAYLIST_ITEM'
 export const ARCHIVE_PLAYLIST_ITEM : string = 'ARCHIVE_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_ARCHIVED : string = 'PLAYLIST_ITEM_ARCHIVED'
-
-export const PLAYLIST_ERROR_OCCURRED : string = 'PLAYLIST_ERROR_OCCURED'
-export const CLEAR_PLAYLIST_ERROR : string = 'CLEAR_PLAYLIST_ERROR'
-
 export const UPDATE_PLAYLIST_ITEM : string = 'UPDATE_PLAYLIST_ITEM'
 
-// Statuses
-class PlaylistStatuses {
-  ARCHIVING_ITEM : string = 'ARCHIVING_ITEM'
-  REMOVING_ITEM : string = 'REMOVING_ITEM'
-  FETCHING : string = 'FETCHING'
-  DEFAULT : string = 'DEFAULT'
-  ERROR : string = 'ERROR'
-}
-
 // Reducer
-export default function reducer(state : {data: Array<PlaylistItemType>, errorMessage: string} = {data: [], errorMessage: ''}, action : ActionType = new ActionType) {
+export default function reducer(playlistState : Array<PlaylistItemType> = [], action : ActionType = new ActionType) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
-      return Object.assign({}, state, {
-        data: action.data,
-        receivedAt: action.receivedAt,
-        status: PlaylistStatuses.DEFAULT
-      })
-
-    case FETCHING_PLAYLIST_ITEMS:
-      return Object.assign({}, state, {
-        status: PlaylistStatuses.FETCHING,
-        receivedAt: action.receivedAt
-      })
-
-    case REMOVING_PLAYLIST_ITEM:
-      return Object.assign({}, state, {
-        status: PlaylistStatuses.REMOVING_ITEM
-      })
+      return action.data
 
     case REMOVE_PLAYLIST_ITEM:
-      return Object.assign({}, state, {
-        data: state.data.filter(item => {
-          return item.id !== action.item_id
-        })
-      })
-
-    case PLAYLIST_ITEM_REMOVED:
-      return Object.assign({}, state, {
-        status: PlaylistStatuses.DEFAULT
-      })
-
-    case ARCHIVING_PLAYLIST_ITEM:
-      return Object.assign({}, state, {
-        status: PlaylistStatuses.ARCHIVING_ITEM
-      })
+      return playlistState.filter(item => item.id !== action.item_id)
 
     case ARCHIVE_PLAYLIST_ITEM:
-      return Object.assign({}, state, {
-        data: state.data.map(item => {
-          if (item.id === action.item.id) {
-            return Object.assign({}, item, action.item)
-          } else {
-            return item
-          }
-        })
+      return playlistState.map(item => {
+        if (item.id === action.item.id) {
+          return {...item, ...action.item}
+        } else {
+          return item
+        }
       })
-
-    case PLAYLIST_ITEM_ARCHIVED:
-      return Object.assign({}, state, {
-        status: PlaylistStatuses.DEFAULT
-      })
-
-    case PLAYLIST_ERROR_OCCURRED:
-      return Object.assign({}, state, {
-        errorMessage: action.message
-      })
-
-    case CLEAR_PLAYLIST_ERROR:
-      let result = Object.assign({}, state);
-      delete result.errorMessage;
-      return result
 
     case UPDATE_PLAYLIST_ITEM:
-      return Object.assign({}, state, {
-        data: state.data.map(item => {
-          if (item.id === action.item.id) {
-            return Object.assign({}, item, action.item)
-          }
-          return item;
-        })
+      return playlistState.map(item => {
+        if (item.id === action.item.id) {
+          return {...item, ...action.item}
+        }
+        return item;
       })
 
     case UPDATE_PLAYTIME:
-      let updated = Object.assign({}, state, {
-        data: state.data.map(item => {
-          if (item.id === action.item_id) {
-            item.attributes.playtime = action.currentTime
-            return {...item}
-          } else {
-            return item
-          }
-        })
+      return playlistState.map(item => {
+        if (item.id === action.item_id) {
+          item.attributes.playtime = action.currentTime
+          return {...item}
+        } else {
+          return item
+        }
       })
-      return updated
 
-    default: return state
+    default: return playlistState
   }
 }
 
@@ -129,15 +65,6 @@ export function receivePlaylistItems (data) {
   return {
     type: RECEIVE_PLAYLIST_ITEMS,
     data: data,
-    receivedAt: Date.now()
-  }
-}
-
-
-export function removingPlaylistItem(item_id) {
-  return {
-    type: REMOVING_PLAYLIST_ITEM,
-    item_id: item_id,
     receivedAt: Date.now()
   }
 }
@@ -151,41 +78,11 @@ export function removePlaylistItem (access_token, item_id) {
   }
 }
 
-export function playlistItemRemoved(item_id) {
-  return {
-    type: PLAYLIST_ITEM_REMOVED,
-    item_id: item_id,
-    receivedAt: Date.now()
-  }
-}
-
-// Archiving
-export function archivingPlaylistItem(item) {
-  return {
-    type: ARCHIVING_PLAYLIST_ITEM,
-    item: item,
-  }
-}
-
 export function archivePlaylistItem (access_token, item) {
   return {
     type: ARCHIVE_PLAYLIST_ITEM,
     access_token: access_token,
-    item: item
-  }
-}
-
-export function playlistItemArchived(item) {
-  return {
-    type: PLAYLIST_ITEM_ARCHIVED,
-    item: item
-  }
-}
-
-export function addedItemToPlaylist(json) {
-  return {
-    type: ITEM_ADDED_TO_PLAYLIST,
-    data: json.data,
+    item: item,
     receivedAt: Date.now()
   }
 }
@@ -198,32 +95,11 @@ export function initializePlaylist(access_token) {
   }
 }
 
-export function fetchingPlaylistItems() {
-  return {
-    type: FETCHING_PLAYLIST_ITEMS,
-    receivedAt: Date.now()
-  }
-}
-
-export function playlistErrorOccured(message) {
-  return {
-    type: PLAYLIST_ERROR_OCCURRED,
-    message: message,
-    receivedAt: Date.now()
-  }
-}
-
-export function clearPlaylistError() {
-  return {
-    type: CLEAR_PLAYLIST_ERROR,
-    receivedAt: Date.now()
-  }
-}
-
 export function updatePlaylistItem(item) {
   return {
     type: UPDATE_PLAYLIST_ITEM,
-    item: item
+    item: item,
+    receivedAt: Date.now()
   }
 }
 

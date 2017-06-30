@@ -1,17 +1,21 @@
 import {
-    fetchingPlaylistItems,
     initializePlaylist,
     initializePlaylistItemsSaga,
     receivePlaylistItems,
     removePlaylistItem,
     removePlaylistItemSaga,
-    removingPlaylistItem,
-    playlistItemRemoved,
+
     archivePlaylistItemSaga,
-    archivingPlaylistItem,
-    archivePlaylistItem,
-    playlistItemArchived
+    archivePlaylistItem
 } from '../playlist';
+import {
+  fetchingPlaylistItems,
+  removingPlaylistItem,
+  playlistItemRemoved,
+  archivingPlaylistItem,
+  playlistItemArchived
+} from '../data'
+
 import { fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../../service/playlist'
 import { put, call, takeLatest } from "redux-saga/effects"
 import * as moxios from 'moxios'
