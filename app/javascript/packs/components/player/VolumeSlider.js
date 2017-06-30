@@ -9,7 +9,7 @@ type VolumeSliderProps = {
   updateVolume: () => {}
 }
 
-const VolumeSliderPresenter = (props: VolumeSliderProps) => {
+export default function(props: VolumeSliderProps) {
   return (
     <Slider
       value={ props.volume }
@@ -17,5 +17,3 @@ const VolumeSliderPresenter = (props: VolumeSliderProps) => {
     />
   )
 }
-
-export default VolumeSliderPresenter

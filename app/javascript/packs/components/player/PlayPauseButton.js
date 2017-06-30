@@ -10,36 +10,30 @@ type PlayPauseProps = {
   pause: () => {}
 }
 
-export default class PlayPauseButtonPresenter extends React.Component {
-
-  props: PlayPauseProps
-
-  render() {
-
-    if(!this.props.canPlay) {
-      return (
-        <button
-          id="play-pause-loading-button"
-          disabled={true}>
-          Loading ...
-        </button>
-      )
-    } else if (this.props.paused || typeof this.props.paused === 'undefined') {
-      return (
-        <button
-          id="play-button"
-          onClick={this.props.play}>
-          Play
-        </button>
-      )
-    } else {
-      return (
-        <button
-          id="pause-button"
-          onClick={this.props.pause}>
-          Pause
-        </button>
-      )
-    }
+export default function PlayPauseButtonPresenter(props: PlayPauseProps) {
+  if(!props.canPlay) {
+    return (
+      <button
+        id="play-pause-loading-button"
+        disabled={true}>
+        Loading ...
+      </button>
+    )
+  } else if (props.paused || typeof props.paused === 'undefined') {
+    return (
+      <button
+        id="play-button"
+        onClick={props.play}>
+        Play
+      </button>
+    )
+  } else {
+    return (
+      <button
+        id="pause-button"
+        onClick={props.pause}>
+        Pause
+      </button>
+    )
   }
 }

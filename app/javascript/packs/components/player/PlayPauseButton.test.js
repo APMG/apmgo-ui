@@ -53,33 +53,4 @@ describe('Play/Pause Button Component', () => {
       expect(props.pause.mock.calls.length).toEqual(1);
     })
   })
-
-  describe('Redux Connection', () => {
-    //
-    // let dispatchSpy
-    //
-    // beforeEach(() => {
-    //   dispatchSpy = jest.fn()
-    // })
-
-    // it('Dispatches `playClick` Action', () => {
-    //   let item_id = itemFixtures[0].id,
-    //       ownProps = { item_id: item_id },
-    //       { play } = mapDispatchToProps(dispatchSpy, ownProps)
-    //
-    //   play(ownProps.item_id)
-    //   expect(dispatchSpy).toHaveBeenCalled()
-    //   expect(dispatchSpy.mock.calls[0][0]).toEqual(playClick(item_id))
-    // })
-    //
-    // it('Dispatches `pauseClick` Action', () => {
-    //   let item_id = itemFixtures[0].id,
-    //       ownProps = { item_id: item_id },
-    //       { pause } = mapDispatchToProps(dispatchSpy, ownProps)
-    //
-    //   pause(item_id)
-    //   expect(dispatchSpy).toHaveBeenCalled()
-    //   expect(dispatchSpy.mock.calls[0][0]).toEqual(pauseClick(item_id))
-    // })
-  })
 })

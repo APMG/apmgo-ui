@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const PlayTimeDisplayPresenter = (props: {currentTime: number}) => {
+export default function (props: {currentTime: number}) {
   if (typeof props.currentTime === undefined || isNaN(props.currentTime)) {
     return (<div>0:00</div>)
   }
@@ -13,5 +13,3 @@ const PlayTimeDisplayPresenter = (props: {currentTime: number}) => {
 
   return (<div>{formatted}</div>)
 }
-
-export default PlayTimeDisplayPresenter

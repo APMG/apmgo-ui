@@ -9,20 +9,15 @@ type MuteButtonProps = {
   unmute: () => {}
 }
 
-export class MuteButtonPresenter extends React.Component {
-
-  props: MuteButtonProps
-
-  render() {
-    if (this.props.muted) {
-      return (
-        <button id="unmute-button" onClick={this.props.unmute}>Unmute</button>
-      )
-    } else {
-      return (
-        <button id="mute-button" onClick={this.props.mute}>Mute</button>
-      )
-    }
+const MuteButtonPresenter = (props: MuteButtonProps) => {
+  if (props.muted) {
+    return (
+      <button id="unmute-button" onClick={props.unmute}>Unmute</button>
+    )
+  } else {
+    return (
+      <button id="mute-button" onClick={props.mute}>Mute</button>
+    )
   }
 }
 

@@ -10,14 +10,24 @@ import TimeScrubber from './TimeScrubber'
 import TimeKeeper from './TimeKeeper'
 import VolumeSlider from './VolumeSlider'
 import PlayTimeDisplay from './PlayTimeDisplay'
-import { audioMetaDataLoaded, audioCanPlay, playClick, pauseClick, muteClick, unmuteClick, updatePlayTime, timeScrubberChange, volumeChange } from '../../redux/audio-player'
+
+import {
+  audioMetaDataLoaded,
+  audioCanPlay,
+  playClick,
+  pauseClick,
+  muteClick,
+  unmuteClick,
+  updatePlayTime,
+  timeScrubberChange,
+  volumeChange
+} from '../../redux/audio-player'
 
 type AudioPlayerProps = {
   item: PlaylistItemType,
   audioPlayer: AudioPlayerState,
   audioCanPlay: () => {},
   audioMetaDataLoaded: () => {},
-  // audioRefSet: () => {},
   pause: () => {},
   play: () => {},
   mute: () => {},
@@ -101,7 +111,7 @@ export class AudioPlayerPresenter extends React.Component {
         </h3>
 
         <audio
-          ref={ (ref) => this.audio=ref /*this.props.audioRefSet(ref, this)*/ }
+          ref={ (ref) => this.audio=ref }
           src={this.props.item.attributes.audio_url}>
         </audio>
 
