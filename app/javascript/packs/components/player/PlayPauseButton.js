@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, dispatch } from 'react-redux';
 import { pauseClick, playClick } from '../../redux/audio-player';
 
 type PlayPauseProps = {
@@ -17,23 +17,36 @@ export class PlayPauseButtonPresenter extends React.Component {
   props: PlayPauseProps
 
   render() {
-    if (this.props.paused || typeof this.props.paused === 'undefined') {
+
+    if(!this.props.canPlay) {
       return (
         <button
-          onClick={this.props.play}
-          disabled={!this.props.canPlay}>
+          id="play-pause-loading-button"
+          disabled={true}>
+          Loading ...
+        </button>
+      )
+    } else if (this.props.paused || typeof this.props.paused === 'undefined') {
+      return (
+        <button
+          id="play-button"
+          onClick={this.props.play}>
           Play
         </button>
       )
     } else {
       return (
-        <button onClick={this.props.pause}>Pause</button>
+        <button
+          id="pause-button"
+          onClick={this.props.pause}>
+          Pause
+        </button>
       )
     }
   }
 }
 
-const mapStateToProps = (newState) => {
+export const mapStateToProps = (newState: any) => {
   return {
     paused: newState.audioPlayer.paused,
     item_id: newState.audioPlayer.currentTrackId,
@@ -41,7 +54,7 @@ const mapStateToProps = (newState) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps: PlayPauseProps) => {
+export const mapDispatchToProps = (dispatch: dispatch, ownProps: PlayPauseProps) => {
   return {
     play: () : void => {
       dispatch(playClick(ownProps.item_id))

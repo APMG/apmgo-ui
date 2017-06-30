@@ -42,6 +42,9 @@ export class AudioPlayerPresenter extends React.Component {
 
     if(newProps.item.id !== this.props.item.id) {
       this.audio.src = newProps.item.attributes.audio_url
+      if(this.audio.canPlay && !this.props.audioPlayer.paused) {
+        this.audio.play()
+      }
     }
 
     if(newProps.audioPlayer.updateAudioElementTime) {

@@ -13,9 +13,10 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
     onLoadedMetadata={[Function]}
   />
   <button
-    onClick={[Function]}
+    disabled={true}
+    id="play-pause-loading-button"
   >
-    Pause
+    Loading ...
   </button>
   <button
     id="mute-button"

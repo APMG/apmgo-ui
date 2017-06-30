@@ -2,8 +2,13 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import getSnapshotJson, { getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
-import MuteButton, { MuteButtonPresenter, mapDispatchToProps } from './MuteButton'
 import { muteClick, unmuteClick } from '../../redux/audio-player'
+
+import MuteButton, {
+  MuteButtonPresenter,
+  mapDispatchToProps,
+  mapStateToProps
+} from './MuteButton'
 
 describe('Mute Button Component', () => {
   describe('Presenter', () => {
@@ -41,7 +46,7 @@ describe('Mute Button Component', () => {
     })
   })
 
-  describe('Dispatch Functions', () => {
+  describe('Redux Connection', () => {
 
     let dispatchSpy
 
@@ -63,6 +68,12 @@ describe('Mute Button Component', () => {
       expect(dispatchSpy.mock.calls[0][0]).toEqual(unmuteClick())
     })
 
+    it('Gets Mute From State', () => {
+      let trueState = {audioPlayer: {muted: true}}
+      let falseState = {audioPlayer: {muted: false}}
 
+      expect(mapStateToProps(trueState)).toEqual({muted: true})
+      expect(mapStateToProps(falseState)).toEqual({muted: false})
+    })
   })
 })

@@ -26,7 +26,7 @@ export class MuteButtonPresenter extends React.Component {
   }
 }
 
-const mapStateToProps = (newState) => {
+export const mapStateToProps = (newState: any) => {
   return {
     muted: newState.audioPlayer.muted
   }
