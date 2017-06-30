@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 const PlayTimeDisplayPresenter = (props: {currentTime: number}) => {
-  if (typeof props.currentTime === undefined) {
+  if (typeof props.currentTime === undefined || isNaN(props.currentTime)) {
     return (<div>0:00</div>)
   }
 
@@ -13,11 +13,11 @@ const PlayTimeDisplayPresenter = (props: {currentTime: number}) => {
 
   return (<div>{formatted}</div>)
 }
+//
+// const mapStateToProps = (state) => {
+//   return {
+//     currentTime: state.audioPlayer.currentTime
+//   }
+// }
 
-const mapStateToProps = (state) => {
-  return {
-    currentTime: state.audioPlayer.currentTime
-  }
-}
-
-export default connect(mapStateToProps)(PlayTimeDisplayPresenter)
+export default PlayTimeDisplayPresenter //connect(mapStateToProps)(PlayTimeDisplayPresenter)

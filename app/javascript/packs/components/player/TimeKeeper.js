@@ -6,7 +6,7 @@ export class TimeKeeperPresenter extends React.Component {
 
   props: {
     audio: HTMLAudioElement,
-    item_id: number
+    updatePlayTime: () => {}
   }
   state: {
     timer?: number|false
@@ -60,19 +60,19 @@ export class TimeKeeperPresenter extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    item_id: state.audioPlayer.currentTrackId,
-    paused: state.audioPlayer.paused
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//     item_id: state.audioPlayer.currentTrackId,
+//     paused: state.audioPlayer.paused
+//   }
+// }
+//
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     updatePlayTime: (currentTime) => {
+//       dispatch(updatePlayTime(ownProps.item_id, Math.ceil(currentTime)))
+//     }
+//   }
+// }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    updatePlayTime: (currentTime) => {
-      dispatch(updatePlayTime(ownProps.item_id, Math.ceil(currentTime)))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TimeKeeperPresenter)
+export default TimeKeeperPresenter// connect(mapStateToProps, mapDispatchToProps)(TimeKeeperPresenter)

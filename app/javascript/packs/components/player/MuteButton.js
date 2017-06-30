@@ -43,7 +43,7 @@ export const mapDispatchToProps = (dispatch: dispatch) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MuteButtonPresenter)
+export default MuteButtonPresenter //connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(MuteButtonPresenter)

@@ -4,9 +4,7 @@ import { connect, dispatch } from 'react-redux';
 import { pauseClick, playClick } from '../../redux/audio-player';
 
 type PlayPauseProps = {
-  audio: HTMLAudioElement,
   paused: boolean,
-  item_id: number,
   canPlay: boolean,
   play: () => {},
   pause: () => {}
@@ -46,26 +44,28 @@ export class PlayPauseButtonPresenter extends React.Component {
   }
 }
 
-export const mapStateToProps = (newState: any) => {
-  return {
-    paused: newState.audioPlayer.paused,
-    item_id: newState.audioPlayer.currentTrackId,
-    canPlay: newState.audioPlayer.canPlay
-  }
-}
+// export const mapStateToProps = (newState: any) => {
+//   return {
+//     paused: newState.audioPlayer.paused,
+//     item_id: newState.audioPlayer.currentTrackId,
+//     canPlay: newState.audioPlayer.canPlay
+//   }
+// }
+//
+// export const mapDispatchToProps = (dispatch: dispatch, ownProps: PlayPauseProps) => {
+//   return {
+//     play: () : void => {
+//       dispatch(playClick(ownProps.item_id))
+//     },
+//     pause: (): void => {
+//       dispatch(pauseClick(ownProps.item_id))
+//     }
+//   }
+// }
 
-export const mapDispatchToProps = (dispatch: dispatch, ownProps: PlayPauseProps) => {
-  return {
-    play: () : void => {
-      dispatch(playClick(ownProps.item_id))
-    },
-    pause: (): void => {
-      dispatch(pauseClick(ownProps.item_id))
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlayPauseButtonPresenter)
+export default PlayPauseButtonPresenter
+//
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(PlayPauseButtonPresenter)

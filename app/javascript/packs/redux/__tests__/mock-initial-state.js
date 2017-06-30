@@ -3,6 +3,7 @@ import * as React from 'react'
 import { Component } from 'react'
 import renderer from 'react-test-renderer'
 import configureStore from 'redux-mock-store'
+import { shallowWithStore } from 'enzyme-redux'
 import { Provider } from 'react-redux'
 import AudioPlayerState from '../../models/AudioPlayerState'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -12,14 +13,16 @@ export const itemFixtures = [
     "id": 1,
     "attributes": {
       "audio_title": 'Test Audio',
-      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
+      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
+      "playtime": 30
     }
   },
   {
     "id": 2,
     "attributes": {
       "audio_title": 'Another Test Audio',
-      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3'
+      "audio_url": 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
+      "playtime": 60
     }
   }
 ]
@@ -56,12 +59,22 @@ export function getWrappedComponentWithStore(Component: Component<*,*,*>, custom
   }
 }
 
+export function getShallowWithStore(Component: Component<*,*,*>, customTestState?: any = {}) {
+  let store = getMockStore(customTestState)
+
+  return shallowWithStore(Component, store)
+}
+
 export function wrapComponent(Component: Component<*,*,*>, store:any) {
   return <MuiThemeProvider>
-          <Provider store={store}>
-            { Component }
-          </Provider>
+          {wrapComponentInProvider(Component, store)}
         </MuiThemeProvider>
+}
+
+export function wrapComponentInProvider(Component: Component<*,*,*>, store:any) {
+  return <Provider store={store}>
+           {Component}
+         </Provider>
 }
 
 export function getMockStore(customTestState?: any = {}) {
