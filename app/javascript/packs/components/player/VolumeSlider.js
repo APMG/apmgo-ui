@@ -5,57 +5,17 @@ import Slider from 'material-ui/Slider'
 import { volumeChange } from '../../redux/audio-player'
 
 type VolumeSliderProps = {
+  volume: number,
   updateVolume: () => {}
 }
 
-export class VolumeSliderPresenter extends React.Component {
-
-  props: VolumeSliderProps
-
-  state: {
-    volume: number
-  }
-
-  constructor(props: VolumeSliderProps) {
-    let volume = 1
-
-    super(props)
-    this.state = {
-      volume: volume
-    }
-  }
-
-  _updateVolumeInState() {
-    this.setState({
-      volume: this.state.volume
-    })
-  }
-
-  _volumeChange(event: any, newValue: number) {
-    if (!this.props.audio) {
-      return
-    }
-
-    this.state.volume = newValue
-    this._updateVolumeInState()
-  }
-
-  render() {
-    return (
-      <Slider
-        value={ this.state.volume }
-        onChange={ this.props.updateVolume }
-      />
-    )
-  }
+const VolumeSliderPresenter = (props: VolumeSliderProps) => {
+  return (
+    <Slider
+      value={ props.volume }
+      onChange={ props.updateVolume }
+    />
+  )
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateVolume: (event, newVolume) => {
-      dispatch(volumeChange(newVolume))
-    }
-  }
-}
-
-export default connect(null, mapDispatchToProps)(VolumeSliderPresenter)
+export default VolumeSliderPresenter

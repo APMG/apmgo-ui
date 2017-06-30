@@ -1,6 +1,6 @@
 import React from 'react'
 import { PlaylistPresenter } from './Playlist'
-import getSnapshotJson from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson } from '../../redux/__tests__/mock-initial-state'
 
 describe('Playlist Component', () => {
   describe('Presenter', () => {

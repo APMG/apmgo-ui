@@ -2,7 +2,8 @@ import React from 'react'
 import connect from 'react-redux'
 import { mount, shallow } from 'enzyme'
 import AudioPlayer, { AudioPlayerPresenter, mapStateToProps, mapDispatchToProps } from './AudioPlayer'
-import getSnapshotJson, { itemFixtures, getRenderedComponent, getShallowWithStore, getMockStore, getWrappedComponent, wrapComponentInProvider } from '../../redux/__tests__/mock-initial-state'
+import { muteClick } from '../../redux/audio-player'
+import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
 import MockableAudio from '../../redux/__tests__/mock-audio'
 import AudioPlayerState from '../../models/AudioPlayerState'
 
@@ -117,6 +118,22 @@ describe('AudioPlayer Component Test', () => {
 
       wrapper.setProps(forceTimeUpdate)
       expect(audioMockRef.currentTime).toEqual(forceTimeUpdate.audioPlayer.currentTime)
+    })
+  })
+
+  describe('Redux Connection', () => {
+
+    let dispatchSpy
+
+    beforeEach(() => {
+      dispatchSpy = jest.fn()
+    })
+
+    it('Dispatches `muteClick` Action', () => {
+      let { mute } = mapDispatchToProps(dispatchSpy)
+      mute()
+      expect(dispatchSpy).toHaveBeenCalled()
+      expect(dispatchSpy.mock.calls[0][0]).toEqual(muteClick())
     })
   })
 })

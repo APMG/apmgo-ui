@@ -12,7 +12,7 @@ type TimeScrubberProps = {
   timeScrubberChange: () => {}
 }
 
-export class TimeScrubberPresenter extends React.Component {
+export default class TimeScrubberPresenter extends React.Component {
 
   props: TimeScrubberProps
   state: {
@@ -77,24 +77,3 @@ export class TimeScrubberPresenter extends React.Component {
     )
   }
 }
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     updatePlayTime: (currentTime) => {
-//       dispatch(updatePlayTime(ownProps.item_id, Math.ceil(currentTime)))
-//     },
-//     timeScrubberChange: (currentTime) => {
-//       dispatch(timeScrubberChange(ownProps.item_id, Math.ceil(currentTime)))
-//     }
-//   }
-// }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     currentTime: state.audioPlayer.currentTime,
-//     duration: state.audioPlayer.duration,
-//     paused: state.audioPlayer.paused
-//   }
-// }
-
-export default TimeScrubberPresenter //connect(mapStateToProps, mapDispatchToProps)(TimeScrubberPresenter)

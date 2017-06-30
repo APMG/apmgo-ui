@@ -1,19 +1,15 @@
 
 import React from 'react'
 import { mount } from 'enzyme'
-import getSnapshotJson, { getWrappedComponent, itemFixtures } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson, getWrappedComponent, itemFixtures } from '../../redux/__tests__/mock-initial-state'
 import { playClick, pauseClick } from '../../redux/audio-player'
 
-import PlayPauseButton, {
-  PlayPauseButtonPresenter,
-  mapDispatchToProps,
-  mapStateToProps
-} from './PlayPauseButton'
+import PlayPauseButton from './PlayPauseButton'
 
 describe('Play/Pause Button Component', () => {
   describe('Presenter', () => {
     it('Displays a Loading Button When It Can Not Play', () => {
-      let tree = getSnapshotJson(<PlayPauseButtonPresenter canPlay={false}/>)
+      let tree = getSnapshotJson(<PlayPauseButton canPlay={false}/>)
       expect(tree).toMatchSnapshot()
     })
     it('Displays a Play Button When Paused', () => {
@@ -21,7 +17,7 @@ describe('Play/Pause Button Component', () => {
         canPlay: true,
         paused: true
       },
-      tree = getSnapshotJson(<PlayPauseButtonPresenter {...props} />)
+      tree = getSnapshotJson(<PlayPauseButton {...props} />)
       expect(tree).toMatchSnapshot()
     })
     it('Displays a Pause Button When Playing', () => {
@@ -29,7 +25,7 @@ describe('Play/Pause Button Component', () => {
         canPlay: true,
         paused: true
       },
-      tree = getSnapshotJson(<PlayPauseButtonPresenter {...props} />)
+      tree = getSnapshotJson(<PlayPauseButton {...props} />)
       expect(tree).toMatchSnapshot()
     })
     it('Calls `play` When Play Button Is Clicked', () => {
@@ -38,7 +34,7 @@ describe('Play/Pause Button Component', () => {
         paused: true,
         play: jest.fn()
       },
-      component = getWrappedComponent(<PlayPauseButtonPresenter {...props} />),
+      component = getWrappedComponent(<PlayPauseButton {...props} />),
       wrapper = mount(component)
 
       wrapper.find('#play-button').simulate('click')
@@ -50,7 +46,7 @@ describe('Play/Pause Button Component', () => {
         paused: false,
         pause: jest.fn()
       },
-      component = getWrappedComponent(<PlayPauseButtonPresenter {...props} />),
+      component = getWrappedComponent(<PlayPauseButton {...props} />),
       wrapper = mount(component)
 
       wrapper.find('#pause-button').simulate('click')
@@ -59,7 +55,7 @@ describe('Play/Pause Button Component', () => {
   })
 
   describe('Redux Connection', () => {
-    // 
+    //
     // let dispatchSpy
     //
     // beforeEach(() => {

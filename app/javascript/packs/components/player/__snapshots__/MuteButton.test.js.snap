@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Mute Button Component Presenter Displays a Mute Button When Unmuted 1`] = `
+exports[`Mute Button Component  Displays a Mute Button When Unmuted 1`] = `
 <button
   id="mute-button"
   onClick={undefined}
@@ -9,7 +9,7 @@ exports[`Mute Button Component Presenter Displays a Mute Button When Unmuted 1`]
 </button>
 `;
 
-exports[`Mute Button Component Presenter Displays an Unmute Button When Muted 1`] = `
+exports[`Mute Button Component  Displays an Unmute Button When Muted 1`] = `
 <button
   id="unmute-button"
   onClick={undefined}

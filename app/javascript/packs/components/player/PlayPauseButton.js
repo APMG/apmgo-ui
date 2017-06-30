@@ -10,7 +10,7 @@ type PlayPauseProps = {
   pause: () => {}
 }
 
-export class PlayPauseButtonPresenter extends React.Component {
+export default class PlayPauseButtonPresenter extends React.Component {
 
   props: PlayPauseProps
 
@@ -43,29 +43,3 @@ export class PlayPauseButtonPresenter extends React.Component {
     }
   }
 }
-
-// export const mapStateToProps = (newState: any) => {
-//   return {
-//     paused: newState.audioPlayer.paused,
-//     item_id: newState.audioPlayer.currentTrackId,
-//     canPlay: newState.audioPlayer.canPlay
-//   }
-// }
-//
-// export const mapDispatchToProps = (dispatch: dispatch, ownProps: PlayPauseProps) => {
-//   return {
-//     play: () : void => {
-//       dispatch(playClick(ownProps.item_id))
-//     },
-//     pause: (): void => {
-//       dispatch(pauseClick(ownProps.item_id))
-//     }
-//   }
-// }
-
-export default PlayPauseButtonPresenter
-//
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(PlayPauseButtonPresenter)

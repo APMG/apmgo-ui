@@ -13,11 +13,5 @@ const PlayTimeDisplayPresenter = (props: {currentTime: number}) => {
 
   return (<div>{formatted}</div>)
 }
-//
-// const mapStateToProps = (state) => {
-//   return {
-//     currentTime: state.audioPlayer.currentTime
-//   }
-// }
 
-export default PlayTimeDisplayPresenter //connect(mapStateToProps)(PlayTimeDisplayPresenter)
+export default PlayTimeDisplayPresenter

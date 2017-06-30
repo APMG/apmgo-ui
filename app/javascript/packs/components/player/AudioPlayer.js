@@ -10,7 +10,7 @@ import TimeScrubber from './TimeScrubber'
 import TimeKeeper from './TimeKeeper'
 import VolumeSlider from './VolumeSlider'
 import PlayTimeDisplay from './PlayTimeDisplay'
-import { audioMetaDataLoaded, audioCanPlay, playClick, pauseClick, muteClick, unmuteClick, updatePlayTime, timeScrubberChange } from '../../redux/audio-player'
+import { audioMetaDataLoaded, audioCanPlay, playClick, pauseClick, muteClick, unmuteClick, updatePlayTime, timeScrubberChange, volumeChange } from '../../redux/audio-player'
 
 type AudioPlayerProps = {
   item: PlaylistItemType,
@@ -24,7 +24,8 @@ type AudioPlayerProps = {
   unmute: () => {},
   updatePlayTimeTimeKeeper: () => {},
   updatePlayTimeTimeScrubber: () => {},
-  timeScrubberChange: () => {}
+  timeScrubberChange: () => {},
+  updateVolume: () => {}
 }
 
 export class AudioPlayerPresenter extends React.Component {
@@ -133,7 +134,10 @@ export class AudioPlayerPresenter extends React.Component {
         />
 
         <h3>Volume Control</h3>
-        <VolumeSlider />
+        <VolumeSlider
+          volume={this.props.audioPlayer.volume}
+          updateVolume={this.props.updateVolume}
+        />
       </div>
     )
   }
@@ -167,6 +171,9 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     },
     timeScrubberChange: (currentTime: number) => {
       dispatch(timeScrubberChange(ownProps.item.id, Math.ceil(currentTime)))
+    },
+    updateVolume: (event: Event, newVolume:number) => {
+      dispatch(volumeChange(newVolume))
     }
   }
 }

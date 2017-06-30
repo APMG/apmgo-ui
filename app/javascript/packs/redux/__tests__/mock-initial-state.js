@@ -32,7 +32,7 @@ export const defaultTestState = {
   audioPlayer: new AudioPlayerState({currentTrackId: itemFixtures[0].id})
 }
 
-export default function getSnapshotJson(Component: Component<*,*,*>, customTestState?: any = {}) {
+export function getSnapshotJson(Component: Component<*,*,*>, customTestState?: any = {}) {
   let renderedComponent = getRenderedComponent(Component, customTestState),
       tree = renderedComponent.toJSON();
     return tree
@@ -47,22 +47,6 @@ export function getRenderedComponent(Component: Component<*,*,*>, customTestStat
 export function getWrappedComponent(Component: Component<*,*,*>, customTestState?: any = {}) {
   let store = getMockStore(customTestState)
   return wrapComponent(Component, store)
-}
-
-export function getWrappedComponentWithStore(Component: Component<*,*,*>, customTestState?: any = {}) {
-  let store = getMockStore(customTestState),
-      component = wrapComponent(Component, store)
-
-  return {
-    component: component,
-    store: store
-  }
-}
-
-export function getShallowWithStore(Component: Component<*,*,*>, customTestState?: any = {}) {
-  let store = getMockStore(customTestState)
-
-  return shallowWithStore(Component, store)
 }
 
 export function wrapComponent(Component: Component<*,*,*>, store:any) {
