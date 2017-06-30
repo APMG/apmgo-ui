@@ -1,6 +1,6 @@
 
 import React from 'react'
-import getSnapshotJson from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson } from '../../redux/__tests__/mock-initial-state'
 import PlayTimeDisplay from './PlayTimeDisplay'
 
 describe('Play Time Display Component', () => {
@@ -10,7 +10,7 @@ describe('Play Time Display Component', () => {
       expect(tree).toMatchSnapshot()
     })
     it('Displays currentTime When Prop is Passed', () => {
-      let tree = getSnapshotJson(<PlayTimeDisplay />, {audioPlayer: {currentTime: 60}})
+      let tree = getSnapshotJson(<PlayTimeDisplay currentTime={60} />)
       expect(tree).toMatchSnapshot()
     })
   })

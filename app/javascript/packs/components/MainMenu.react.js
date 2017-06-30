@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
 import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'

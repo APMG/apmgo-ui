@@ -1,16 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Play/Pause Button Component Presenter Displays a Loading Button When It Can Not Play 1`] = `
+<button
+  disabled={true}
+  id="play-pause-loading-button"
+>
+  Loading ...
+</button>
+`;
+
 exports[`Play/Pause Button Component Presenter Displays a Pause Button When Playing 1`] = `
 <button
+  id="play-button"
   onClick={undefined}
 >
-  Pause
+  Play
 </button>
 `;
 
 exports[`Play/Pause Button Component Presenter Displays a Play Button When Paused 1`] = `
 <button
-  disabled={true}
+  id="play-button"
   onClick={undefined}
 >
   Play

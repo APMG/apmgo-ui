@@ -2,11 +2,11 @@ import React from 'react'
 import { connect, dispatch } from 'react-redux'
 import { updatePlayTime } from '../../redux/audio-player'
 
-export class TimeKeeperPresenter extends React.Component {
+export default class TimeKeeperPresenter extends React.Component {
 
   props: {
     audio: HTMLAudioElement,
-    item_id: number
+    updatePlayTime: () => {}
   }
   state: {
     timer?: number|false
@@ -59,20 +59,3 @@ export class TimeKeeperPresenter extends React.Component {
     return (<div></div>)
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    item_id: state.audioPlayer.currentTrackId,
-    paused: state.audioPlayer.paused
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    updatePlayTime: (currentTime) => {
-      dispatch(updatePlayTime(ownProps.item_id, Math.ceil(currentTime)))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TimeKeeperPresenter)
