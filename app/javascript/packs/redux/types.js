@@ -1,13 +1,13 @@
 // @flow
 import AudioPlayerState from '../models/AudioPlayerState'
 
-export type PlaylistItemType = {
+export interface PlaylistItemType {
   attributes: PlaylistItemAttributes,
   id: number,
   type: string
 }
 
-export type PlaylistItemAttributes = {
+export interface PlaylistItemAttributes {
   after: string,
   audio_description: string,
   audio_hosts: string,

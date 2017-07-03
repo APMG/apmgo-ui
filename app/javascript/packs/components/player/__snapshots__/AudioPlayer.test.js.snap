@@ -8,9 +8,7 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
   <h3>
     Now playing: Test Audio
   </h3>
-  <audio
-    src="https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3"
-  />
+  <audio />
   <button
     disabled={true}
     id="play-pause-loading-button"
