@@ -20,6 +20,7 @@
 /public/packs
 /public/assets
 /node_modules
+/flow-typed
 
 # Ignore sensitive data
 /config/initializers/apm_accounts_component.rb

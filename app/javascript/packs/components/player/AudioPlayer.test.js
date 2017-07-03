@@ -2,7 +2,18 @@ import React from 'react'
 import connect from 'react-redux'
 import { mount, shallow } from 'enzyme'
 import AudioPlayer, { AudioPlayerPresenter, mapStateToProps, mapDispatchToProps } from './AudioPlayer'
-import { muteClick } from '../../redux/audio-player'
+import {
+  audioCanPlay as audioCanPlayAction,
+  audioMetaDataLoaded as audioMetaDataLoadedAction,
+  playClick,
+  pauseClick,
+  muteClick,
+  unmuteClick,
+  updatePlayTime,
+  timeScrubberChange as timeScrubberChangeAction,
+  volumeChange
+
+} from '../../redux/audio-player'
 import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
 import MockableAudio from '../../redux/__tests__/mock-audio'
 import AudioPlayerState from '../../models/AudioPlayerState'
@@ -123,17 +134,119 @@ describe('AudioPlayer Component Test', () => {
 
   describe('Redux Connection', () => {
 
-    let dispatchSpy
+    describe('Sets State', () => {
+      let newPlayer = new AudioPlayerState(itemFixtures[0].id),
+          newState = { audioPlayer: newPlayer },
+          result = mapStateToProps(newState)
 
-    beforeEach(() => {
-      dispatchSpy = jest.fn()
+      expect(result.audioPlayer).toBe(newPlayer)
     })
 
-    it('Dispatches `muteClick` Action', () => {
-      let { mute } = mapDispatchToProps(dispatchSpy)
-      mute()
-      expect(dispatchSpy).toHaveBeenCalled()
-      expect(dispatchSpy.mock.calls[0][0]).toEqual(muteClick())
+    describe('Dispatches Action', () => {
+      let dispatchSpy
+
+      beforeEach(() => {
+        dispatchSpy = jest.fn()
+      })
+      it('`audioCanPlay`', () => {
+        let { audioCanPlay } = mapDispatchToProps(dispatchSpy)
+
+        audioCanPlay()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(audioCanPlayAction())
+      })
+
+      it('`audioMetaDataLoaded`', () => {
+        let { audioMetaDataLoaded } = mapDispatchToProps(dispatchSpy)
+
+        audioMetaDataLoaded()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(audioMetaDataLoadedAction())
+      })
+
+
+      it('`playClick`', () => {
+        let item = itemFixtures[0],
+            { play } = mapDispatchToProps(dispatchSpy, {item: item})
+
+        play()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(playClick(item.id))
+      })
+
+      it('`pauseClick`', () => {
+        let item = itemFixtures[0],
+            { pause } = mapDispatchToProps(dispatchSpy, {item: item})
+
+        pause()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(pauseClick(item.id))
+      })
+
+      it('`muteClick`', () => {
+        let { mute } = mapDispatchToProps(dispatchSpy)
+
+        mute()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(muteClick())
+      })
+
+      it('`unmuteClick`', () => {
+        let { unmute } = mapDispatchToProps(dispatchSpy)
+
+        unmute()
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(unmuteClick())
+      })
+
+      it('`updatePlayTimeTimeKeeper`', () => {
+        let item = itemFixtures[0],
+            { updatePlayTimeTimeKeeper } = mapDispatchToProps(dispatchSpy, {item: item}),
+            newTime = 100
+
+        updatePlayTimeTimeKeeper(newTime)
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(updatePlayTime(item.id, newTime))
+      })
+
+      it('`updatePlayTimeTimeScrubber`', () => {
+        let { updatePlayTimeTimeScrubber } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]}),
+            newTime = 100
+
+        updatePlayTimeTimeScrubber(newTime)
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(updatePlayTime(itemFixtures[0].id, newTime))
+      })
+
+      it('`timeScrubberChange`', () => {
+        let { timeScrubberChange } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]}),
+            newTime = 100
+
+        timeScrubberChange(newTime)
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(timeScrubberChangeAction(itemFixtures[0].id, newTime))
+      })
+
+      it('`updateVolume`', () => {
+        let { updateVolume } = mapDispatchToProps(dispatchSpy),
+            newVol = .5,
+            event = new Event('testevent')
+
+        updateVolume(event, newVol)
+
+        expect(dispatchSpy).toHaveBeenCalled()
+        expect(dispatchSpy.mock.calls[0][0]).toEqual(volumeChange(newVol))
+      })
     })
+
   })
 })

@@ -111,8 +111,7 @@ export class AudioPlayerPresenter extends React.Component {
         </h3>
 
         <audio
-          ref={ (ref) => this.audio=ref }
-          src={this.props.item.attributes.audio_url}>
+          ref={ (ref) => this.audio=ref }>
         </audio>
 
         <PlayPauseButton
@@ -173,7 +172,7 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     unmute: () => {
       dispatch(unmuteClick())
     },
-    updatePlayTimeTimeKeeper: (currentTime:number) => {
+    updatePlayTimeTimeKeeper: (currentTime: number) => {
       dispatch(updatePlayTime(ownProps.item.id, Math.ceil(currentTime)))
     },
     updatePlayTimeTimeScrubber: (currentTime: number) => {
