@@ -6,6 +6,7 @@ import List from 'material-ui/List'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import Async from 'react-code-splitting'
+import { changeTrack } from '../../redux/audio-player'
 
 type PlaylistProps = {
   data: Array<PlaylistItemType>,
@@ -38,10 +39,18 @@ export class PlaylistPresenter extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let activeItem = state.data.data.find(item => item.id === state.audioPlayer.currentTrackId)
+  let activeItem = state.playlist.find(item => item.id === state.audioPlayer.currentTrackId)
   return {
-    data: state.data.data,
+    data: state.playlist,
     activeItem: Object.assign({}, activeItem)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    playTrack: (item) => {
+      dispatch(changeTrack(item))
+    }
   }
 }
 
