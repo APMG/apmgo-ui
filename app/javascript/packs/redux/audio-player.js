@@ -19,7 +19,8 @@ export const UPDATE_PLAYTIME: string = 'UPDATE_PLAYTIME'
 const defaultProps = {
   paused: true,
   muted: false,
-  canPlay: false
+  canPlay: false,
+  volume: .5
 }
 const defaultPlayer = new AudioPlayerState(defaultProps)
 
@@ -56,6 +57,7 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
     case TIME_SCRUBBER_CHANGE:
       return playerState
         .setTime(action.currentTime)
+        .setCanPlay(false)
         .instanceUpdatesAudioElementTime()
 
     case UPDATE_PLAYTIME:

@@ -9,41 +9,16 @@ type MuteButtonProps = {
   unmute: () => {}
 }
 
-export class MuteButtonPresenter extends React.Component {
-
-  props: MuteButtonProps
-
-  render() {
-    if (this.props.muted) {
-      return (
-        <button onClick={this.props.unmute}>Unmute</button>
-      )
-    } else {
-      return (
-        <button onClick={this.props.mute}>Mute</button>
-      )
-    }
+const MuteButtonPresenter = (props: MuteButtonProps) => {
+  if (props.muted) {
+    return (
+      <button id="unmute-button" onClick={props.unmute}>Unmute</button>
+    )
+  } else {
+    return (
+      <button id="mute-button" onClick={props.mute}>Mute</button>
+    )
   }
 }
 
-const mapStateToProps = (newState) => {
-  return {
-    muted: newState.audioPlayer.muted
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    mute: () => {
-      dispatch(muteClick())
-    },
-    unmute: () => {
-      dispatch(unmuteClick())
-    }
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MuteButtonPresenter)
+export default MuteButtonPresenter

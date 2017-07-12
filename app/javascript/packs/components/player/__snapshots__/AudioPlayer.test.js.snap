@@ -8,17 +8,16 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
   <h3>
     Now playing: Test Audio
   </h3>
-  <audio
-    onCanPlay={undefined}
-    onLoadedMetadata={[Function]}
-  />
+  <audio />
   <button
-    onClick={[Function]}
+    disabled={true}
+    id="play-pause-loading-button"
   >
-    Pause
+    Loading ...
   </button>
   <button
-    onClick={[Function]}
+    id="mute-button"
+    onClick={undefined}
   >
     Mute
   </button>

@@ -5,6 +5,7 @@ import MainMenu from './components/MainMenu.react'
 import Playlist from './components/playlist/Playlist'
 import playlistReducer, { initializePlaylist } from './redux/playlist'
 import playerReducer from './redux/audio-player'
+import dataReducer from "./redux/data"
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
 import { BragiItemChannelSubscription } from './service/cable'
@@ -31,7 +32,8 @@ const enhancer = composeEnhancers(
 
 let store = createStore(
   combineReducers({
-    data: playlistReducer,
+    data: dataReducer,
+    playlist: playlistReducer,
     audioPlayer: playerReducer
   }),
   enhancer
