@@ -1,18 +1,45 @@
-<script type="text/javascript">
-var apm_account = new ApmAccount('/apm_accounts')
-if(!apm_account.is_logged_in()) {
-  window.location.href = apm_account.log_in_path()
-}
-console.log(apm_account)
-</script>
-
 <% @entries.each do |entry| %>
   <h2><%= entry.headline %></h2>
   <p><%= entry.teaser %></p>
   <p><%= entry.slug %></p>
-  <% entry.audio.each do |audio| %>
-    <h3><%= audio.title %></h3>
-    <audio controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
+  <ol class="audiosList" aria-label="List of audio">
+  <% if entry.respond_to?(:audio) %>
+    <% entry.audio.each do |audio| %>
+      <% audio_data = audio.apm_api.stream %>
+      <% duration = audio_data.duration_time.split(':') %>
+      <li>
+        <script data-bragi-audio=true type="application/ld+json">
+        {
+          "@type": "AudioObject",
+          "contentUrl": "<%= audio_data.http_file_path.sub(/^http/, 'https') %>",
+          "description": "<%= audio_data.description %>",
+          <% # Rolling my own iso8601 duration converter %>
+          "duration": "PT<%= duration.zip(%w(H M S)).flatten.join %>",
+          "encodingFormat": "<%= audio_data.http_file_path.split('.').last %>",
+          "name": "<%= audio_data.title %>",
+          "identifier": "<%= audio_data.filename %>",
+          "uploadDate": "<%= DateTime.strptime(audio_data.pub_date.concat(Time.now.getlocal.formatted_offset), '%Y-%m-%d %H:%M:%S %Z').rfc3339() %>",
+          "isPartOf": {
+            "@type": "Article",
+            "url": "//mprnews.org/story/<%= entry.slug %>",
+            "headline": "<%= entry.headline %>"
+          },
+          "creator": {
+            "@type": "Organization",
+            "name": "MPR News",
+            "url": "//mprnews.org"
+          }
+        }
+        </script>
+        <h3>Listen: <%= audio_data.title %></h3>
+        <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
+      </li>
+    <% end %>
+  <% else %>
+   <% binding.pry %>
   <% end %>
+  </ol>
   <hr />
 <% end %>
+
+<%= javascript_include_tag 'add_audio' %>

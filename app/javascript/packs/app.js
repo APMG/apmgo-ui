@@ -8,6 +8,7 @@ import playerReducer from './redux/audio-player'
 import dataReducer from "./redux/data"
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
+import { BragiItemChannelSubscription } from './service/cable'
 
 const apm_account = new ApmAccount('/apm_accounts')
 if(!apm_account.is_logged_in()) {
@@ -56,6 +57,8 @@ if(apm_account.get_expires_at() < Date.now()) {
 } else {
   store.dispatch( initializePlaylist(apm_account.get_token()) )
 }
+
+BragiItemChannelSubscription.initiateSubscription(apm_account.get_token())
 
 const App = () => (
   <MuiThemeProvider>
