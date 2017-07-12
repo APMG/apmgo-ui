@@ -1,3 +1,4 @@
+// @flow
 import ActionCable from 'actioncable'
 
 export class BragiItemChannelSubscription {
