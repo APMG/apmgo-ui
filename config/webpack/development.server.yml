@@ -2,8 +2,7 @@
 
 default: &default
   enabled: true
-  host: bragi.dev
-  port: 8080
+  host: bragijs.dev
 
 development:
   <<: *default
