@@ -4,6 +4,7 @@ import { ActionType } from './defaults'
 import type { PlaylistItemType } from './types'
 import AudioPlayerState from '../models/AudioPlayerState'
 import { RECEIVE_PLAYLIST_ITEMS } from './playlist'
+import { PLAYLIST_ITEM_ARCHIVED, PLAYLIST_ITEM_REMOVED } from './data'
 
 export const AUDIO_META_DATA_LOADED: string = 'AUDIO_META_DATA_LOADED'
 export const AUDIO_CAN_PLAY: string = 'AUDIO_CAN_PLAY'

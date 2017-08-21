@@ -8,7 +8,9 @@ import {
   playlistErrorOccured,
   archivingPlaylistItem,
   playlistItemRemoved,
-  playlistItemArchived
+  playlistItemArchived,
+  PLAYLIST_ITEM_ARCHIVED,
+  PLAYLIST_ITEM_REMOVED
 } from './data'
 
 import { put, takeLatest, call } from 'redux-saga/effects'
@@ -26,17 +28,10 @@ export default function reducer(playlistState : Array<PlaylistItemType> = [], ac
     case RECEIVE_PLAYLIST_ITEMS:
       return action.data
 
-    case REMOVE_PLAYLIST_ITEM:
-      return playlistState.filter(item => item.id !== action.item_id)
-
-    case ARCHIVE_PLAYLIST_ITEM:
-      return playlistState.map(item => {
-        if (item.id === action.item.id) {
-          return {...item, ...action.item}
-        } else {
-          return item
-        }
-      })
+    case PLAYLIST_ITEM_REMOVED:
+    case PLAYLIST_ITEM_ARCHIVED:
+      let result = playlistState.filter(item => item.id !== action.item.id)
+      return result
 
     case UPDATE_PLAYLIST_ITEM:
       return playlistState.map(item => {
@@ -69,28 +64,25 @@ export function receivePlaylistItems (data) {
   }
 }
 
-export function removePlaylistItem (access_token, item_id) {
+export function removePlaylistItem (item_id) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
-    access_token: access_token,
     item_id: item_id,
     receivedAt: Date.now()
   }
 }
 
-export function archivePlaylistItem (access_token, item) {
+export function archivePlaylistItem (item) {
   return {
     type: ARCHIVE_PLAYLIST_ITEM,
-    access_token: access_token,
     item: item,
     receivedAt: Date.now()
   }
 }
 
-export function initializePlaylist(access_token) {
+export function initializePlaylist() {
   return {
     type: INITIALIZE_PLAYLIST,
-    access_token: access_token,
     receivedAt: Date.now()
   }
 }
@@ -114,7 +106,7 @@ export function* initializePlaylistItemsSaga(action) {
     // when the promise returns, yield that value from the generator
     // and also store its value to the playlist variable
     // (noted bc it was confusing to me that both of those things would happen)
-    let playlist = yield call( fetchPlaylistItems, action.access_token )
+    let playlist = yield call(fetchPlaylistItems)
 
     // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
     yield put( receivePlaylistItems(playlist) );
@@ -125,9 +117,8 @@ export function* initializePlaylistItemsSaga(action) {
 
 export function* removePlaylistItemSaga(action) {
   yield put ( removingPlaylistItem(action.item_id) );
-
   try {
-    yield call( deletePlaylistItem, action.access_token, action.item_id )
+    yield call( deletePlaylistItem, action.item_id )
     yield put ( playlistItemRemoved( action.item_id ) )
   } catch (e) {
     yield put( playlistErrorOccured( e.message ) )
@@ -138,7 +129,7 @@ export function* archivePlaylistItemSaga(action) {
   yield put ( archivingPlaylistItem(action.item) );
 
   try {
-    let itemResult = yield call( apiArchivePlaylistItem, action.access_token, action.item )
+    let itemResult = yield call(apiArchivePlaylistItem, action.item)
     yield put ( playlistItemArchived( itemResult ) )
   } catch (e) {
     yield put( playlistErrorOccured( e.message ) )
