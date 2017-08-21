@@ -20,14 +20,17 @@ import {
   unmuteClick,
   updatePlayTime,
   timeScrubberChange,
-  volumeChange
+  volumeChange,
+  changeTrack
 } from '../../redux/audio-player'
+
+import { archivePlaylistItem } from '../../redux/playlist'
 
 type AudioPlayerProps = {
   item: PlaylistItemType,
   audioPlayer: AudioPlayerState,
   audioCanPlay: () => {},
-  audioMetaDataLoaded: () => {},
+  audioMetaDataLoaded: (duration: number) => {},
   pause: () => {},
   play: () => {},
   mute: () => {},
@@ -35,7 +38,9 @@ type AudioPlayerProps = {
   updatePlayTimeTimeKeeper: () => {},
   updatePlayTimeTimeScrubber: () => {},
   timeScrubberChange: () => {},
-  updateVolume: () => {}
+  updateVolume: () => {},
+  onEnded: () => {},
+  changeTrack: (item: PlaylistItemType) => {}
 }
 
 export class AudioPlayerPresenter extends React.Component {
@@ -55,7 +60,7 @@ export class AudioPlayerPresenter extends React.Component {
     this.audio.src = this.props.item.attributes.audio_url
     this.audio.oncanplay = this.props.audioCanPlay,
     this.audio.onloadedmetadata = this.metaDataLoaded.bind(this)
-
+    this.audio.onended = this.props.onEnded
     // So, these are being set here to make the component testable
     // the audio element does not get rendered in tests
     // so that logic needed to be moved out of the render function
@@ -63,6 +68,7 @@ export class AudioPlayerPresenter extends React.Component {
   }
 
   componentWillReceiveProps(newProps: AudioPlayerProps) {
+
     this._setPlayPaused(newProps.audioPlayer.paused)
     this.audio.muted = newProps.audioPlayer.muted
     this.audio.volume = newProps.audioPlayer.volume
@@ -71,6 +77,9 @@ export class AudioPlayerPresenter extends React.Component {
       this.audio.src = newProps.item.attributes.audio_url
       if(this.audio.canPlay && !this.props.audioPlayer.paused) {
         this.audio.play()
+      }
+      if(newProps.item.id !== newProps.audioPlayer.currentTrackId) {
+        this.props.changeTrack(newProps.item)
       }
     }
 
@@ -183,7 +192,14 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     },
     updateVolume: (event: Event, newVolume:number) => {
       dispatch(volumeChange(newVolume))
-    }
+    },
+    onEnded: (event: Event) => {
+      dispatch(archivePlaylistItem(ownProps.item))
+    },
+    changeTrack: ((item: PlaylistItemType) => {
+      console.log(item)
+      dispatch(changeTrack(item))
+    })
   }
 }
 

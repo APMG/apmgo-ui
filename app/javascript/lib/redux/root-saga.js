@@ -13,6 +13,6 @@ export default function* rootSaga() {
   yield all([
     takeEvery(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga),
     takeEvery(REMOVE_PLAYLIST_ITEM, removePlaylistItemSaga),
-    takeEvery(ARCHIVE_PLAYLIST_ITEM, removePlaylistItemSaga)
+    takeEvery(ARCHIVE_PLAYLIST_ITEM, archivePlaylistItemSaga)
   ])
 }

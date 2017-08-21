@@ -11,12 +11,19 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const extname = require('path-complete-extname')
 const { env, paths, publicPath, loadersDir } = require('./configuration.js')
-const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
+
+const extensionGlob = `**/*{${paths.extensions.join(',')}}*`
+const packPaths = sync(join(paths.source, paths.entry, extensionGlob))
 
 module.exports = {
-  entry: {
-    'app': './app/javascript/packs/app.js'
-  },
+  entry: packPaths.reduce(
+    (map, entry) => {
+      const localMap = map
+      const namespace = relative(join(paths.source, paths.entry), dirname(entry))
+      localMap[join(namespace, basename(entry, extname(entry)))] = resolve(entry)
+      return localMap
+    }, {}
+  ),
 
   output: {
     filename: '[name].js',
@@ -29,7 +36,6 @@ module.exports = {
   },
 
   plugins: [
-    new FlowBabelWebpackPlugin(),
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
     new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
     new ManifestPlugin({ fileName: paths.manifest, publicPath, writeToFileEmit: true })

@@ -8,8 +8,8 @@ type TimeScrubberProps = {
   paused: boolean,
   currentTime: number,
   duration: number,
-  updatePlayTime: () => {},
-  timeScrubberChange: () => {}
+  updatePlayTime: (playtime: number) => {},
+  timeScrubberChange: (currentTime: number) => {}
 }
 
 export default class TimeScrubberPresenter extends React.Component {

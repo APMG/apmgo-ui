@@ -1,19 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import MainMenu from './components/MainMenu.react'
-import Playlist from './components/playlist/Playlist'
-import playlistReducer, { initializePlaylist } from './redux/playlist'
-import playerReducer from './redux/audio-player'
-import dataReducer from "./redux/data"
+import MainMenu from '../lib/components/MainMenu.react'
+import Playlist from '../lib/components/playlist/Playlist'
+import playlistReducer, { initializePlaylist } from '../lib/redux/playlist'
+import playerReducer from '../lib/redux/audio-player'
+import dataReducer from "../lib/redux/data"
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
-import { BragiItemChannelSubscription } from './service/cable'
-
-const apm_account = new ApmAccount('/apm_accounts')
-if(!apm_account.is_logged_in()) {
-  window.location.href = apm_account.log_in_path()
-}
+import { BragiItemChannelSubscription } from '../lib/service/cable'
+import apm_account from '../lib/service/apm-account'
 
 // Improved tap events
 // http://stackoverflow.com/a/34015469/988941
@@ -22,7 +18,7 @@ injectTapEventPlugin()
 
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import rootSaga from "./redux/root-saga"
+import rootSaga from "../lib/redux/root-saga"
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 let sagaMiddleware = createSagaMiddleware()
@@ -48,14 +44,14 @@ sagaMiddleware.run(rootSaga)
 if(apm_account.get_expires_at() < Date.now()) {
   apm_account.refresh()
     .then(function (token) {
-      store.dispatch( initializePlaylist(apm_account.get_token()) )
+      store.dispatch( initializePlaylist() )
     })
     .catch(function (error) {
       // TODO: Error handling
       console.error('Could not refresh access token')
     })
 } else {
-  store.dispatch( initializePlaylist(apm_account.get_token()) )
+  store.dispatch( initializePlaylist() )
 }
 
 BragiItemChannelSubscription.initiateSubscription(apm_account.get_token())
