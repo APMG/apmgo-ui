@@ -17,11 +17,6 @@ import {
 import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
 import MockableAudio from '../../redux/__tests__/mock-audio'
 import AudioPlayerState from '../../models/AudioPlayerState'
-const ApmAccount = {
-  get_token: function() {
-    return 'token'
-  }
-}
 
 let audioMockRef,
     getAudioMockRef = () => audioMockRef
