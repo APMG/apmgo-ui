@@ -41,7 +41,6 @@ const PLAYLIST_ITEM_MOCK = {
 }
 
 describe('Playlist API suite', () => {
-  const token = 'SAMPLE_TOKEN'
 
   beforeEach(function() {
     moxios.install()
@@ -64,7 +63,7 @@ describe('Playlist API suite', () => {
       }
     })
 
-    let result = await fetchPlaylistItems(token)
+    let result = await fetchPlaylistItems()
     expect(result.data).toEqual(payload)
   })
 
@@ -76,7 +75,7 @@ describe('Playlist API suite', () => {
       status: returnStatus
     })
 
-    let result = await deletePlaylistItem(token, 12345)
+    let result = await deletePlaylistItem(12345)
     expect(result).toEqual(true)
   })
 
@@ -96,7 +95,7 @@ describe('Playlist API suite', () => {
       status: returnStatus
     })
 
-    let result = await apiArchivePlaylistItem(token, PLAYLIST_ITEM_MOCK)
+    let result = await apiArchivePlaylistItem(PLAYLIST_ITEM_MOCK)
     expect(result).toEqual(postArchiveItem)
   })
 })
@@ -104,8 +103,7 @@ describe('Playlist API suite', () => {
 describe('initialize playlist saga', () => {
 
   const
-    token = 'SAMPLE_TOKEN',
-    saga = initializePlaylistItemsSaga(initializePlaylist(token));
+    saga = initializePlaylistItemsSaga(initializePlaylist());
 
   it('dispatches FETCHING_PLAYLIST_ITEMS action', () => {
     let
@@ -120,7 +118,7 @@ describe('initialize playlist saga', () => {
   it('receives playlist', () => {
     let
       nextVal = saga.next().value,
-      expected = call(fetchPlaylistItems, token)
+      expected = call(fetchPlaylistItems)
 
     expect(nextVal).toEqual(expected)
   })
@@ -144,9 +142,8 @@ describe('initialize playlist saga', () => {
 describe('remove playlist item saga', () => {
 
   const
-    token = 'SAMPLE_TOKEN',
     item_id = 12345,
-    saga = removePlaylistItemSaga(removePlaylistItem(token, item_id))
+    saga = removePlaylistItemSaga(removePlaylistItem(item_id))
 
   it('dispatches REMOVING_PLAYLIST_ITEM action', function() {
     let
@@ -161,7 +158,7 @@ describe('remove playlist item saga', () => {
   it('deletes item', function() {
     let
       nextVal = saga.next().value,
-      expected = call(deletePlaylistItem, token, item_id)
+      expected = call(deletePlaylistItem, item_id)
 
     expect(nextVal).toEqual(expected)
   })
@@ -179,7 +176,6 @@ describe('remove playlist item saga', () => {
 
 describe('archive playlist item saga', () => {
   const
-    token = 'SAMPLE_TOKEN',
     preArchiveItem = PLAYLIST_ITEM_MOCK,
     postArchiveItem = {
         ...PLAYLIST_ITEM_MOCK,
@@ -189,7 +185,7 @@ describe('archive playlist item saga', () => {
           finished: new Date().toString()
         }
       },
-    saga = archivePlaylistItemSaga(archivePlaylistItem(token, preArchiveItem))
+    saga = archivePlaylistItemSaga(archivePlaylistItem(preArchiveItem))
 
   it('dispatches ARCHIVING_PLAYLIST_ITEM action', function() {
     let
@@ -202,7 +198,7 @@ describe('archive playlist item saga', () => {
   it('archives item', function() {
     let
       nextVal = saga.next().value,
-      expected = call(apiArchivePlaylistItem, token, preArchiveItem)
+      expected = call(apiArchivePlaylistItem, preArchiveItem)
 
     expect(nextVal).toEqual(expected)
   })

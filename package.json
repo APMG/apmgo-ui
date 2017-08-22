@@ -81,6 +81,9 @@
       "tsx",
       "js",
       "json"
-    ]
+    ],
+    "globals": {
+       "__TESTING__": true
+    }
   }
 }

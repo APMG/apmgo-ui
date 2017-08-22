@@ -18,7 +18,6 @@ import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from
 import MockableAudio from '../../redux/__tests__/mock-audio'
 import AudioPlayerState from '../../models/AudioPlayerState'
 
-
 let audioMockRef,
     getAudioMockRef = () => audioMockRef
 
@@ -49,6 +48,7 @@ describe('AudioPlayer Component Test', () => {
           item: itemFixtures[0],
           audioCanPlay: jest.fn(),
           audioMetaDataLoaded: jest.fn(),
+          onEnded: jest.fn(),
           audioRefSet: jest.fn((ref, context) => context.audio = ref ),
           audioPlayer: {volume: 1}
         }
@@ -68,6 +68,7 @@ describe('AudioPlayer Component Test', () => {
 
       audioMockRef.oncanplay()
       audioMockRef.onloadedmetadata()
+      audioMockRef.onended()
 
       expect(testProps.audioMetaDataLoaded).toHaveBeenCalled()
       expect(testProps.audioCanPlay).toHaveBeenCalled()
