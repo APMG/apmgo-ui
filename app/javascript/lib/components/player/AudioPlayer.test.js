@@ -72,6 +72,7 @@ describe('AudioPlayer Component Test', () => {
 
       expect(testProps.audioMetaDataLoaded).toHaveBeenCalled()
       expect(testProps.audioCanPlay).toHaveBeenCalled()
+      expect(testProps.onEnded).toHaveBeenCalled()
     })
 
     it('Updates Audio Element With New Props', () => {
