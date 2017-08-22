@@ -12,7 +12,6 @@ import {
   updatePlayTime,
   timeScrubberChange as timeScrubberChangeAction,
   volumeChange
-
 } from '../../redux/audio-player'
 import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
 import MockableAudio from '../../redux/__tests__/mock-audio'
@@ -49,6 +48,7 @@ describe('AudioPlayer Component Test', () => {
           audioCanPlay: jest.fn(),
           audioMetaDataLoaded: jest.fn(),
           onEnded: jest.fn(),
+          changeTrack: jest.fn(),
           audioRefSet: jest.fn((ref, context) => context.audio = ref ),
           audioPlayer: {volume: 1}
         }
@@ -243,7 +243,7 @@ describe('AudioPlayer Component Test', () => {
             newVol = .5,
             event = new Event('testevent')
 
-        updateVolume(event, newVol)
+        updateVolume(newVol)
 
         expect(dispatchSpy).toHaveBeenCalled()
         expect(dispatchSpy.mock.calls[0][0]).toEqual(volumeChange(newVol))

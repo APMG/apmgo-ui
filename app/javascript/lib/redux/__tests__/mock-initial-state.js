@@ -6,7 +6,6 @@ import configureStore from 'redux-mock-store'
 import { shallowWithStore } from 'enzyme-redux'
 import { Provider } from 'react-redux'
 import AudioPlayerState from '../../models/AudioPlayerState'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 export const itemFixtures = [
   {
@@ -50,12 +49,6 @@ export function getWrappedComponent(Component: Component<*,*,*>, customTestState
 }
 
 export function wrapComponent(Component: Component<*,*,*>, store:any) {
-  return <MuiThemeProvider>
-          {wrapComponentInProvider(Component, store)}
-        </MuiThemeProvider>
-}
-
-export function wrapComponentInProvider(Component: Component<*,*,*>, store:any) {
   return <Provider store={store}>
            {Component}
          </Provider>

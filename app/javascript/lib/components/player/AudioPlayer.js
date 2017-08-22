@@ -60,7 +60,9 @@ export class AudioPlayerPresenter extends React.Component {
     this.audio.src = this.props.item.attributes.audio_url
     this.audio.oncanplay = this.props.audioCanPlay,
     this.audio.onloadedmetadata = this.metaDataLoaded.bind(this)
-    this.audio.onended = this.props.onEnded
+    this.audio.onended = () => {
+      this.props.onEnded()
+    }
     // So, these are being set here to make the component testable
     // the audio element does not get rendered in tests
     // so that logic needed to be moved out of the render function
@@ -78,15 +80,24 @@ export class AudioPlayerPresenter extends React.Component {
       if(this.audio.canPlay && !this.props.audioPlayer.paused) {
         this.audio.play()
       }
-      if(newProps.item.id !== newProps.audioPlayer.currentTrackId) {
-        this.props.changeTrack(newProps.item)
-      }
+    }
+
+    if(newProps.item.id !== newProps.audioPlayer.currentTrackId) {
+      this.props.changeTrack(newProps.item)
     }
 
     if(newProps.audioPlayer.updateAudioElementTime) {
       this.audio.currentTime = newProps.audioPlayer.currentTime
     }
   }
+  //
+  // componentDidUpdate (prevProps: AudioPlayerProps) {
+  //   if (this.props.item.id !== this.props.audioPlayer.currentTrackId) {
+  //     console.log('changing')
+  //     this.props.changeTrack(this.props.item)
+  //   }
+  // }
+
 
   _setPlayPaused(paused: boolean) {
     if (paused !== this.audio.paused) {
@@ -112,7 +123,6 @@ export class AudioPlayerPresenter extends React.Component {
   render() {
     return (
       <div>
-        <h2>My Custom Playlist</h2>
         <h3>
             { this.props.item
               ? 'Now playing: ' + this.props.item.attributes.audio_title
@@ -139,6 +149,7 @@ export class AudioPlayerPresenter extends React.Component {
         <TimeKeeper // this component is invisible
           audio={ this.audio }
           updatePlayTime={this.props.updatePlayTimeTimeKeeper}
+          canPlay={this.props.audioPlayer.canPlay}
         />
         <PlayTimeDisplay
           currentTime={this.props.audioPlayer.currentTime}
@@ -190,10 +201,11 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     timeScrubberChange: (currentTime: number) => {
       dispatch(timeScrubberChange(ownProps.item.id, Math.ceil(currentTime)))
     },
-    updateVolume: (event: Event, newVolume:number) => {
+    updateVolume: (newVolume:number) => {
       dispatch(volumeChange(newVolume))
     },
-    onEnded: (event: Event) => {
+    onEnded: () => {
+      console.log('ended', ownProps.item)
       dispatch(archivePlaylistItem(ownProps.item))
     },
     changeTrack: ((item: PlaylistItemType) => {

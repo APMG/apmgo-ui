@@ -2,23 +2,6 @@
 import * as React from 'react'
 import { connect, dispatch } from 'react-redux'
 
-import ListItem from 'material-ui/List/ListItem'
-import Avatar from 'material-ui/Avatar'
-import IconMenu from 'material-ui/IconMenu'
-import MenuItem from 'material-ui/MenuItem'
-import IconButton from 'material-ui/IconButton'
-
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
-import Delete from 'material-ui/svg-icons/action/delete'
-import Done from 'material-ui/svg-icons/action/done'
-
-import {
-  grey400,
-  lightBlue400,
-  red50,
-  red700
-} from 'material-ui/styles/colors'
-
 import type { PlaylistItemType } from '../../redux/types'
 import { changeTrack, playClick } from '../../redux/audio-player'
 import { archivePlaylistItem, removePlaylistItem } from '../../redux/playlist'
@@ -34,47 +17,61 @@ type PlaylistItemProps = {
 export class PlaylistItemPresenter extends React.Component {
 
   props: PlaylistItemProps
+  state: {
+    showingMenu: boolean
+  }
 
-  _iconButtonElement() {
-    return(
-      <IconButton
-        touch={true}
-        tooltip="more"
-        tooltipPosition="bottom-left"
-      >
-        <MoreVertIcon color={grey400} />
-      </IconButton>
-    )
+  constructor(props: PlaylistItemProps) {
+    super(props)
+    this.state = {showingMenu: false}
+  }
+
+  _showMenu() {
+    this.setState({showingMenu: true})
+  }
+
+  _hideMenu() {
+    this.setState({showingMenu: false})
   }
 
   _rightIconMenu () {
-    return (
-      <IconMenu iconButtonElement={this._iconButtonElement()} >
-        <MenuItem
-          onClick={this.props.archiveTrack}
-          leftIcon={<Done />}>
-          Mark as played
-        </MenuItem>
-        <MenuItem
-          onClick={this.props.deleteTrack}
-          leftIcon={<Delete />}>
-          Delete
-        </MenuItem>
-      </IconMenu>
-    )
+    if(this.state.showingMenu) {
+      return (
+        <ul className="menu">
+          <li onClick={this.props.archiveTrack} >
+            Mark as played
+          </li>
+          <li onClick={this.props.deleteTrack}>
+            Delete
+          </li>
+        </ul>
+      )
+    } else {
+      return (
+        <p className="hamburger" onClick={this._showMenu.bind(this)}>hamburger</p>
+      )
+    }
   }
 
   render() {
     return (
-      <ListItem
-        onClick={() => this.props.setTrackAsActive(this.props.item)}
-        onDoubleClick={this.props.play}
-        leftAvatar={<Avatar color={red50} backgroundColor={red700}>TC</Avatar>}
-        rightIconButton={this._rightIconMenu()}
-        primaryText={this.props.item.attributes.audio_title}
-        secondaryText={ <p>{this.props.item.attributes.audio_description}</p> }
-        secondaryTextLines={1}
-      />
+      <li>
+        <div
+          onClick={() => this.props.setTrackAsActive(this.props.item)}
+          onDoubleClick={this.props.play}
+          style={{display: 'inline-block', width: '66%'}}
+        >
+          <h3>{this.props.item.attributes.audio_title}</h3>
+          <p>{this.props.item.attributes.audio_description}</p>
+        </div>
+        <div
+          onClick={this._showMenu.bind(this)}
+          onMouseLeave={this._hideMenu.bind(this)}
+          className="right-menu"
+          style={{display: 'inline-block', width: '33%'}}>
+            {this._rightIconMenu()}
+        </div>
+      </li>
     )
   }
 }

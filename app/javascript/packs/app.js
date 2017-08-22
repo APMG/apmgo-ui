@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import MainMenu from '../lib/components/MainMenu.react'
 import Playlist from '../lib/components/playlist/Playlist'
 import playlistReducer, { initializePlaylist } from '../lib/redux/playlist'
@@ -57,14 +56,12 @@ if(apm_account.get_expires_at() < Date.now()) {
 BragiItemChannelSubscription.initiateSubscription(apm_account.get_token())
 
 const App = () => (
-  <MuiThemeProvider>
-    <Provider store={store}>
-      <div>
-        <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
-        <Playlist />
-      </div>
-    </Provider>
-  </MuiThemeProvider>
+  <Provider store={store}>
+    <div>
+      <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
+      <Playlist />
+    </div>
+  </Provider>
 )
 
 document.addEventListener('DOMContentLoaded', () => {

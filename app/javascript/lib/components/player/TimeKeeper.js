@@ -1,26 +1,31 @@
+// @flow
+
 import React from 'react'
 import { connect, dispatch } from 'react-redux'
 import { updatePlayTime } from '../../redux/audio-player'
 
+type TimeKeeperPresenterProps = {
+  audio: HTMLAudioElement,
+  canPlay: boolean,
+  updatePlayTime: (currentTime: number) => {}
+}
+
 export default class TimeKeeperPresenter extends React.Component {
 
-  props: {
-    audio: HTMLAudioElement,
-    updatePlayTime: () => {}
-  }
+  props: TimeKeeperPresenterProps
   state: {
     timer?: number|false
   }
 
-  constructor(props: TimeScrubberProps) {
+  constructor(props: TimeKeeperPresenterProps) {
     super(props)
     this.state = {
       timer: false
     }
   }
 
-  componentWillReceiveProps(newProps: TimeScrubberProps) {
-    let playing = !newProps.paused
+  componentWillReceiveProps(newProps: TimeKeeperPresenterProps) {
+    let playing = !newProps.audio.paused // && this.props.canPlay
 
     if(playing) {
       this._startTimer()

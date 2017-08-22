@@ -29,9 +29,10 @@ export default function reducer(playlistState : Array<PlaylistItemType> = [], ac
       return action.data
 
     case PLAYLIST_ITEM_REMOVED:
+      return playlistState.filter(item => item.id != action.item_id)
+
     case PLAYLIST_ITEM_ARCHIVED:
-      let result = playlistState.filter(item => item.id !== action.item.id)
-      return result
+      return playlistState.filter(item => item.id != action.item.id)
 
     case UPDATE_PLAYLIST_ITEM:
       return playlistState.map(item => {
