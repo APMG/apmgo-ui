@@ -240,8 +240,7 @@ describe('AudioPlayer Component Test', () => {
 
       it('`updateVolume`', () => {
         let { updateVolume } = mapDispatchToProps(dispatchSpy),
-            newVol = .5,
-            event = new Event('testevent')
+            newVol = .5
 
         updateVolume(newVol)
 

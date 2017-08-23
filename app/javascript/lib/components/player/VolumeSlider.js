@@ -7,15 +7,21 @@ import 'rc-slider/assets/index.css';
 
 type VolumeSliderProps = {
   volume: number,
-  updateVolume: () => {}
+  updateVolume: (volume: number) => {}
 }
 
 export default function(props: VolumeSliderProps) {
+
+  const updateVolume = (event: any) => {
+    props.updateVolume(event.target.value)
+  }
+
   return (
-    <Slider
-      defaultValue={props.volume}
-      onChange={props.updateVolume}
-      onAfterChange={props.updateVolume}
+    <input
+      type='range'
+      value={props.volume}
+      onInput={updateVolume}
+      onChange={updateVolume}
       min={0}
       max={1}
       step={.01}
