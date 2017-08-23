@@ -1,4 +1,5 @@
 {
+  "extends": "./.babelrc-apm",
   "presets": [
     [
       "env",
