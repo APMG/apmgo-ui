@@ -12,10 +12,11 @@ This project uses rbenv to manage its Ruby version.
 
 ## Invoker
 
-1. Run `sudo invoker setup`, which sets up a DNS resolver and firewall rule to allow Invoker to use custom domains and forward to ports 80 and 443.
-2. Run `invoker start config/invoker.ini` to start Rails and Webpack.
-3. Visit https://bragi.dev and https://bragijs.dev/packs/app.js in your browser to verify that Rails and Webpack assets are being served. You will most likely need to add security exceptions for both domains to trust the SSL certificate.
-4. If you're having issues, restarting your machine and upgrading to a newer version of OS X are both possible solutions.
+1. If it's not already installed, you'll need Invoker: `gem install invoker`
+2. Run `sudo invoker setup`, which sets up a DNS resolver and firewall rule to allow Invoker to use custom domains and forward to ports 80 and 443.
+3. Run `invoker start config/invoker.ini` to start Rails and Webpack.
+4. Visit https://bragi.dev and https://bragijs.dev/packs/app.js in your browser to verify that Rails and Webpack assets are being served. You will most likely need to add security exceptions for both domains to trust the SSL certificate.
+5. If you're having issues, restarting your machine and upgrading to a newer version of OS X are both possible solutions.
 
 If you'd like to run a process outside of the Invoker stream (for instance, if you'd like to add a pry breakpoint in Rails and use the interactive REPL) you can comment out that application's entry in `config/invoker.ini`. You would then start the app and allow Invoker to handle its network traffic using `add_http`. For Rails, this would look like:
 
