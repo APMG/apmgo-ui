@@ -2,5 +2,14 @@
   presets: [
     "flow",
     "stage-1"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs",
+        "transform-flow-strip-types",
+        "transform-regenerator"
+      ]
+    }
+  }
 }
