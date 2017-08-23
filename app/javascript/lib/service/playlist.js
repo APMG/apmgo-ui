@@ -5,7 +5,7 @@ import apm_account from './apm-account'
 export function fetchPlaylistItems() : Promise {
     let instance: BragiApiClient = BragiApiClient.getInstance()
 
-    return instance.get('/items')
+    return instance.get('/items?filter[status][]=playing&filter[status][]=unplayed')
       .then(response => response.data.data)
       .catch(handleError)
 }

@@ -78,7 +78,7 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
       // we need to initialize the audio player here
 
       // first, try to default to the first unfinished track
-      let first = action.data.find(item => item.attributes.finished !== true);
+      let first = action.data.find(item => !item.attributes.finished);
 
       // if that fails, just take the first track
       if (!first) {

@@ -1,6 +1,6 @@
 let apm_account
 
-if (typeof __TESTING__ !== undefined && __TESTING__) {
+if (typeof __TESTING__ !== 'undefined' && __TESTING__) {
   apm_account = {
     get_token() {
       return 'test_token'

@@ -2,7 +2,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import PlaylistItem from './PlaylistItem'
-import List from 'material-ui/List'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import Async from 'react-code-splitting'
@@ -28,12 +27,12 @@ export class PlaylistPresenter extends React.Component {
     return (
       <div>
         <AudioPlayer item={this.props.activeItem}/>
-        <List>
+        <ul>
           {this.props.data
             .filter(item => !item.attributes.finished)
             .map((item, i) => <PlaylistItem item={item} key={i} />)
           }
-        </List>
+        </ul>
       </div>
     )
   }
