@@ -75,13 +75,6 @@ export default class TimeScrubberPresenter extends React.Component {
          onInput={ this._timeChange.bind(this) }
          onMouseUp={this._timeChangeDragStop.bind(this) }
        />
-        {/* <Slider
-          max={this.props.duration}
-          min={0}
-          value={this.timeScrubberValue()}
-          onChange={ this._timeChange.bind(this) }
-          onAfterChange={this._timeChangeDragStop.bind(this) }
-        /> */}
       </div>
     )
   }
