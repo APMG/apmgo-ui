@@ -60,9 +60,8 @@ export class AudioPlayerPresenter extends React.Component {
     this.audio.src = this.props.item.attributes.audio_url
     this.audio.oncanplay = this.props.audioCanPlay,
     this.audio.onloadedmetadata = this.metaDataLoaded.bind(this)
-    this.audio.onended = () => {
-      this.props.onEnded()
-    }
+    this.audio.onended = this.props.onEnded
+
     // So, these are being set here to make the component testable
     // the audio element does not get rendered in tests
     // so that logic needed to be moved out of the render function
@@ -90,14 +89,6 @@ export class AudioPlayerPresenter extends React.Component {
       this.audio.currentTime = newProps.audioPlayer.currentTime
     }
   }
-  //
-  // componentDidUpdate (prevProps: AudioPlayerProps) {
-  //   if (this.props.item.id !== this.props.audioPlayer.currentTrackId) {
-  //     console.log('changing')
-  //     this.props.changeTrack(this.props.item)
-  //   }
-  // }
-
 
   _setPlayPaused(paused: boolean) {
     if (paused !== this.audio.paused) {
@@ -205,11 +196,9 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
       dispatch(volumeChange(newVolume))
     },
     onEnded: () => {
-      console.log('ended', ownProps.item)
       dispatch(archivePlaylistItem(ownProps.item))
     },
     changeTrack: ((item: PlaylistItemType) => {
-      console.log(item)
       dispatch(changeTrack(item))
     })
   }
