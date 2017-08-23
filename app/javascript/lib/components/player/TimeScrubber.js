@@ -2,7 +2,6 @@
 import React from 'react'
 import { dispatch, connect } from 'react-redux'
 import { timeScrubberChange, updatePlayTime } from '../../redux/audio-player'
-import Slider from 'rc-slider'
 
 type TimeScrubberProps = {
   paused: boolean,
@@ -36,7 +35,8 @@ export default class TimeScrubberPresenter extends React.Component {
 
   // EVENT HANDLERS
 
-  _timeChange(newValue: number) {
+  _timeChange(event: any) {
+    let newValue = event.target.value
     if (this.state.timeDraggingPoint) {
       this.setState({
         timeDraggingPoint: newValue
@@ -67,13 +67,14 @@ export default class TimeScrubberPresenter extends React.Component {
   render() {
     return (
       <div>
-        <Slider
-          max={this.props.duration}
-          min={0}
-          value={this.timeScrubberValue()}
-          onChange={ this._timeChange.bind(this) }
-          onAfterChange={this._timeChangeDragStop.bind(this) }
-        />
+        <input
+         type="range"
+         max={this.props.duration}
+         min={0}
+         value={this.timeScrubberValue()}
+         onInput={ this._timeChange.bind(this) }
+         onMouseUp={this._timeChangeDragStop.bind(this) }
+       />
       </div>
     )
   }

@@ -191,7 +191,7 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     timeScrubberChange: (currentTime: number) => {
       dispatch(timeScrubberChange(ownProps.item.id, Math.ceil(currentTime)))
     },
-    updateVolume: (newVolume:number) => {
+    updateVolume: (newVolume: number) => {
       dispatch(volumeChange(newVolume))
     },
     onEnded: () => {
