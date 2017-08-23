@@ -1,24 +1,25 @@
 {
-  "passPerPreset": true,
   "presets": [
-    { "plugins": [ "transform-runtime" ] },
-    {
-        "passPerPreset": false,
-        "presets": [
-          [ "es2015", { "modules": false } ],
-          "stage-1",
-          "flow",
-          "react"
-        ]
-    }
+    [
+      "env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": "> 1%",
+          "uglify": true
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "react"
   ],
-  "env": {
-    "test": {
-      "plugins": [
-        "transform-es2015-modules-commonjs",
-        "transform-flow-strip-types",
-        "transform-regenerator"
-      ]
-    }
-  }
+  "plugins": [
+    "syntax-dynamic-import",
+    [
+      "transform-class-properties",
+      {
+        "spec": true
+      }
+    ]
+  ]
 }
