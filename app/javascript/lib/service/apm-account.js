@@ -1,7 +1,7 @@
 let apm_account
 
 if (typeof __TESTING__ !== 'undefined' && __TESTING__) {
-  apm_account = {
+  apm_account_mock = {
     get_token() {
       return 'test_token'
     }
@@ -12,5 +12,4 @@ if (typeof __TESTING__ !== 'undefined' && __TESTING__) {
     window.location.href = apm_account.log_in_path()
   }
 }
-
 export default apm_account
