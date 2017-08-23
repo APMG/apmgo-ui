@@ -1,5 +1,6 @@
 {
   presets: [
+    { "plugins": [ "transform-runtime" ] },
     "flow",
     "stage-1"
   ],
