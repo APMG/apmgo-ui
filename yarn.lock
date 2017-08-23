@@ -6190,6 +6190,12 @@ webpack-sources@^0.2.3:
     source-list-map "^1.1.1"
     source-map "~0.5.3"
 
+webpack-strip-block@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/webpack-strip-block/-/webpack-strip-block-0.2.0.tgz#c60d4a703e0eeee8895e7f1abe9b5fe914681470"
+  dependencies:
+    loader-utils "^1.1.0"
+
 webpack@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.4.1.tgz#15a91dbe34966d8a4b99c7d656efd92a2e5a6f6a"
