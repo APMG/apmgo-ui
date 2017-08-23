@@ -140,7 +140,6 @@ export class AudioPlayerPresenter extends React.Component {
         <TimeKeeper // this component is invisible
           audio={ this.audio }
           updatePlayTime={this.props.updatePlayTimeTimeKeeper}
-          canPlay={this.props.audioPlayer.canPlay}
         />
         <PlayTimeDisplay
           currentTime={this.props.audioPlayer.currentTime}

@@ -6,7 +6,6 @@ import { updatePlayTime } from '../../redux/audio-player'
 
 type TimeKeeperPresenterProps = {
   audio: HTMLAudioElement,
-  canPlay: boolean,
   updatePlayTime: (currentTime: number) => {}
 }
 
@@ -25,7 +24,7 @@ export default class TimeKeeperPresenter extends React.Component {
   }
 
   componentWillReceiveProps(newProps: TimeKeeperPresenterProps) {
-    let playing = !newProps.audio.paused // && this.props.canPlay
+    let playing = !newProps.audio.paused
 
     if(playing) {
       this._startTimer()
