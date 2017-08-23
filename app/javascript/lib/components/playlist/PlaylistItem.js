@@ -55,7 +55,7 @@ export class PlaylistItemPresenter extends React.Component {
 
   render() {
     return (
-      <li>
+      <li style={{display: 'block', backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
           onClick={() => this.props.setTrackAsActive(this.props.item)}
           onDoubleClick={this.props.play}
@@ -68,7 +68,7 @@ export class PlaylistItemPresenter extends React.Component {
           onClick={this._showMenu.bind(this)}
           onMouseLeave={this._hideMenu.bind(this)}
           className="right-menu"
-          style={{display: 'inline-block', width: '33%'}}>
+          style={{display: 'inline-block', width: '33%', verticalAlign: 'top'}}>
             {this._rightIconMenu()}
         </div>
       </li>

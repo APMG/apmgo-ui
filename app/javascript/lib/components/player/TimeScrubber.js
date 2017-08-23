@@ -31,8 +31,7 @@ export default class TimeScrubberPresenter extends React.Component {
       return 0
     }
 
-    let val = this.props.currentTime // / this.props.duration
-    return val // <= 1 ? val : 1
+    return this.props.currentTime
   }
 
   // EVENT HANDLERS
@@ -42,7 +41,7 @@ export default class TimeScrubberPresenter extends React.Component {
       this.setState({
         timeDraggingPoint: newValue
       })
-      this.props.updatePlayTime(newValue) //this.props.duration * )
+      this.props.updatePlayTime(newValue)
     } else {
       this.setState({
         timeDraggingPoint: newValue
@@ -56,7 +55,7 @@ export default class TimeScrubberPresenter extends React.Component {
     }
 
     if (this.state.timeDraggingPoint) {
-      let currentTime = this.state.timeDraggingPoint //* this.props.duration
+      let currentTime = this.state.timeDraggingPoint
       this.props.timeScrubberChange(currentTime)
     }
 
