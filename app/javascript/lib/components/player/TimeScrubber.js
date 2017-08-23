@@ -36,15 +36,15 @@ export default class TimeScrubberPresenter extends React.Component {
   // EVENT HANDLERS
 
   _timeChange(event: any) {
-    let newVal = event.target.value
+    let newValue = event.target.value
     if (this.state.timeDraggingPoint) {
       this.setState({
-        timeDraggingPoint: newVal
+        timeDraggingPoint: newValue
       })
-      this.props.updatePlayTime(newVal)
+      this.props.updatePlayTime(newValue)
     } else {
       this.setState({
-        timeDraggingPoint: newVal
+        timeDraggingPoint: newValue
       })
     }
   }
