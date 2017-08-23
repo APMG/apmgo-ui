@@ -74,17 +74,11 @@ export default function reducer(playerState : AudioPlayerState = defaultPlayer, 
         .instanceUpdatesAudioElementTime() // tell state that actual audio element needs to be updated
       return newplayer
 
-    // case PLAYLIST_ITEM_REMOVED:
-    // case PLAYLIST_ITEM_ARCHIVED:
-    //   return action.item.id === playerState.currentTrackId
-    //     ? playerState.setCurrentTrackId(0)
-    //     : playerState
-
     case RECEIVE_PLAYLIST_ITEMS:
       // we need to initialize the audio player here
 
       // first, try to default to the first unfinished track
-      let first = action.data.find(item => item.attributes.finished !== true);
+      let first = action.data.find(item => !item.attributes.finished);
 
       // if that fails, just take the first track
       if (!first) {

@@ -1,26 +1,6 @@
 // @flow
 import React from 'react'
 
-type LoggedProps = {
-  logoutPath: string
-}
-
-const Logged = (props: LoggedProps) => (
-  <IconMenu
-    iconButtonElement={ <IconButton><ExpandMoreIcon /></IconButton> }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText="RSS Feed" />
-    <MenuItem primaryText="Archive" />
-    <MenuItem primaryText="Log out" onClick={(e) => (
-      window.location.href=props.logoutPath
-    )} />
-  </IconMenu>
-);
-
-Logged.muiName = 'IconMenu'
-
 type MainMenuProps = {
   name: string,
   logoutPath: string

@@ -13,7 +13,7 @@ export class BragiApiClient {
 
     return this.instance = axios.create({
       baseURL: 'https://bragi-api-dev.publicradio.org',
-      timeout: 60000,
+      timeout: 10000,
       headers: {'Authorization': `Bearer ${access_token}`}
     })
   }
