@@ -2,7 +2,6 @@
 import React from 'react'
 import { dispatch, connect } from 'react-redux'
 import { timeScrubberChange, updatePlayTime } from '../../redux/audio-player'
-import Slider from 'rc-slider'
 
 type TimeScrubberProps = {
   paused: boolean,

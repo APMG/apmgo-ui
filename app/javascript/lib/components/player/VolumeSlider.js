@@ -2,8 +2,6 @@
 import React from 'react'
 import { connect, dispatch } from 'react-redux'
 import { volumeChange } from '../../redux/audio-player'
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
 
 type VolumeSliderProps = {
   volume: number,
