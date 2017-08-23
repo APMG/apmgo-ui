@@ -36,15 +36,16 @@ export default class TimeScrubberPresenter extends React.Component {
 
   // EVENT HANDLERS
 
-  _timeChange(newValue: number) {
+  _timeChange(event: any) {
+    let newVal = event.target.value
     if (this.state.timeDraggingPoint) {
       this.setState({
-        timeDraggingPoint: newValue
+        timeDraggingPoint: newVal
       })
-      this.props.updatePlayTime(newValue)
+      this.props.updatePlayTime(newVal)
     } else {
       this.setState({
-        timeDraggingPoint: newValue
+        timeDraggingPoint: newVal
       })
     }
   }
@@ -67,13 +68,21 @@ export default class TimeScrubberPresenter extends React.Component {
   render() {
     return (
       <div>
-        <Slider
+        <input
+         type="range"
+         max={this.props.duration}
+         min={0}
+         value={this.timeScrubberValue()}
+         onInput={ this._timeChange.bind(this) }
+         onMouseUp={this._timeChangeDragStop.bind(this) }
+       />
+        {/* <Slider
           max={this.props.duration}
           min={0}
           value={this.timeScrubberValue()}
           onChange={ this._timeChange.bind(this) }
           onAfterChange={this._timeChangeDragStop.bind(this) }
-        />
+        /> */}
       </div>
     )
   }
