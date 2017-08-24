@@ -5,10 +5,13 @@ import Playlist from '../lib/components/playlist/Playlist'
 import playlistReducer, { initializePlaylist } from '../lib/redux/playlist'
 import playerReducer from '../lib/redux/audio-player'
 import dataReducer from "../lib/redux/data"
-import { Provider } from 'react-redux'
+import PlaylistItemType from '../lib/redux/types'
+import { Provider, connect } from 'react-redux'
 import { combineReducers } from 'redux'
 import { BragiItemChannelSubscription } from '../lib/service/cable'
 import apm_account from '../lib/service/apm-account'
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContextProvider } from 'react-dnd';
 
 // Improved tap events
 // http://stackoverflow.com/a/34015469/988941
@@ -55,18 +58,38 @@ if(apm_account.get_expires_at() < Date.now()) {
 
 BragiItemChannelSubscription.initiateSubscription(apm_account.get_token())
 
-const App = () => (
-  <Provider store={store}>
-    <div>
-      <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
-      <Playlist />
-    </div>
-  </Provider>
-)
+type AppPresenterProps = {
+  playlist: Array<PlaylistItemType>
+}
+
+class AppPresenter extends React.Component {
+  props: AppPresenterProps
+
+  render () {
+    return (
+      <DragDropContextProvider backend={HTML5Backend}>
+        <div>
+          <MainMenu name={apm_account.get_name()} logoutPath={apm_account.log_out_path()} />
+          <Playlist playlist={this.props.playlist}/>
+        </div>
+      </DragDropContextProvider>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    playlist: state.playlist
+  }
+}
+
+const App = connect(mapStateToProps)(AppPresenter)
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <App />,
+    <Provider store={store}>
+      <App />
+    </Provider>,
     document.body.appendChild(document.createElement('div')),
   )
 })

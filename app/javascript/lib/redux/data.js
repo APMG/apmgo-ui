@@ -19,11 +19,14 @@ export const ARCHIVING_PLAYLIST_ITEM : string = 'ARCHIVING_PLAYLIST_ITEM'
 export const PLAYLIST_ITEM_ARCHIVED : string = 'PLAYLIST_ITEM_ARCHIVED'
 export const PLAYLIST_ERROR_OCCURRED : string = 'PLAYLIST_ERROR_OCCURED'
 export const CLEAR_PLAYLIST_ERROR : string = 'CLEAR_PLAYLIST_ERROR'
-
+export const UPDATING_PLAYLIST_ITEM : string = 'UPDATING_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_UPDATED : string = 'PLAYLIST_ITEM_UPDATED'
+export const PLAYLIST_ITEM_MOVED : string = 'PLAYLIST_ITEM_MOVED'
 // Statuses
 class PlaylistStatuses {
   ARCHIVING_ITEM : string = 'ARCHIVING_ITEM'
   REMOVING_ITEM : string = 'REMOVING_ITEM'
+  UPDATING_ITEM : string = 'MOVING_ITEM'
   FETCHING : string = 'FETCHING'
   DEFAULT : string = 'DEFAULT'
   ERROR : string = 'ERROR'
@@ -33,6 +36,14 @@ type DataReducerState = {
   status: string,
   receivedAt?: number,
   errorMessage?: string
+}
+
+function updateStatus(state: DataReducerState, newStatus, receivedAt) {
+  return {
+    ...state,
+    status: receivedAt,
+    receivedAt: receivedAt
+  }
 }
 
 // Reducer
@@ -46,18 +57,18 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
       }
 
     case FETCHING_PLAYLIST_ITEMS:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.FETCHING,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.FETCHING,
+        action.receivedAt
+      )
 
     case RECEIVE_PLAYLIST_ITEMS:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.DEFAULT,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.DEFAULT,
+        action.receivedAt
+      )
 
     case REMOVE_PLAYLIST_ITEM:
       return {
@@ -66,25 +77,25 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
       }
 
     case REMOVING_PLAYLIST_ITEM:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.REMOVING_ITEM,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.REMOVING_ITEM,
+        action.receivedAt
+      )
 
     case PLAYLIST_ITEM_REMOVED:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.DEFAULT,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.DEFAULT,
+        action.receivedAt
+      )
 
     case ARCHIVING_PLAYLIST_ITEM:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.ARCHIVING_ITEM,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.ARCHIVING_ITEM,
+        action.receivedAt
+      )
 
     case ARCHIVE_PLAYLIST_ITEM:
       return {
@@ -93,11 +104,11 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
       }
 
     case PLAYLIST_ITEM_ARCHIVED:
-      return {
-        ...dataState,
-        status: PlaylistStatuses.DEFAULT,
-        receivedAt: action.receivedAt
-      }
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.DEFAULT,
+        action.receivedAt
+      )
 
     case PLAYLIST_ERROR_OCCURRED:
       return {
@@ -112,6 +123,21 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
         errorMessage: null,
         receivedAt: action.receivedAt
       }
+
+    case UPDATE_PLAYLIST_ITEM: {
+      return {
+        ...dataState,
+        receivedAt: action.receivedAt
+      }
+    }
+
+    case UPDATING_PLAYLIST_ITEM: {
+      return updateStatus(
+        dataState,
+        PlaylistStatuses.UPDATING_ITEM,
+        action.receivedAt
+      )
+    }
 
     default: return dataState
   }
@@ -168,6 +194,31 @@ export function playlistErrorOccured(message) {
 export function clearPlaylistError() {
   return {
     type: CLEAR_PLAYLIST_ERROR,
+    receivedAt: Date.now()
+  }
+}
+
+export function updatingPlaylistItem(item: PlaylistItemType) {
+  return {
+    type: UPDATING_PLAYLIST_ITEM,
+    item: item,
+    receivedAt: Date.now()
+  }
+}
+
+export function playlistItemMoved(from, to) {
+  return {
+    type: PLAYLIST_ITEM_MOVED,
+    from: from,
+    to: to,
+    receivedAt: Date.now()
+  }
+}
+
+export function playlistItemUpdated(item: PlaylistItemType) {
+  return {
+    type: PLAYLIST_ITEM_UPDATED,
+    item: item,
     receivedAt: Date.now()
   }
 }
