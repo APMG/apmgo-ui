@@ -16,8 +16,7 @@ const playlistItemSource = {
   },
 
   endDrag(props, monitor, component) {
-    console.log('ended drag')
-    props.playlistItemMoved(props.origIndex, props.index)
+    props.playlistItemMoved(props.item, props.index)
   }
 }
 
@@ -46,7 +45,7 @@ const playlistItemTarget = {
   hover(props, monitor, component: React.Component<*, *, *>) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
-    console.log(dragIndex, hoverIndex)
+
     // Don't replace items with themselves
     if (dragIndex === hoverIndex) {
       return;
@@ -88,7 +87,6 @@ const playlistItemTarget = {
     monitor.getItem().index = hoverIndex;
   }
 }
-
 
 export function configureDroppable(playlistItem: any) {
   return DropTarget(

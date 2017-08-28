@@ -206,11 +206,11 @@ export function updatingPlaylistItem(item: PlaylistItemType) {
   }
 }
 
-export function playlistItemMoved(from, to) {
+export function playlistItemMoved(item: PlaylistItemType, toAfter) {
   return {
     type: PLAYLIST_ITEM_MOVED,
-    from: from,
-    to: to,
+    item: item,
+    toAfter: toAfter,
     receivedAt: Date.now()
   }
 }
