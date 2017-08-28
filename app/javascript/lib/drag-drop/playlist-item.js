@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd'
@@ -42,7 +41,7 @@ function targetCollect(connect) {
 }
 
 const playlistItemTarget = {
-  hover(props, monitor, component: React.Component<*, *, *>) {
+  hover(props, monitor, component) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
 
@@ -51,8 +50,14 @@ const playlistItemTarget = {
       return;
     }
 
+    const componentDOMNode = findDOMNode(component)
+
+    if (componentDOMNode === null) {
+      return;
+    }
+
     // Determine rectangle on screen
-    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
+    const hoverBoundingRect = componentDOMNode.getBoundingClientRect()
 
     // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -88,7 +93,7 @@ const playlistItemTarget = {
   }
 }
 
-export function configureDroppable(playlistItem: any) {
+export function configureDroppable(playlistItem) {
   return DropTarget(
     DraggableItemTypes.PLAYLIST_ITEM,
     playlistItemTarget,
