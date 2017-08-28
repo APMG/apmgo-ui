@@ -16,7 +16,7 @@ import {
   playlistItemArchived
 } from '../data'
 
-import { fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../../service/playlist'
+import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../../service/playlist'
 import { put, call, takeLatest } from "redux-saga/effects"
 import * as moxios from 'moxios'
 import configureMockStore from 'redux-mock-store'
@@ -81,22 +81,14 @@ describe('Playlist API suite', () => {
 
   it('Archives a playlist item', async () => {
     expect.assertions(1)
-    let returnStatus = 204,
-      postArchiveItem = {
-        ...PLAYLIST_ITEM_MOCK,
-        attributes: {
-          ...PLAYLIST_ITEM_MOCK.attributes,
-          status: "played",
-          finished: new Date().toString()
-        }
-      }
+    let returnStatus = 204
 
     moxios.stubOnce('PUT', /.*\/items\/\d+/, {
       status: returnStatus
     })
 
-    let result = await apiArchivePlaylistItem(PLAYLIST_ITEM_MOCK)
-    expect(result).toEqual(postArchiveItem)
+    let result = await updatePlaylistItem(PLAYLIST_ITEM_MOCK)
+    expect(result).toEqual(returnStatus)
   })
 })
 
@@ -198,7 +190,7 @@ describe('archive playlist item saga', () => {
   it('archives item', function() {
     let
       nextVal = saga.next().value,
-      expected = call(apiArchivePlaylistItem, preArchiveItem)
+      expected = call(updatePlaylistItem, preArchiveItem)
 
     expect(nextVal).toEqual(expected)
   })
