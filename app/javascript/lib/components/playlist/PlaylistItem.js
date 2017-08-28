@@ -6,6 +6,8 @@ import type { PlaylistItemType } from '../../redux/types'
 import { changeTrack, playClick } from '../../redux/audio-player'
 import { archivePlaylistItem, removePlaylistItem } from '../../redux/playlist'
 
+import './PlaylistItem.scss'
+
 type PlaylistItemProps = {
   item: PlaylistItemType,
   setTrackAsActive: (item: PlaylistItemType) => {},
@@ -60,6 +62,7 @@ export class PlaylistItemPresenter extends React.Component {
           onClick={() => this.props.setTrackAsActive(this.props.item)}
           onDoubleClick={this.props.play}
           style={{display: 'inline-block', width: '66%'}}
+          styleName="a"
         >
           <h3>{this.props.item.attributes.audio_title}</h3>
           <p>{this.props.item.attributes.audio_description}</p>
@@ -68,6 +71,7 @@ export class PlaylistItemPresenter extends React.Component {
           onClick={this._showMenu.bind(this)}
           onMouseLeave={this._hideMenu.bind(this)}
           className="right-menu"
+          styleName="b"
           style={{display: 'inline-block', width: '33%', verticalAlign: 'top'}}>
             {this._rightIconMenu()}
         </div>

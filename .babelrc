@@ -17,9 +17,20 @@
   "plugins": [
     "syntax-dynamic-import",
     [
-      "transform-class-properties",
-      {
+      "transform-class-properties", {
         "spec": true
+      }
+    ],
+    [
+      "react-css-modules", {
+        "filetypes": {
+          ".scss": {
+            "syntax": "postcss-scss",
+            "plugins": ["postcss-nested"]
+          }
+        },
+        "generateScopedName": "[name]__[local]___[hash:base64:5]",
+        "webpackHotModuleReloading": true
       }
     ]
   ]
