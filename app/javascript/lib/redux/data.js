@@ -1,5 +1,5 @@
 import type { PlaylistItemType } from './types';
-import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../service/playlist'
+import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
 import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
 import {

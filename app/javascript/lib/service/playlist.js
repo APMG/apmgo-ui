@@ -25,16 +25,16 @@ export function deletePlaylistItem(item_id) {
     .catch(handleError)
 }
 
-export async function apiArchivePlaylistItem(item: {}) : Promise<boolean> {
-  item.attributes.status = "played"
-  item.attributes.finished = (new Date().toString())
-
-  let responseCode = await updatePlaylistItem(item)
-  if (responseCode === 204) {
-    return item
-  }
-  throw Error('Could not archive item')
-}
+// export async function apiArchivePlaylistItem(item: {}) : Promise<boolean> {
+//   item.attributes.status = "played"
+//   item.attributes.finished = (new Date().toString())
+//
+//   let responseCode = await updatePlaylistItem(item)
+//   if (responseCode === 204) {
+//     return item
+//   }
+//   throw Error('Could not archive item')
+// }
 
 export async function apiMovePlaylistItem(item: PlaylistItemType, toAfter: number) : Promise<boolean> {
   item.attributes.after = toAfter
