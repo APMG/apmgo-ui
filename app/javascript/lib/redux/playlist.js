@@ -153,7 +153,7 @@ export function* movePlaylistItemSaga(action) {
   yield put ( updatingPlaylistItem (action.item) )
 
   try {
-    action.item.attributes.after = action.toAfter
+    action.item.attributes.after_id = action.toAfter
     let itemResult = yield call(updatePlaylistItem, action.item)
   } catch (e) {
     yield put(playlistErrorOccured(e.message))
