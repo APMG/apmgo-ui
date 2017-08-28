@@ -4967,6 +4967,12 @@ react-dnd-html5-backend@^2.4.1:
   dependencies:
     lodash "^4.2.0"
 
+react-dnd-test-backend@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-test-backend/-/react-dnd-test-backend-2.4.0.tgz#007039c9f4e4b76e30dabfe4ae286097032f5e64"
+  dependencies:
+    dnd-core "^2.4.0"
+
 react-dnd@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.4.0.tgz#96f0042cd4cd375b4f0c3413f6ec84d267b7d792"
