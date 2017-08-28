@@ -103,13 +103,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     movePlaylistItem: (from, to) => {
       dispatch(movePlaylistItem(from, to))
-    },
-    playlistItemMoved: (from, to) => {
-      dispatch(playlistItemMoved(from, to))
     }
   }
 }
-
-const DraggableDroppablePlaylistItem = configureDroppable(configureDraggable(PlaylistItemPresenter))
+const DroppablePlaylistItem = configureDroppable(PlaylistItemPresenter)
+const DraggableDroppablePlaylistItem = configureDraggable(DroppablePlaylistItem)
 
 export default connect(null, mapDispatchToProps)(DraggableDroppablePlaylistItem)

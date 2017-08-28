@@ -10,7 +10,7 @@ import { playlistItemMoved } from '../../redux/data'
 type PlaylistProps = {
   playlist: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType,
-  itemMoved: (item: PlaylistItemType, newPosition:number) => {}
+  playlistItemMoved: (item: PlaylistItemType, newPosition:number) => {}
 }
 
 interface TimelineListState {}
@@ -60,17 +60,21 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    itemMoved: (item: PlaylistItemType, newPosition: number) => {
-      let newAfter =
-      dispatch(playlistItemMoved(from, to))
+    playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {
+      let newAfter = ownProps.playlist[newPosition - 1]
+
+      newAfter = newAfter ? newAfter.id : null
+
+      dispatch(playlistItemMoved(item, newAfter))
     }
   }
 }
 
 const PlaylistContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(PlaylistPresenter)
 
 export default PlaylistContainer
