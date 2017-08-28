@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd'
 import PlaylistItem from '../components/playlist/PlaylistItem'
-import { DraggableItemTypes } from './Contants'
+import { DraggableItemTypes } from './Constants'
 import { PlaylistItemType } from '../redux/types'
 
 const playlistItemSource = {
