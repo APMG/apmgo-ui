@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { dispatch, connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { timeScrubberChange, updatePlayTime } from '../../redux/audio-player'
 
 type TimeScrubberProps = {

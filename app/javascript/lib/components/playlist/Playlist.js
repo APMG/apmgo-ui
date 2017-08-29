@@ -4,22 +4,16 @@ import { connect } from 'react-redux'
 import PlaylistItem from './PlaylistItem'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
-import { changeTrack } from '../../redux/audio-player'
 import { playlistItemMoved } from '../../redux/data'
 
 type PlaylistProps = {
   playlist: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType,
-  playlistItemMoved: (item: PlaylistItemType, newPosition:number) => {}
+  playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
 }
 
-interface TimelineListState {}
-
 export class PlaylistPresenter extends React.Component {
-
-  constructor(props: PlaylistProps) {
-    super(props)
-  }
+  props: PlaylistProps
 
   render () {
     if (!this.props.playlist || !this.props.playlist.length) {
@@ -27,7 +21,7 @@ export class PlaylistPresenter extends React.Component {
     }
     return (
       <div>
-        <AudioPlayer item={this.props.activeItem}/>
+        <AudioPlayer item={this.props.activeItem} />
         <ul>
           {this.props.playlist
             .filter(item => !item.attributes.finished)
@@ -60,7 +54,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
   return {
     playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {
       let newAfter = ownProps.playlist[newPosition - 1]

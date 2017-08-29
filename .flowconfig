@@ -8,3 +8,4 @@
 <PROJECT_ROOT>/flow-typed/
 
 [options]
+module.name_mapper='.*\(.scss\)' -> 'empty/object'

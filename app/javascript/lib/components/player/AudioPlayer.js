@@ -1,9 +1,9 @@
 // @flow
-import React from 'react';
-import { connect, dispatch } from 'react-redux'
+import React from 'react'
+import { connect } from 'react-redux'
 
-import AudioPlayerState from '../../models/AudioPlayerState';
-import type { PlaylistItemType } from '../../redux/types';
+import AudioPlayerState from '../../models/AudioPlayerState'
+import type { PlaylistItemType } from '../../redux/types'
 import PlayPauseButton from './PlayPauseButton'
 import MuteButton from './MuteButton'
 import TimeScrubber from './TimeScrubber'
@@ -44,21 +44,16 @@ type AudioPlayerProps = {
 }
 
 export class AudioPlayerPresenter extends React.Component {
-
   audio: HTMLAudioElement
   props: AudioPlayerProps
 
-  constructor(props: AudioPlayerProps) {
-    super(props)
-  }
-
-  componentDidMount() {
+  componentDidMount () {
     // by now, this.audio is an HTMLAudioElement ref
     // it gets set when the component renders...
     // see the audio element's `ref` attribute
 
     this.audio.src = this.props.item.attributes.audio_url
-    this.audio.oncanplay = this.props.audioCanPlay,
+    this.audio.oncanplay = this.props.audioCanPlay
     this.audio.onloadedmetadata = this.metaDataLoaded.bind(this)
     this.audio.onended = this.props.onEnded
 
@@ -68,29 +63,28 @@ export class AudioPlayerPresenter extends React.Component {
     // to here, where it can be overridden by a test class
   }
 
-  componentWillReceiveProps(newProps: AudioPlayerProps) {
-
+  componentWillReceiveProps (newProps: AudioPlayerProps) {
     this._setPlayPaused(newProps.audioPlayer.paused)
     this.audio.muted = newProps.audioPlayer.muted
     this.audio.volume = newProps.audioPlayer.volume
 
-    if(newProps.item.id !== this.props.item.id) {
+    if (newProps.item.id !== this.props.item.id) {
       this.audio.src = newProps.item.attributes.audio_url
-      if(this.audio.canPlay && !this.props.audioPlayer.paused) {
+      if (this.audio.canPlay && !this.props.audioPlayer.paused) {
         this.audio.play()
       }
     }
 
-    if(newProps.item.id !== newProps.audioPlayer.currentTrackId) {
+    if (newProps.item.id !== newProps.audioPlayer.currentTrackId) {
       this.props.changeTrack(newProps.item)
     }
 
-    if(newProps.audioPlayer.updateAudioElementTime) {
+    if (newProps.audioPlayer.updateAudioElementTime) {
       this.audio.currentTime = newProps.audioPlayer.currentTime
     }
   }
 
-  _setPlayPaused(paused: boolean) {
+  _setPlayPaused (paused: boolean) {
     if (paused !== this.audio.paused) {
       if (paused) {
         this.audio.pause()
@@ -100,29 +94,27 @@ export class AudioPlayerPresenter extends React.Component {
     }
   }
 
-  metaDataLoaded(a:any,b:any,c:any) {
+  metaDataLoaded (a: any, b: any, c: any) {
     this.audio.currentTime = this.props.item.attributes.playtime
     this.props.audioMetaDataLoaded(this.audio.duration)
   }
 
-  audioRefCallback(ref:any) {
+  audioRefCallback (ref: any) {
     if (!this.audio) {
       this.audio = ref
     }
   }
 
-  render() {
+  render () {
     return (
       <div>
         <h3>
-            { this.props.item
-              ? 'Now playing: ' + this.props.item.attributes.audio_title
-              : 'Loading ...' }
+          { this.props.item
+            ? 'Now playing: ' + this.props.item.attributes.audio_title
+            : 'Loading ...' }
         </h3>
 
-        <audio
-          ref={ (ref) => this.audio=ref }>
-        </audio>
+        <audio ref={(ref) => { this.audio = ref }} />
 
         <PlayPauseButton
           paused={this.props.audioPlayer.paused}
@@ -138,7 +130,7 @@ export class AudioPlayerPresenter extends React.Component {
 
         <h3>Time Control</h3>
         <TimeKeeper // this component is invisible
-          audio={ this.audio }
+          audio={this.audio}
           updatePlayTime={this.props.updatePlayTimeTimeKeeper}
         />
         <PlayTimeDisplay
@@ -162,7 +154,7 @@ export class AudioPlayerPresenter extends React.Component {
   }
 }
 
-export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProps) => {
+export const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps: AudioPlayerProps) => {
   return {
     audioCanPlay: () => {
       dispatch(audioCanPlay())
@@ -170,7 +162,7 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     audioMetaDataLoaded: (duration: number) => {
       dispatch(audioMetaDataLoaded(duration))
     },
-    play: () : void => {
+    play: (): void => {
       dispatch(playClick(ownProps.item.id))
     },
     pause: (): void => {
@@ -197,9 +189,9 @@ export const mapDispatchToProps = (dispatch: dispatch, ownProps: AudioPlayerProp
     onEnded: () => {
       dispatch(archivePlaylistItem(ownProps.item))
     },
-    changeTrack: ((item: PlaylistItemType) => {
+    changeTrack: (item: PlaylistItemType) => {
       dispatch(changeTrack(item))
-    })
+    }
   }
 }
 

@@ -1,54 +1,51 @@
 // @flow
 import React, { Component } from 'react'
-import { connect, dispatch } from 'react-redux'
-import { DragSource } from 'react-dnd'
+import { connect } from 'react-redux'
 
 import type { PlaylistItemType } from '../../redux/types'
 import { changeTrack, playClick } from '../../redux/audio-player'
 import { archivePlaylistItem, removePlaylistItem, movePlaylistItem } from '../../redux/playlist'
-import { playlistItemMoved } from '../../redux/data'
-import { configureDraggable, configureDroppable } from '../../drag-drop/playlist-item'
-
+import { configureDD } from '../../drag-drop/playlist-item'
 
 import './PlaylistItem.scss'
 
-type PlaylistItemProps = {
+export type PlaylistItemProps = {
   item: PlaylistItemType,
+  index: number,
   setTrackAsActive: (item: PlaylistItemType) => {},
   archiveTrack: (item: PlaylistItemType) => {},
   deleteTrack: (item: PlaylistItemType) => {},
   play: () => {},
   movePlaylistItem: () => {},
-  playlistItemMoved: () => {},
+  playlistItemMoved: (item: PlaylistItemType, newIndex: number) => {},
   connectDragSource(component: React.Element<*>): React.Element<*>,
   connectDropTarget(component: React.Element<*>): React.Element<*>,
   isDragging: boolean
 }
 
 export class PlaylistItemPresenter extends Component {
-
   props: PlaylistItemProps
   state: {
     showingMenu: boolean
   }
 
-  constructor(props: PlaylistItemProps) {
+  constructor (props: PlaylistItemProps) {
     super(props)
     this.state = {showingMenu: false}
   }
 
-  _showMenu() {
+  _showMenu () {
     this.setState({showingMenu: true})
   }
 
-  _hideMenu() {
+  _hideMenu () {
     this.setState({showingMenu: false})
   }
 
   _rightIconMenu () {
-    if(this.state.showingMenu) {
+    if (this.state.showingMenu) {
       return (
-        <ul className="menu">
+        <ul className='menu'>
           <li onClick={this.props.archiveTrack} >
             Mark as played
           </li>
@@ -59,21 +56,25 @@ export class PlaylistItemPresenter extends Component {
       )
     } else {
       return (
-        <p className="hamburger" onClick={this._showMenu.bind(this)}>hamburger</p>
+        <p
+          className='hamburger'
+          onClick={this._showMenu.bind(this)}>
+          hamburger
+        </p>
       )
     }
   }
 
-  render() {
+  render () {
     const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, isDragging } = this.props
-    const opacity = isDragging ? 0 : 1;
+    const opacity = isDragging ? 0 : 1
     return connectDropTarget(connectDragSource(
-      <li style={{display: 'block', opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
+      <li style={{display: 'block', foo: isDragging, opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
           onClick={() => setTrackAsActive(item)}
           onDoubleClick={play}
           style={{display: 'inline-block', width: '66%'}}
-          styleName="a"
+          styleName='a'
         >
           <h3>{item.attributes.audio_title}</h3>
           <p>{item.attributes.audio_description}</p>
@@ -81,17 +82,17 @@ export class PlaylistItemPresenter extends Component {
         <div
           onClick={this._showMenu.bind(this)}
           onMouseLeave={this._hideMenu.bind(this)}
-          className="right-menu"
-          styleName="b"
+          className='right-menu'
+          styleName='b'
           style={{display: 'inline-block', width: '33%', verticalAlign: 'top'}}>
-            {this._rightIconMenu()}
+          {this._rightIconMenu()}
         </div>
       </li>
     ))
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
   return {
     setTrackAsActive: () => {
       dispatch(changeTrack(ownProps.item))
@@ -110,7 +111,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
   }
 }
-const DroppablePlaylistItem = configureDroppable(PlaylistItemPresenter)
-const DraggableDroppablePlaylistItem = configureDraggable(DroppablePlaylistItem)
 
-export default connect(null, mapDispatchToProps)(DraggableDroppablePlaylistItem)
+const DDPlaylistItem = configureDD(PlaylistItemPresenter)
+const PlaylistItem = connect(null, mapDispatchToProps)(DDPlaylistItem)
+export default PlaylistItem
