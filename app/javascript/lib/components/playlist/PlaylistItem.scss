@@ -1,0 +1,14 @@
+$color-bg: #00aaff;
+
+.a {
+  background-color: $color-bg;
+}
+
+.b {
+  composes: a;
+  color: yellow;
+
+  @media (min-width: 800px) {
+    color: white;
+  }
+}
