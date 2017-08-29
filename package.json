@@ -76,7 +76,7 @@
     "webpack-strip-block": "^0.2.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --colors",
     "test:watch": "npm test -- --watch",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand",
     "dev": "concurrently --kill-others \"./ssl_thin.sh\" \"./bin/webpack-dev-server\""
@@ -84,7 +84,7 @@
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
     "testRegex": "(\\.(test|spec))\\.(js)$",
     "moduleFileExtensions": [
