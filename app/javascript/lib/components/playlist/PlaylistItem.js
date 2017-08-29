@@ -1,10 +1,14 @@
 // @flow
-import * as React from 'react'
+import React, { Component } from 'react'
 import { connect, dispatch } from 'react-redux'
+import { DragSource } from 'react-dnd'
 
 import type { PlaylistItemType } from '../../redux/types'
 import { changeTrack, playClick } from '../../redux/audio-player'
-import { archivePlaylistItem, removePlaylistItem } from '../../redux/playlist'
+import { archivePlaylistItem, removePlaylistItem, movePlaylistItem } from '../../redux/playlist'
+import { playlistItemMoved } from '../../redux/data'
+import { configureDraggable, configureDroppable } from '../../drag-drop/playlist-item'
+
 
 import './PlaylistItem.scss'
 
@@ -13,10 +17,15 @@ type PlaylistItemProps = {
   setTrackAsActive: (item: PlaylistItemType) => {},
   archiveTrack: (item: PlaylistItemType) => {},
   deleteTrack: (item: PlaylistItemType) => {},
-  play: () => {}
+  play: () => {},
+  movePlaylistItem: () => {},
+  playlistItemMoved: () => {},
+  connectDragSource(component: React.Element<*>): React.Element<*>,
+  connectDropTarget(component: React.Element<*>): React.Element<*>,
+  isDragging: boolean
 }
 
-export class PlaylistItemPresenter extends React.Component {
+export class PlaylistItemPresenter extends Component {
 
   props: PlaylistItemProps
   state: {
@@ -56,16 +65,18 @@ export class PlaylistItemPresenter extends React.Component {
   }
 
   render() {
-    return (
-      <li style={{display: 'block', backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
+    const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, isDragging } = this.props
+    const opacity = isDragging ? 0 : 1;
+    return connectDropTarget(connectDragSource(
+      <li style={{display: 'block', opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
-          onClick={() => this.props.setTrackAsActive(this.props.item)}
-          onDoubleClick={this.props.play}
+          onClick={() => setTrackAsActive(item)}
+          onDoubleClick={play}
           style={{display: 'inline-block', width: '66%'}}
           styleName="a"
         >
-          <h3>{this.props.item.attributes.audio_title}</h3>
-          <p>{this.props.item.attributes.audio_description}</p>
+          <h3>{item.attributes.audio_title}</h3>
+          <p>{item.attributes.audio_description}</p>
         </div>
         <div
           onClick={this._showMenu.bind(this)}
@@ -76,7 +87,7 @@ export class PlaylistItemPresenter extends React.Component {
             {this._rightIconMenu()}
         </div>
       </li>
-    )
+    ))
   }
 }
 
@@ -92,9 +103,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(removePlaylistItem(ownProps.item.id))
     },
     play: () => {
-      dispatch(playClick())
+      dispatch(playClick(ownProps.item.id))
+    },
+    movePlaylistItem: (from, to) => {
+      dispatch(movePlaylistItem(from, to))
+    },
+    playlistItemMoved: (from, to) => {
+      dispatch(playlistItemMoved(from, to))
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(PlaylistItemPresenter)
+const DraggableDroppablePlaylistItem = configureDroppable(configureDraggable(PlaylistItemPresenter))
+
+export default connect(null, mapDispatchToProps)(DraggableDroppablePlaylistItem)
