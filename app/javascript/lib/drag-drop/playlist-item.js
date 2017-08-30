@@ -14,7 +14,7 @@ const playlistItemSource = {
     }
   },
 
-  endDrag (props: PlaylistItemProps, monitor, component) {
+  endDrag (props, monitor, component) {
     props.playlistItemMoved(props.item, props.index)
   }
 }
@@ -50,14 +50,8 @@ const playlistItemTarget = {
       return
     }
 
-    const componentDOMNode = findDOMNode(component)
-
-    if (!(componentDOMNode)) {
-      return
-    }
-
     // Determine rectangle on screen
-    const hoverBoundingRect = componentDOMNode.getBoundingClientRect()
+    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
 
     // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
