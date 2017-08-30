@@ -1,4 +1,6 @@
-$color-bg: #00aaff;
+@import '../../styles/helpers';
+
+$color-bg: $color-red;
 
 .a {
   background-color: $color-bg;

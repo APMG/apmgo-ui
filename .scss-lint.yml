@@ -1,0 +1,48 @@
+# SCSS-Lint configuration file.
+# For default values see https://github.com/brigade/scss-lint/blob/master/config/default.yml
+# For explanation of various linters see https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md
+# Run scss-lint from this directory to use this config.
+
+# Directories/files to lint
+scss_files: 'app/**/*.scss'
+
+# Exclusions
+exclude: 'app/assets/stylesheets/vendor/*'
+
+# Extend linter configuration
+linters:
+  ChainedClasses:
+    enabled: true
+
+  ColorVariable:
+    enabled: false
+
+  Comment:
+    enabled: false
+
+  ExtendDirective:
+    enabled: true
+
+  HexLength:
+    style: long
+
+  PropertySortOrder:
+    enabled: false
+
+  PropertySpelling:
+    extra_properties:
+      - composes
+
+  PropertyUnits:
+    properties:
+      line-height: [] # No units allowed
+
+  PseudoElement:
+    enabled: false
+
+  # TODO: Choose selector format and configure linter
+  SelectorFormat:
+    enabled: false
+
+  SpaceBeforeBrace:
+    allow_single_line_padding: true

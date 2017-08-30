@@ -1,0 +1,20 @@
+// ------------------------------------------------
+// global.js -- Contains base styles used globally.
+// *** Import only once in the app.
+// ------------------------------------------------
+
+:global {
+
+  @import 'helpers';
+
+  // Vendor
+  // Imported libraries, etc.
+  @import 'vendor/normalize';
+
+  // Base
+  // General-usage css, such as element fonts, styles, resets
+  @import 'base/fonts';
+  @import 'base/elements';
+  @import 'base/util';
+
+}

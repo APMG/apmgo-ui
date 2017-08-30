@@ -1,0 +1,12 @@
+// ------------------------------------------------
+// helpers.js -- Contains base styles used globally.
+// Sass variables, functions, mixins, etc. for use in other files.
+// NO output css should be used in these files.
+//
+// *** Intended for import in every scss file
+// ------------------------------------------------
+
+@import 'helpers/vars';
+@import 'helpers/vars_z_index';
+@import 'helpers/vars_layout';
+@import 'helpers/mixins';

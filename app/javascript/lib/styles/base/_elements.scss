@@ -1,0 +1,111 @@
+/*doc
+---
+title: Elements
+name: elements
+category: Elements
+---
+
+This is some text explaining things for example one.
+
+```html_example
+<div class='alert'>Example One</div>
+```
+
+This is some text explaining things for example two.
+
+```html_example
+<div class='alert'>Example Two</div>
+```
+*/
+
+html {
+  box-sizing: border-box;
+  font-size: $font-size-root;
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  // Use border-box unless its parent is modified
+  // More reading: http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+  box-sizing: inherit;
+}
+
+// scss-lint:disable VendorPrefix
+::-moz-selection { background: $color-selection; }
+::selection { background: $color-selection; }
+
+body {
+  // Flexbox and min-height for sticky footer
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  font-family: $font-family-default;
+  font-size: $font-size-default;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  color: $color-default;
+  background: $color-bg;
+}
+
+// Unstyle lists generally; lists are restyled in landmarks/content.scss
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  margin: 0;
+}
+
+p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+q {
+  &:before,
+  &:after {
+    content: ''; // Removes automatic quotation marks
+  }
+}
+
+blockquote {
+  &:before,
+  &:after {
+    content: ''; // Removes automatic quotation marks
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+iframe {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -16,6 +16,8 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../lib/redux/root-saga'
 
+import '../lib/styles/global.scss'
+
 // Improved tap events
 // http://stackoverflow.com/a/34015469/988941
 import injectTapEventPlugin from 'react-tap-event-plugin'

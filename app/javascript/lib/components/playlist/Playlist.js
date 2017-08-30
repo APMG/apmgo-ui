@@ -6,6 +6,8 @@ import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import { playlistItemMoved } from '../../redux/data'
 
+import './Playlist.scss'
+
 type PlaylistProps = {
   playlist: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType,
@@ -22,7 +24,7 @@ export class PlaylistPresenter extends React.Component {
     return (
       <div>
         <AudioPlayer item={this.props.activeItem} />
-        <ul>
+        <ul styleName="c">
           {this.props.playlist
             .filter(item => !item.attributes.finished)
             .map((item, i) =>
