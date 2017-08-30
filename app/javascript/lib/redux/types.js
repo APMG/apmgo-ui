@@ -21,7 +21,3 @@ export interface PlaylistItemAttributes {
   source: string,
   status: string
 }
-
-export const DraggableItemTypes = {
-  PLAYLIST_ITEM: 'playlistItem'
-}
