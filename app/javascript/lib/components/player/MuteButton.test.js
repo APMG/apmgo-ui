@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { getSnapshotJson, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson, getWrappedComponent } from '../../__tests__/testHelpers'
 import { muteClick, unmuteClick } from '../../redux/audio-player'
 
 import MuteButton from './MuteButton'

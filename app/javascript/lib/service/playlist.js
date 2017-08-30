@@ -25,17 +25,29 @@ export function deletePlaylistItem(item_id) {
     .catch(handleError)
 }
 
-export async function apiArchivePlaylistItem(item: {}) : Promise<boolean> {
-  item.attributes.status = "played"
-  item.attributes.finished = (new Date().toString())
+// export async function apiArchivePlaylistItem(item: {}) : Promise<boolean> {
+//   item.attributes.status = "played"
+//   item.attributes.finished = (new Date().toString())
+//
+//   let responseCode = await updatePlaylistItem(item)
+//   if (responseCode === 204) {
+//     return item
+//   }
+//   throw Error('Could not archive item')
+// }
+
+export async function apiMovePlaylistItem(item: PlaylistItemType, toAfter: number) : Promise<boolean> {
+  item.attributes.after = toAfter
   let responseCode = await updatePlaylistItem(item)
-    if (responseCode === 204) {
-      return item
-    }
-    throw Error("Could not update item")
+
+  if (responseCode === 204) {
+    return item
+  }
+  throw Error('Could not move item')
+
 }
 
-function updatePlaylistItem(item: PlaylistItemType) {
+export function updatePlaylistItem(item: PlaylistItemType) {
   let instance = BragiApiClient.getInstance()
 
   return instance.put(`/items/${item.id}`, {data: item})

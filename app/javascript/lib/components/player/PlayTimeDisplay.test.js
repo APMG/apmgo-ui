@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { getSnapshotJson } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson } from '../../__tests__/testHelpers'
 import PlayTimeDisplay from './PlayTimeDisplay'
 
 describe('Play Time Display Component', () => {

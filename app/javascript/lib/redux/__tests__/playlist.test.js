@@ -16,29 +16,11 @@ import {
   playlistItemArchived
 } from '../data'
 
-import { fetchPlaylistItems, deletePlaylistItem, apiArchivePlaylistItem } from '../../service/playlist'
+import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../../service/playlist'
 import { put, call, takeLatest } from "redux-saga/effects"
 import * as moxios from 'moxios'
 import configureMockStore from 'redux-mock-store'
-
-const PLAYLIST_ITEM_MOCK = {
-  attributes: {
-    after: "todo",
-    "audio_description": "My boss told me to make a long description, so I did.",
-    "audio_hosts": "John Doe",
-    "audio_identifier": "2016/01/01/smart-audio",
-    "audio_program": "Spending Money",
-    "audio_title": "Smart Audio",
-    "audio_url": "https://ondemand.npr.org/anon.npr-mp3/npr/atc/2017/04/20170417_atc_schools_will_soon_have_to_put_in_writing_if_they_lunch_shame.mp3?orgId=227&topicId=1013&d=217&p=2&story=524234563&t=progseg&e=524383015&seg=14&ft=nprml&f=524234563",
-    "finished": null,
-    "origin_url": "https://example.com/smart-audio",
-    "playtime": 123456,
-    "source": "example",
-    "status": "unplayed"
-  },
-  id: 1,
-  type: "bragi-items"
-}
+import { PLAYLIST_ITEM_MOCK } from './mock-playlist-item'
 
 describe('Playlist API suite', () => {
 
@@ -81,22 +63,14 @@ describe('Playlist API suite', () => {
 
   it('Archives a playlist item', async () => {
     expect.assertions(1)
-    let returnStatus = 204,
-      postArchiveItem = {
-        ...PLAYLIST_ITEM_MOCK,
-        attributes: {
-          ...PLAYLIST_ITEM_MOCK.attributes,
-          status: "played",
-          finished: new Date().toString()
-        }
-      }
+    let returnStatus = 204
 
     moxios.stubOnce('PUT', /.*\/items\/\d+/, {
       status: returnStatus
     })
 
-    let result = await apiArchivePlaylistItem(PLAYLIST_ITEM_MOCK)
-    expect(result).toEqual(postArchiveItem)
+    let result = await updatePlaylistItem(PLAYLIST_ITEM_MOCK)
+    expect(result).toEqual(returnStatus)
   })
 })
 
@@ -191,14 +165,14 @@ describe('archive playlist item saga', () => {
     let
       nextVal = saga.next().value,
       expectedAction = archivingPlaylistItem(preArchiveItem)
-
+      expectedAction.receivedAt = expect.any(Number)
     expect(nextVal).toEqual(put(expectedAction))
   })
 
   it('archives item', function() {
     let
       nextVal = saga.next().value,
-      expected = call(apiArchivePlaylistItem, preArchiveItem)
+      expected = call(updatePlaylistItem, preArchiveItem)
 
     expect(nextVal).toEqual(expected)
   })
@@ -207,6 +181,7 @@ describe('archive playlist item saga', () => {
     let
       nextVal = saga.next(postArchiveItem).value,
       expectedAction = playlistItemArchived(postArchiveItem)
+      expectedAction.receivedAt = expect.any(Number)
 
     expect(nextVal).toEqual(put(expectedAction))
   })

@@ -4,33 +4,35 @@ import { connect } from 'react-redux'
 import PlaylistItem from './PlaylistItem'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
-import Async from 'react-code-splitting'
-import { changeTrack } from '../../redux/audio-player'
+import { playlistItemMoved } from '../../redux/data'
 
 type PlaylistProps = {
-  data: Array<PlaylistItemType>,
-  activeItem?: PlaylistItemType
+  playlist: Array<PlaylistItemType>,
+  activeItem?: PlaylistItemType,
+  playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
 }
 
-interface TimelineListState {}
-
 export class PlaylistPresenter extends React.Component {
-
-  constructor(props: PlaylistProps) {
-    super(props)
-  }
+  props: PlaylistProps
 
   render () {
-    if (!this.props.data || !this.props.data.length) {
+    if (!this.props.playlist || !this.props.playlist.length) {
       return <h1>Loading ...</h1>
     }
     return (
       <div>
-        <AudioPlayer item={this.props.activeItem}/>
+        <AudioPlayer item={this.props.activeItem} />
         <ul>
-          {this.props.data
+          {this.props.playlist
             .filter(item => !item.attributes.finished)
-            .map((item, i) => <PlaylistItem item={item} key={i} />)
+            .map((item, i) =>
+              <PlaylistItem
+                playlistItemMoved={this.props.playlistItemMoved}
+                item={item}
+                index={i}
+                key={item.id}
+              />
+            )
           }
         </ul>
       </div>
@@ -38,31 +40,35 @@ export class PlaylistPresenter extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  let activeItem = state.playlist.find(item => item.id === state.audioPlayer.currentTrackId)
+const mapStateToProps = (state, ownProps) => {
+  let activeItem = ownProps.playlist.find(item => item.id === state.audioPlayer.currentTrackId)
 
   if (!activeItem) {
-    activeItem = state.playlist.find((item: PlaylistItemType) => {
+    activeItem = ownProps.playlist.find((item: PlaylistItemType) => {
       return !item.attributes.finished
     })
   }
 
   return {
-    data: state.playlist,
     activeItem: Object.assign({}, activeItem)
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
   return {
-    playTrack: (item) => {
-      dispatch(changeTrack(item))
+    playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {
+      let newAfter = ownProps.playlist[newPosition - 1]
+
+      newAfter = newAfter ? newAfter.id : null
+
+      dispatch(playlistItemMoved(item, newAfter))
     }
   }
 }
 
 const PlaylistContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(PlaylistPresenter)
 
 export default PlaylistContainer

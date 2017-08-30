@@ -1,15 +1,12 @@
 // @flow
 import React from 'react'
-import { connect, dispatch } from 'react-redux'
-import { volumeChange } from '../../redux/audio-player'
 
 type VolumeSliderProps = {
   volume: number,
   updateVolume: (volume: number) => {}
 }
 
-export default function(props: VolumeSliderProps) {
-
+export default function (props: VolumeSliderProps) {
   const updateVolume = (event: any) => {
     props.updateVolume(event.target.value)
   }
@@ -22,7 +19,7 @@ export default function(props: VolumeSliderProps) {
       onChange={updateVolume}
       min={0}
       max={1}
-      step={.01}
+      step={0.01}
     />
   )
 }

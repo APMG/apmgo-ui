@@ -25,7 +25,7 @@ export default class AudioPlayerState {
   isDragging: boolean
   playWhenCan: boolean
 
-  constructor(params: AudioPlayerStateParams) {
+  constructor (params: AudioPlayerStateParams) {
     this.currentTrackId = params.currentTrackId
     this.paused = !!params.paused
     this.muted = !!params.muted
@@ -43,13 +43,13 @@ export default class AudioPlayerState {
     }
   }
 
-  setCurrentTrackId(track: number) {
+  setCurrentTrackId (track: number) {
     return this._make({
       currentTrackId: track
-     })
+    })
   }
 
-  setTime(time: number) {
+  setTime (time: number) {
     return this._make({currentTime: time})
   }
 
@@ -57,15 +57,15 @@ export default class AudioPlayerState {
   // this method must be called last
   // or it will be overwritten
   // because its value is not preserved in _make({})
-  instanceUpdatesAudioElementTime() {
+  instanceUpdatesAudioElementTime () {
     return this._make({updateAudioElementTime: true})
   }
 
-  setCanPlay(canPlay: boolean) {
+  setCanPlay (canPlay: boolean) {
     return this._make({canPlay: canPlay})
   }
 
-  play(currentTrackId?: number) {
+  play (currentTrackId?: number) {
     currentTrackId = currentTrackId || this.currentTrackId
 
     return this._make({
@@ -74,31 +74,31 @@ export default class AudioPlayerState {
     })
   }
 
-  pause() {
+  pause () {
     return this._make({paused: true})
   }
 
-  mute() {
+  mute () {
     return this._make({muted: true})
   }
 
-  unmute() {
+  unmute () {
     return this._make({muted: false})
   }
 
-  setVolume(volume: number) {
+  setVolume (volume: number) {
     return this._make({volume: volume})
   }
 
-  setDuration(duration: number) {
+  setDuration (duration: number) {
     return this._make({duration: duration})
   }
 
-  setPlayWhenCan(playWhenCan: boolean) {
+  setPlayWhenCan (playWhenCan: boolean) {
     return this._make({playWhenCan: playWhenCan})
   }
 
-  _make(params: {}) : AudioPlayerState {
+  _make (params: {}): AudioPlayerState {
     let newParams = {
       currentTrackId: this.currentTrackId,
       paused: this.paused,

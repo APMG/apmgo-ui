@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { getSnapshotJson } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson } from '../../__tests__/testHelpers'
 import TimeScrubber from './TimeScrubber'
 
 describe('Time Scrubber Component', () => {

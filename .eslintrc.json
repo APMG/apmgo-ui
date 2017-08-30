@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "flowtype"
+  ],
+  "extends": ["standard", "standard-react", "plugin:flowtype/recommended"],
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "react/jsx-no-bind": 0,
+    "react/no-unused-prop-types": 0
+  }
+}

@@ -1,7 +1,6 @@
 import React from 'react'
-import connect from 'react-redux'
 import { mount, shallow } from 'enzyme'
-import AudioPlayer, { AudioPlayerPresenter, mapStateToProps, mapDispatchToProps } from './AudioPlayer'
+import { AudioPlayerPresenter, mapStateToProps, mapDispatchToProps } from './AudioPlayer'
 import {
   audioCanPlay as audioCanPlayAction,
   audioMetaDataLoaded as audioMetaDataLoadedAction,
@@ -13,53 +12,49 @@ import {
   timeScrubberChange as timeScrubberChangeAction,
   volumeChange
 } from '../../redux/audio-player'
-import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
-import MockableAudio from '../../redux/__tests__/mock-audio'
+import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../__tests__/testHelpers'
 import AudioPlayerState from '../../models/AudioPlayerState'
 
-let audioMockRef,
-    getAudioMockRef = () => audioMockRef
+let audioMockRef
+let getAudioMockRef = () => audioMockRef
 
 class TestAudioPlayerPresenter extends AudioPlayerPresenter {
-
-  componentDidMount() {
+  componentDidMount () {
     this.audio = getAudioMockRef()
     super.componentDidMount()
   }
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps (newProps) {
     this.audio = getAudioMockRef()
     super.componentWillReceiveProps(newProps)
   }
 }
 
 describe('AudioPlayer Component Test', () => {
-
   describe('Presenter', () => {
+    let testProps
 
-      let testProps
-
-      beforeEach(() => {
-        audioMockRef = {
-          play: jest.fn(() => audioMockRef.paused = false),
-          pause: jest.fn(() => audioMockRef.paused = true)
-        },
-        testProps = {
-          item: itemFixtures[0],
-          audioCanPlay: jest.fn(),
-          audioMetaDataLoaded: jest.fn(),
-          onEnded: jest.fn(),
-          changeTrack: jest.fn(),
-          audioRefSet: jest.fn((ref, context) => context.audio = ref ),
-          audioPlayer: {volume: 1}
-        }
-      })
+    beforeEach(() => {
+      audioMockRef = {
+        play: jest.fn(() => { audioMockRef.paused = false }),
+        pause: jest.fn(() => { audioMockRef.paused = true })
+      }
+      testProps = {
+        item: itemFixtures[0],
+        audioCanPlay: jest.fn(),
+        audioMetaDataLoaded: jest.fn(),
+        onEnded: jest.fn(),
+        changeTrack: jest.fn(),
+        audioRefSet: jest.fn((ref, context) => { context.audio = ref }),
+        audioPlayer: {volume: 1}
+      }
+    })
     it('Renders', () => {
       let tree = getSnapshotJson(<TestAudioPlayerPresenter {...testProps} />)
       expect(tree).toMatchSnapshot()
     })
 
     it('Passes Functions To Audio Property', () => {
-      let wrapper = mount(getWrappedComponent(<TestAudioPlayerPresenter { ...testProps} />, getMockStore()))
+      let wrapper = mount(getWrappedComponent(<TestAudioPlayerPresenter {...testProps} />, getMockStore()))
 
       wrapper.render()
 
@@ -76,14 +71,14 @@ describe('AudioPlayer Component Test', () => {
     })
 
     it('Updates Audio Element With New Props', () => {
-      let wrapper = shallow(<TestAudioPlayerPresenter { ...testProps} />)
+      let wrapper = shallow(<TestAudioPlayerPresenter {...testProps} />)
 
       let newProps = {
         ...testProps,
         audioPlayer: {
           muted: true,
           paused: false,
-          volume: .5,
+          volume: 0.5
         }
       }
 
@@ -98,7 +93,7 @@ describe('AudioPlayer Component Test', () => {
         audioPlayer: {
           paused: true,
           muted: false,
-          volume: .75
+          volume: 0.75
         }
       }
 
@@ -135,11 +130,10 @@ describe('AudioPlayer Component Test', () => {
   })
 
   describe('Redux Connection', () => {
-
     describe('Sets State', () => {
-      let newPlayer = new AudioPlayerState(itemFixtures[0].id),
-          newState = { audioPlayer: newPlayer },
-          result = mapStateToProps(newState)
+      let newPlayer = new AudioPlayerState(itemFixtures[0].id)
+      let newState = { audioPlayer: newPlayer }
+      let result = mapStateToProps(newState)
 
       expect(result.audioPlayer).toBe(newPlayer)
     })
@@ -168,10 +162,9 @@ describe('AudioPlayer Component Test', () => {
         expect(dispatchSpy.mock.calls[0][0]).toEqual(audioMetaDataLoadedAction())
       })
 
-
       it('`playClick`', () => {
-        let item = itemFixtures[0],
-            { play } = mapDispatchToProps(dispatchSpy, {item: item})
+        let item = itemFixtures[0]
+        let { play } = mapDispatchToProps(dispatchSpy, {item: item})
 
         play()
 
@@ -180,8 +173,8 @@ describe('AudioPlayer Component Test', () => {
       })
 
       it('`pauseClick`', () => {
-        let item = itemFixtures[0],
-            { pause } = mapDispatchToProps(dispatchSpy, {item: item})
+        let item = itemFixtures[0]
+        let { pause } = mapDispatchToProps(dispatchSpy, {item: item})
 
         pause()
 
@@ -208,9 +201,9 @@ describe('AudioPlayer Component Test', () => {
       })
 
       it('`updatePlayTimeTimeKeeper`', () => {
-        let item = itemFixtures[0],
-            { updatePlayTimeTimeKeeper } = mapDispatchToProps(dispatchSpy, {item: item}),
-            newTime = 100
+        let item = itemFixtures[0]
+        let { updatePlayTimeTimeKeeper } = mapDispatchToProps(dispatchSpy, {item: item})
+        let newTime = 100
 
         updatePlayTimeTimeKeeper(newTime)
 
@@ -219,8 +212,8 @@ describe('AudioPlayer Component Test', () => {
       })
 
       it('`updatePlayTimeTimeScrubber`', () => {
-        let { updatePlayTimeTimeScrubber } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]}),
-            newTime = 100
+        let { updatePlayTimeTimeScrubber } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]})
+        let newTime = 100
 
         updatePlayTimeTimeScrubber(newTime)
 
@@ -229,8 +222,8 @@ describe('AudioPlayer Component Test', () => {
       })
 
       it('`timeScrubberChange`', () => {
-        let { timeScrubberChange } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]}),
-            newTime = 100
+        let { timeScrubberChange } = mapDispatchToProps(dispatchSpy, {item: itemFixtures[0]})
+        let newTime = 100
 
         timeScrubberChange(newTime)
 
@@ -239,8 +232,8 @@ describe('AudioPlayer Component Test', () => {
       })
 
       it('`updateVolume`', () => {
-        let { updateVolume } = mapDispatchToProps(dispatchSpy),
-            newVol = .5
+        let { updateVolume } = mapDispatchToProps(dispatchSpy)
+        let newVol = 0.5
 
         updateVolume(newVol)
 
@@ -248,6 +241,5 @@ describe('AudioPlayer Component Test', () => {
         expect(dispatchSpy.mock.calls[0][0]).toEqual(volumeChange(newVol))
       })
     })
-
   })
 })
