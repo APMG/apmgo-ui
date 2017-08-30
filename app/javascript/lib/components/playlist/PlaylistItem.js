@@ -69,7 +69,7 @@ export class PlaylistItemPresenter extends Component {
     const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, isDragging } = this.props
     const opacity = isDragging ? 0 : 1
     return connectDropTarget(connectDragSource(
-      <li style={{display: 'block', foo: isDragging, opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
+      <li style={{display: 'block', opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
           onClick={() => setTrackAsActive(item)}
           onDoubleClick={play}

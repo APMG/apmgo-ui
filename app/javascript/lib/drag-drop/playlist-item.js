@@ -102,5 +102,5 @@ export function configureDroppable (playlistItem: any) {
 }
 
 export function configureDD (item: any) {
-  return configureDraggable(configureDroppable(configureDraggable(item)))
+  return configureDraggable(configureDroppable(item))
 }
