@@ -12,7 +12,7 @@ import {
   timeScrubberChange as timeScrubberChangeAction,
   volumeChange
 } from '../../redux/audio-player'
-import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson, itemFixtures, getMockStore, getWrappedComponent } from '../../__tests__/testHelpers'
 import AudioPlayerState from '../../models/AudioPlayerState'
 
 let audioMockRef

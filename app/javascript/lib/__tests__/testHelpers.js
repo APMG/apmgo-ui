@@ -1,10 +1,10 @@
 // @flow
+
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 import configureStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { getInitialState } from '../../__tests__/testHelpers'
-import AudioPlayerState from '../../models/AudioPlayerState'
+import AudioPlayerState from '../models/AudioPlayerState'
 
 export const itemFixtures = [
   {
@@ -61,4 +61,8 @@ export function getMockStore (customTestState?: any = {}) {
   let store = mockStore(initialState)
 
   return store
+}
+
+export function getInitialState (customTestState?: any = {}) {
+  return Object.assign({}, defaultTestState, customTestState)
 }

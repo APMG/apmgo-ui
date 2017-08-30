@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { mount } from 'enzyme'
-import { getSnapshotJson, getWrappedComponent, itemFixtures } from '../../redux/__tests__/mock-initial-state'
+import { getSnapshotJson, getWrappedComponent, itemFixtures } from '../../__tests__/testHelpers'
 import { playClick, pauseClick } from '../../redux/audio-player'
 
 import PlayPauseButton from './PlayPauseButton'
