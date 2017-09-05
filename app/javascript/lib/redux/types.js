@@ -1,7 +1,7 @@
 // @flow
 
 export interface PlaylistItemAttributes {
-  after: string,
+  after: number,
   audio_description: string,
   audio_hosts: string,
   audio_identifier: string,

@@ -1,22 +1,24 @@
-let apm_account
+let apmAccount
 
-function makeAccount() {
+function makeAccount () {
   /* develblock:start */
+  /* global __TESTING__ */
+  /* global ApmAccount */
   if (typeof __TESTING__ !== 'undefined' && __TESTING__) {
     return {
-      get_token() {
+      get_token () {
         return 'test_token'
       }
     }
   }
   /* develblock:end */
-  let apm_account = new ApmAccount('/apm_accounts')
-  if(!apm_account.is_logged_in()) {
-    window.location.href = apm_account.log_in_path()
+  let apmAccount = new ApmAccount('/apm_accounts')
+  if (!apmAccount.is_logged_in()) {
+    window.location.href = apmAccount.log_in_path()
   }
-  return apm_account
+  return apmAccount
 }
 
-apm_account = makeAccount()
+apmAccount = makeAccount()
 
-export default apm_account
+export default apmAccount

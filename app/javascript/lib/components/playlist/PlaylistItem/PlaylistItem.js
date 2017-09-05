@@ -2,10 +2,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import type { PlaylistItemType } from '../../redux/types'
-import { changeTrack, playClick } from '../../redux/audio-player'
-import { archivePlaylistItem, removePlaylistItem, movePlaylistItem } from '../../redux/playlist'
-import { configureDD } from '../../drag-drop/playlist-item'
+import type { PlaylistItemType } from '../../../redux/types'
+import { changeTrack, playClick } from '../../../redux/audio-player'
+import { archivePlaylistItem, removePlaylistItem, movePlaylistItem } from '../../../redux/playlist'
+import { configureDD } from './DNDPlaylistItem'
+import PlaylistItemDragPreview from './PlaylistItemDragPreview'
 
 import './PlaylistItem.scss'
 
@@ -20,13 +21,34 @@ export type PlaylistItemProps = {
   playlistItemMoved: (item: PlaylistItemType, newIndex: number) => {},
   connectDragSource(component: React.Element<*>): React.Element<*>,
   connectDropTarget(component: React.Element<*>): React.Element<*>,
+  connectDragPreview(component: React.Element<*>): React.Element<*>,
   isDragging: boolean
+}
+
+function removeLastWord (text: string) {
+  let lastSpace = text.lastIndexOf(' ')
+  return text.substr(0, lastSpace).trim()
+}
+
+function truncateText (text: string, maxLength: number = 200) {
+  if (text.length < maxLength) {
+    return text
+  }
+  text = removeLastWord(text.substr(0, maxLength)) + '...'
+
+  return text.length <= maxLength
+    ? text
+    : removeLastWord(text) + '...'
 }
 
 export class PlaylistItemPresenter extends Component {
   props: PlaylistItemProps
   state: {
     showingMenu: boolean
+  }
+
+  componentDidMount (props: PlaylistItemProps) {
+    this.props.connectDragPreview(PlaylistItemDragPreview)
   }
 
   constructor (props: PlaylistItemProps) {
@@ -66,9 +88,9 @@ export class PlaylistItemPresenter extends Component {
   }
 
   render () {
-    const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, isDragging } = this.props
+    const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, connectDragPreview, isDragging } = this.props
     const opacity = isDragging ? 0 : 1
-    return connectDropTarget(connectDragSource(
+    return connectDragPreview(connectDropTarget(connectDragSource(
       <li style={{display: 'block', opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
           onClick={() => setTrackAsActive(item)}
@@ -77,7 +99,7 @@ export class PlaylistItemPresenter extends Component {
           styleName='a'
         >
           <h3>{item.attributes.audio_title}</h3>
-          <p>{item.attributes.audio_description}</p>
+          <p>{truncateText(item.attributes.audio_description)}</p>
         </div>
         <div
           onClick={this._showMenu.bind(this)}
@@ -88,7 +110,7 @@ export class PlaylistItemPresenter extends Component {
           {this._rightIconMenu()}
         </div>
       </li>
-    ))
+    )))
   }
 }
 
@@ -113,5 +135,6 @@ const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
 }
 
 const DDPlaylistItem = configureDD(PlaylistItemPresenter)
-const PlaylistItem = connect(null, mapDispatchToProps)(DDPlaylistItem)
-export default PlaylistItem
+const ReduxPlaylistItem = connect(null, mapDispatchToProps)(DDPlaylistItem)
+
+export default ReduxPlaylistItem
