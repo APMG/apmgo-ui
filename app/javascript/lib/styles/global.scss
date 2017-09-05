@@ -17,4 +17,10 @@
   @import 'base/elements';
   @import 'base/util';
 
+  // Modules
+  // Global classes
+  // * Ideally this wouldn't be how we do it but webpack is blowing up
+  //   when trying to use scss files in a `composes` css-modules statement
+  // * Keep in alphabetical order
+  @import 'modules/hdg';
 }

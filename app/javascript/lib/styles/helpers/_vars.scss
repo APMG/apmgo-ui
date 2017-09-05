@@ -14,12 +14,11 @@ $media-desktop: 64em;
 $media-wide: 75em;
 
 // Font Families
-$font-family-sans: 'Roboto Condensed', sans-serif;
-$font-family-serif: 'Libre Baskerville', Georgia, serif;
+$font-family-sans: 'Montserrat', 'Gotham', 'Proxima Nova', sans-serif;
+$font-family-condensed: 'HelveticaNeue-CondensedBold', 'Arial Narrow', 'Roboto Condensed', sans-serif;
 
 $font-family-main: $font-family-sans;
-$font-family-heading: $font-family-sans;
-$font-family-copy: $font-family-serif;
+$font-family-heading: $font-family-condensed;
 
 $font-family-default: $font-family-main;
 
@@ -28,11 +27,12 @@ $font-size-root: 62.5%; // Root size, only for html tag. // 62.5% means that 1re
 $font-size-default: 1.6rem;
 
 // Default Transition Speed
+$transition-short: .1s;
 $transition: .175s;
+$transition-long: .25s;
 
 // Colors
 $color-red: #d12421;
-$color-yellow: #eaaa00;
 
 $color-white: #ffffff;
 $color-black: #000000;
@@ -65,7 +65,6 @@ $color-text-light: $color-grey-darker;
 $color-header-bg: $color-white;
 $color-link: $color-red;
 $color-link-hover: darken($color-red, 20%);
-$color-selection: lighten($color-yellow, 20%);
 $color-screen: rgba($color-black, .7);
 
 $color-shadow: $color-grey-light;

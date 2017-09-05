@@ -33,7 +33,7 @@ export class PlaylistPresenter extends React.Component {
       return <h1>Loading ...</h1>
     }
     return (
-      <div>
+      <main role="main">
         <AudioPlayer item={this.props.activeItem} />
         <VerticalScrollingList>
           {this.props.playlist
@@ -50,7 +50,7 @@ export class PlaylistPresenter extends React.Component {
           }
           <Preview generator={generatePreview} />
         </VerticalScrollingList>
-      </div>
+      </main>
     )
   }
 }

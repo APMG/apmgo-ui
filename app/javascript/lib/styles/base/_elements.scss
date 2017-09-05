@@ -1,22 +1,6 @@
-/*doc
----
-title: Elements
-name: elements
-category: Elements
----
-
-This is some text explaining things for example one.
-
-```html_example
-<div class='alert'>Example One</div>
-```
-
-This is some text explaining things for example two.
-
-```html_example
-<div class='alert'>Example Two</div>
-```
-*/
+// --------------------------------------------
+// HTML Elements
+// --------------------------------------------
 
 html {
   box-sizing: border-box;
@@ -32,14 +16,7 @@ html {
   box-sizing: inherit;
 }
 
-// scss-lint:disable VendorPrefix
-::-moz-selection { background: $color-selection; }
-::selection { background: $color-selection; }
-
 body {
-  // Flexbox and min-height for sticky footer
-  display: flex;
-  flex-direction: column;
   min-height: 100%;
   font-family: $font-family-default;
   font-size: $font-size-default;

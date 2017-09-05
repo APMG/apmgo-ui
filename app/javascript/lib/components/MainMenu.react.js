@@ -12,15 +12,9 @@ let mainMenuDefaultProps = {
 }
 
 class MainMenu extends React.Component {
-  styles = {
-    width: '100%',
-    fontFamily: 'Roboto, sans-serif'
-  }
-
   state: {
     menuIsOpen: boolean
   }
-
 
   constructor (props: MainMenuProps = mainMenuDefaultProps) {
     super(props)
@@ -29,41 +23,40 @@ class MainMenu extends React.Component {
     }
   }
 
-  _openMenu() {
+  _openMenu () {
     this.setState({menuIsOpen: true})
   }
 
-  _closeMenu() {
+  _closeMenu () {
     this.setState({menuIsOpen: false})
   }
 
-  _rightMenu() {
-    let spanStyle = {display: 'block'}
-    if(this.state.menuIsOpen) {
+  _rightMenu () {
+    if (this.state.menuIsOpen) {
       return (
-        <div onMouseLeave={this._closeMenu.bind(this)} >
+        <nav role='navigation' onMouseLeave={this._closeMenu.bind(this)} >
           <ul>
             <li>RSS Feed</li>
             <li>Archive</li>
             <li><a href={this.props.logoutPath}>Log Out</a></li>
           </ul>
-        </div>
+        </nav>
       )
     } else {
-      return (<span onClick={this._openMenu.bind(this)} style={spanStyle}> hamburger </span>)
+      return (<span onClick={this._openMenu.bind(this)}> hamburger </span>)
     }
   }
 
-  render() {
+  render () {
     return (
-    <div style={this.styles}>
-      <div style={{width: '80%', display: 'inline-block'}}>
-        <h2>{`${this.props.name}'s Playlist`}</h2>
-      </div>
-      <div style={{width: '20%', display: 'inline-block'}}>
-        {this._rightMenu()}
-      </div>
-    </div>
+      <header role='banner'>
+        <div>
+          <h2>{`${this.props.name}'s Playlist`}</h2>
+        </div>
+        <div>
+          {this._rightMenu()}
+        </div>
+      </header>
     )
   }
 }
