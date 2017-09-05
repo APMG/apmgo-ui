@@ -12,7 +12,8 @@ import { BragiItemChannelSubscription } from '../lib/service/cable'
 import apmAccount from '../lib/service/apm-account'
 import { DragDropContextProvider } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
-import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
+import ApmHTML5toTouch from '../lib/drag-drop/ApmHTML5toTouch'
+// import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../lib/redux/root-saga'
@@ -70,7 +71,7 @@ class AppPresenter extends React.Component {
 
   render () {
     return (
-      <DragDropContextProvider backend={MultiBackend(HTML5toTouch)}>
+      <DragDropContextProvider backend={MultiBackend(ApmHTML5toTouch)}>
         <div>
           <MainMenu name={apmAccount.get_name()} logoutPath={apmAccount.log_out_path()} />
           <Playlist playlist={this.props.playlist} />

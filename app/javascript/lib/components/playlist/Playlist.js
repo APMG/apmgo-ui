@@ -1,7 +1,10 @@
 // @flow
 import * as React from 'react'
 import { connect } from 'react-redux'
-import PlaylistItem from './PlaylistItem'
+
+import PlaylistItem, { PlaylistItemDragPreview } from './PlaylistItem'
+import { DraggableItemTypes } from '../../drag-drop/Constants'
+import VerticalScrollingList from './VerticalScrollingList'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import { playlistItemMoved } from '../../redux/data'
@@ -24,7 +27,7 @@ export class PlaylistPresenter extends React.Component {
     return (
       <div>
         <AudioPlayer item={this.props.activeItem} />
-        <ul styleName="c">
+        <VerticalScrollingList>
           {this.props.playlist
             .filter(item => !item.attributes.finished)
             .map((item, i) =>
@@ -35,8 +38,13 @@ export class PlaylistPresenter extends React.Component {
                 key={item.id}
               />
             )
+
           }
-        </ul>
+          <PlaylistItemDragPreview
+            item={DraggableItemTypes.PLAYLIST_ITEM}
+            key='__preview'
+          />
+        </VerticalScrollingList>
       </div>
     )
   }

@@ -1,9 +1,8 @@
 // @flow
-// import React from 'react'
 import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
-import { type PlaylistItemProps } from '../components/playlist/PlaylistItem'
-import { DraggableItemTypes } from './Constants'
+import { type PlaylistItemProps } from './PlaylistItem'
+import { DraggableItemTypes } from '../../../drag-drop/Constants'
 
 const playlistItemSource = {
   beginDrag (props: PlaylistItemProps) {
@@ -22,6 +21,7 @@ const playlistItemSource = {
 function sourceCollect (connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
