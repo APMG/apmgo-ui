@@ -1,9 +1,11 @@
 // @flow
 import React from 'react'
 import DragLayer from 'react-dnd/lib/DragLayer'
+import { PlaylistItemType } from '../../../redux/types'
 
 type PlaylistItemDragPreviewProps = {
-  id: number,
+  item: PlaylistItemType,
+  // id: number,
   currentOffset: {x: number, y: number},
   isDragging: boolean
 }
@@ -24,15 +26,10 @@ function getItemStyles (currentOffset) {
     }
   }
 
-  // http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
-  var x = currentOffset.x
-  var y = currentOffset.y
-  var transform = `translate(${x}px, ${y}px)`
-
   return {
-    pointerEvents: 'none',
-    transform: transform,
-    WebkitTransform: transform
+    position: 'absolute',
+    top: currentOffset.y,
+    left: currentOffset.x
   }
 }
 
@@ -41,13 +38,11 @@ function PlaylistItemDragPreview (props: PlaylistItemDragPreviewProps) {
     return null
   }
 
-  let result = (
-    <div>
+  return (
+    <div style={getItemStyles(props.currentOffset)}>
       <h1>Drag Preview!!!</h1>
     </div>
   )
-  console.log(result)
-  return result
 }
 
 export default DragLayer(collect)(PlaylistItemDragPreview)

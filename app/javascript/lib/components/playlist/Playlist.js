@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import ItemSlot from './ItemSlot'
 import PlaylistItem, { PlaylistItemDragPreview } from './PlaylistItem'
 import { DraggableItemTypes } from '../../drag-drop/Constants'
 import VerticalScrollingList from './VerticalScrollingList'
@@ -31,19 +32,16 @@ export class PlaylistPresenter extends React.Component {
           {this.props.playlist
             .filter(item => !item.attributes.finished)
             .map((item, i) =>
-              <PlaylistItem
-                playlistItemMoved={this.props.playlistItemMoved}
-                item={item}
-                index={i}
-                key={item.id}
-              />
+              <ItemSlot key={item.attributes.audio_identifier} index={i}>
+                <PlaylistItem
+                  playlistItemMoved={this.props.playlistItemMoved}
+                  item={item}
+                  index={i}
+                />
+              </ItemSlot>
             )
-
           }
-          <PlaylistItemDragPreview
-            item={DraggableItemTypes.PLAYLIST_ITEM}
-            key='__preview'
-          />
+          <PlaylistItemDragPreview />
         </VerticalScrollingList>
       </div>
     )
