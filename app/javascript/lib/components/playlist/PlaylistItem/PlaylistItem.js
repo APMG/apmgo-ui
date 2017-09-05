@@ -1,12 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
 import type { PlaylistItemType } from '../../../redux/types'
 import { changeTrack, playClick } from '../../../redux/audio-player'
-import { archivePlaylistItem, removePlaylistItem, movePlaylistItem } from '../../../redux/playlist'
+import { archivePlaylistItem, removePlaylistItem } from '../../../redux/playlist'
 import { configureDD } from './DNDPlaylistItem'
-import PlaylistItemDragPreview from './PlaylistItemDragPreview'
 
 import './PlaylistItem.scss'
 
@@ -17,10 +15,8 @@ export type PlaylistItemProps = {
   archiveTrack: (item: PlaylistItemType) => {},
   deleteTrack: (item: PlaylistItemType) => {},
   play: () => {},
-  movePlaylistItem: () => {},
   playlistItemMoved: (item: PlaylistItemType, newIndex: number) => {},
   connectDragSource(component: React.Element<*>): React.Element<*>,
-  connectDropTarget(component: React.Element<*>): React.Element<*>,
   connectDragPreview(component: React.Element<*>): React.Element<*>,
   isDragging: boolean
 }
@@ -45,10 +41,6 @@ export class PlaylistItemPresenter extends Component {
   props: PlaylistItemProps
   state: {
     showingMenu: boolean
-  }
-
-  componentDidMount (props: PlaylistItemProps) {
-    this.props.connectDragPreview(PlaylistItemDragPreview)
   }
 
   constructor (props: PlaylistItemProps) {
@@ -88,10 +80,10 @@ export class PlaylistItemPresenter extends Component {
   }
 
   render () {
-    const { setTrackAsActive, play, item, connectDragSource, connectDropTarget, connectDragPreview, isDragging } = this.props
-    const opacity = isDragging ? 0 : 1
-    return connectDragPreview(connectDropTarget(connectDragSource(
-      <li style={{display: 'block', opacity: opacity, backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
+    const { setTrackAsActive, play, item, connectDragSource } = this.props
+
+    const rendered = (
+      <div style={{display: 'block', backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
         <div
           onClick={() => setTrackAsActive(item)}
           onDoubleClick={play}
@@ -109,8 +101,9 @@ export class PlaylistItemPresenter extends Component {
           style={{display: 'inline-block', width: '33%', verticalAlign: 'top'}}>
           {this._rightIconMenu()}
         </div>
-      </li>
-    )))
+      </div>
+    )
+    return connectDragSource(rendered)
   }
 }
 
@@ -127,9 +120,6 @@ const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
     },
     play: () => {
       dispatch(playClick(ownProps.item.id))
-    },
-    movePlaylistItem: (from, to) => {
-      dispatch(movePlaylistItem(from, to))
     }
   }
 }
