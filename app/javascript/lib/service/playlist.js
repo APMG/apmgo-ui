@@ -10,14 +10,6 @@ export function fetchPlaylistItems (): Promise<*> {
     .catch(handleError)
 }
 
-export function addItemToPlaylist (item: PlaylistItemType) {
-  let instance = BragiApiClient.getInstance()
-
-  return instance.post('/items', item)
-    .then(response => response.data.data)
-    .catch(handleError)
-}
-
 export function deletePlaylistItem (itemId: number) {
   let instance = BragiApiClient.getInstance()
   return instance.delete(`/items/${itemId}`)
