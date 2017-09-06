@@ -86,6 +86,14 @@ export function removePlaylistItem (itemId: number) {
   }
 }
 
+export function addPlaylistItem (item: PlaylistItemType) {
+  return {
+    type: ADD_PLAYLIST_ITEM,
+    item: item,
+    receivedAt: Date.now()
+  }
+}
+
 export function archivePlaylistItem (item: PlaylistItemType) {
   return {
     type: ARCHIVE_PLAYLIST_ITEM,
