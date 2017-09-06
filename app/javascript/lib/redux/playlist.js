@@ -150,7 +150,6 @@ export function* archivePlaylistItemSaga(action) {
 }
 
 export function * movePlaylistItemSaga (action: any) {
-  console.log(action)
   yield put(updatingPlaylistItem(action.item))
 
   try {
