@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 // @flow
 import type { PlaylistItemType } from './types'
-=======
-import type { PlaylistItemType } from './types';
->>>>>>> 3c581c40904b67a54d9c89f92c6379b2a7462322
 import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
 import { UPDATE_PLAYTIME } from './audio-player'
@@ -86,14 +82,6 @@ export function removePlaylistItem (itemId: number) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
     item_id: itemId,
-    receivedAt: Date.now()
-  }
-}
-
-export function addPlaylistItem (item: PlaylistItemType) {
-  return {
-    type: ADD_PLAYLIST_ITEM,
-    item: item,
     receivedAt: Date.now()
   }
 }
