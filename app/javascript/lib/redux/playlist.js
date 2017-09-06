@@ -1,5 +1,5 @@
 import type { PlaylistItemType } from './types';
-import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
+import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
 import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
 import {
@@ -24,6 +24,7 @@ export const REMOVE_PLAYLIST_ITEM : string = 'REMOVE_PLAYLIST_ITEM'
 export const ARCHIVE_PLAYLIST_ITEM : string = 'ARCHIVE_PLAYLIST_ITEM'
 export const UPDATE_PLAYLIST_ITEM : string = 'UPDATE_PLAYLIST_ITEM'
 export const MOVE_PLAYLIST_ITEM : string = 'MOVE_PLAYLIST_ITEM'
+export const ADD_PLAYLIST_ITEM : string = 'ADD_PLAYLIST_ITEM'
 
 // Reducer
 export default function reducer(playlistState : Array<PlaylistItemType> = [], action : ActionType = new ActionType) {
@@ -49,6 +50,10 @@ export default function reducer(playlistState : Array<PlaylistItemType> = [], ac
       return playlistState
         .move(action.from, action.to)
         .slice()
+
+    case ADD_PLAYLIST_ITEM:
+      playlistState.push(action.item)
+      return playlistState.slice()
 
     case UPDATE_PLAYTIME:
       return playlistState.map(item => {
@@ -77,6 +82,14 @@ export function removePlaylistItem (item_id) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
     item_id: item_id,
+    receivedAt: Date.now()
+  }
+}
+
+export function addPlaylistItem (item) {
+  return {
+    type: ADD_PLAYLIST_ITEM,
+    item: item,
     receivedAt: Date.now()
   }
 }
