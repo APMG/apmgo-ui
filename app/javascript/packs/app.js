@@ -3,19 +3,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import MainMenu from '../lib/components/MainMenu.react'
 import Playlist from '../lib/components/playlist/Playlist'
-import playlistReducer, { initializePlaylist } from '../lib/redux/playlist'
-import playerReducer from '../lib/redux/audio-player'
-import dataReducer from '../lib/redux/data'
+import { initializePlaylist } from '../lib/redux/playlist'
 import { PlaylistItemType } from '../lib/redux/types'
 import { Provider, connect } from 'react-redux'
 import { BragiItemChannelSubscription } from '../lib/service/cable'
 import apmAccount from '../lib/service/apm-account'
-import { DragDropContextProvider } from 'react-dnd'
+import { DragDropContext } from 'react-dnd'
 import MultiBackend from 'react-dnd-multi-backend'
 import ApmHTML5toTouch from '../lib/drag-drop/ApmHTML5toTouch'
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-import createSagaMiddleware from 'redux-saga'
-import rootSaga from '../lib/redux/root-saga'
+import store from '../lib/redux/store'
 
 import '../lib/styles/global.scss'
 
@@ -23,26 +19,6 @@ import '../lib/styles/global.scss'
 // http://stackoverflow.com/a/34015469/988941
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-let sagaMiddleware = createSagaMiddleware()
-const enhancer = composeEnhancers(
-  applyMiddleware(sagaMiddleware)
-)
-
-let store = createStore(
-  combineReducers({
-    data: dataReducer,
-    playlist: playlistReducer,
-    audioPlayer: playerReducer
-  }),
-  enhancer
-)
-
-// The root saga is composed of all the app's individual
-// listener sagas - any saga that begins with "take", "takeEvery" or "takeLatest"
-// this bootstraps it onto the sagaMiddleware
-sagaMiddleware.run(rootSaga)
 
 // Verify we have a current auth token, then fetch data
 if (apmAccount.get_expires_at() < Date.now()) {
@@ -70,12 +46,10 @@ class AppPresenter extends React.Component {
 
   render () {
     return (
-      <DragDropContextProvider backend={MultiBackend(ApmHTML5toTouch)}>
-        <div>
-          <MainMenu name={apmAccount.get_name()} logoutPath={apmAccount.log_out_path()} />
-          <Playlist playlist={this.props.playlist} />
-        </div>
-      </DragDropContextProvider>
+      <div>
+        <MainMenu name={apmAccount.get_name()} logoutPath={apmAccount.log_out_path()} />
+        <Playlist playlist={this.props.playlist} />
+      </div>
     )
   }
 }
@@ -85,8 +59,8 @@ const mapStateToProps = (state) => {
     playlist: state.playlist
   }
 }
-
-const App = connect(mapStateToProps)(AppPresenter)
+const DNDApp = DragDropContext(MultiBackend(ApmHTML5toTouch))(AppPresenter)
+const App = connect(mapStateToProps)(DNDApp)
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
