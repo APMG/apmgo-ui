@@ -1,5 +1,5 @@
 import React from 'react'
-import { PlaylistPresenter } from './Playlist'
+import { PlaylistPresenter } from '../Playlist'
 import { getSnapshotJson } from '../../../__tests__/testHelpers'
 
 describe('Playlist Component', () => {

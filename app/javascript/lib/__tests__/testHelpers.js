@@ -12,7 +12,8 @@ export const itemFixtures = [
     'attributes': {
       'audio_title': 'Test Audio',
       'audio_url': 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
-      'playtime': 30
+      'playtime': 30,
+      'audio_description': 'Nice description you have there ...'
     }
   },
   {
@@ -20,7 +21,8 @@ export const itemFixtures = [
     'attributes': {
       'audio_title': 'Another Test Audio',
       'audio_url': 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
-      'playtime': 60
+      'playtime': 60,
+      'audio_description': 'How shall I describe thee?'
     }
   }
 ]

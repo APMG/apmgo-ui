@@ -16,9 +16,7 @@ const playlistItemSource = {
   },
 
   endDrag (props, monitor, component) {
-    if (monitor.didDrop()) {
-      props.playlistItemMoved(props.item, props.index)
-    }
+    props.playlistItemMoved(props.item, props.index)
   }
 }
 
