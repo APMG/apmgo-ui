@@ -41,24 +41,17 @@ type DraggablePlaylistItemProps = {
   play: () => {},
 }
 
-class DraggablePlaylistItem extends Component {
-  props: DraggablePlaylistItemProps
-
-  componentDidMount () {
-    this.props.connectDragPreview(getEmptyImage(), {
-      // IE fallback: specify that we'd rather screenshot the node
-      // when it already knows it's being dragged so we can hide it with CSS.
-      captureDraggingState: true
-    })
-  }
-
-  render () {
-    return this.props.connectDragSource(
-      <div>
-        <PlaylistItemPresenter {...this.props} />
-      </div>
-    )
-  }
+const DraggablePlaylistItem = (props: DraggablePlaylistItemProps) => {
+  props.connectDragPreview(getEmptyImage(), {
+    // IE fallback: specify that we'd rather screenshot the node
+    // when it already knows it's being dragged so we can hide it with CSS.
+    captureDraggingState: true
+  })
+  return props.connectDragSource(
+    <div>
+      <PlaylistItemPresenter {...props} />
+    </div>
+  )
 }
 
 export default DragSource(
