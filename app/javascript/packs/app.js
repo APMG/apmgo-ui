@@ -10,8 +10,9 @@ import { PlaylistItemType } from '../lib/redux/types'
 import { Provider, connect } from 'react-redux'
 import { BragiItemChannelSubscription } from '../lib/service/cable'
 import apmAccount from '../lib/service/apm-account'
-import HTML5Backend from 'react-dnd-html5-backend'
 import { DragDropContextProvider } from 'react-dnd'
+import MultiBackend from 'react-dnd-multi-backend'
+import ApmHTML5toTouch from '../lib/drag-drop/ApmHTML5toTouch'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../lib/redux/root-saga'
@@ -69,7 +70,7 @@ class AppPresenter extends React.Component {
 
   render () {
     return (
-      <DragDropContextProvider backend={HTML5Backend}>
+      <DragDropContextProvider backend={MultiBackend(ApmHTML5toTouch)}>
         <div>
           <MainMenu name={apmAccount.get_name()} logoutPath={apmAccount.log_out_path()} />
           <Playlist playlist={this.props.playlist} />

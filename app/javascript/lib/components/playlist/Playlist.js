@@ -1,7 +1,11 @@
 // @flow
 import * as React from 'react'
 import { connect } from 'react-redux'
-import PlaylistItem from './PlaylistItem'
+import { Preview } from 'react-dnd-multi-backend'
+
+import ItemSlot from './ItemSlot'
+import PlaylistItem, { PlaylistItemDragPreview } from './PlaylistItem'
+import VerticalScrollingList from './VerticalScrollingList'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
 import { playlistItemMoved } from '../../redux/data'
@@ -14,6 +18,13 @@ type PlaylistProps = {
   playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
 }
 
+function generatePreview (type: string, item: any, style: any) {
+  return <PlaylistItemDragPreview
+    item={item.item}
+    style={style}
+  />
+}
+
 export class PlaylistPresenter extends React.Component {
   props: PlaylistProps
 
@@ -24,19 +35,21 @@ export class PlaylistPresenter extends React.Component {
     return (
       <div>
         <AudioPlayer item={this.props.activeItem} />
-        <ul styleName="c">
+        <VerticalScrollingList>
           {this.props.playlist
             .filter(item => !item.attributes.finished)
             .map((item, i) =>
-              <PlaylistItem
-                playlistItemMoved={this.props.playlistItemMoved}
-                item={item}
-                index={i}
-                key={item.id}
-              />
+              <ItemSlot key={item.attributes.audio_identifier} index={i}>
+                <PlaylistItem
+                  playlistItemMoved={this.props.playlistItemMoved}
+                  item={item}
+                  index={i}
+                />
+              </ItemSlot>
             )
           }
-        </ul>
+          <Preview generator={generatePreview} />
+        </VerticalScrollingList>
       </div>
     )
   }

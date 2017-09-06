@@ -1,7 +1,8 @@
-import type { PlaylistItemType } from './types';
-import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
+// @flow
+import type { PlaylistItemType } from './types'
+import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
-import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
+import { UPDATE_PLAYTIME } from './audio-player'
 import {
   fetchingPlaylistItems,
   removingPlaylistItem,
@@ -11,11 +12,10 @@ import {
   playlistItemArchived,
   updatingPlaylistItem,
   PLAYLIST_ITEM_ARCHIVED,
-  PLAYLIST_ITEM_REMOVED,
-  PLAYLIST_ITEM_UPDATED
+  PLAYLIST_ITEM_REMOVED
 } from './data'
 import 'array.prototype.move'
-import { put, takeLatest, call } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 
 // Actions
 export const RECEIVE_PLAYLIST_ITEMS : string = 'RECEIVE_PLAYLIST_ITEMS'
@@ -26,23 +26,23 @@ export const UPDATE_PLAYLIST_ITEM : string = 'UPDATE_PLAYLIST_ITEM'
 export const MOVE_PLAYLIST_ITEM : string = 'MOVE_PLAYLIST_ITEM'
 
 // Reducer
-export default function reducer(playlistState : Array<PlaylistItemType> = [], action : ActionType = new ActionType) {
+export default function reducer (playlistState : Array<PlaylistItemType> = [], action : ActionType = new ActionType) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return action.data
 
     case PLAYLIST_ITEM_REMOVED:
-      return playlistState.filter(item => item.id != action.item_id)
+      return playlistState.filter(item => item.id !== action.item_id)
 
     case PLAYLIST_ITEM_ARCHIVED:
-      return playlistState.filter(item => item.id != action.item.id)
+      return playlistState.filter(item => item.id !== action.item.id)
 
     case UPDATE_PLAYLIST_ITEM:
       return playlistState.map(item => {
         if (item.id === action.item.id) {
           return {...item, ...action.item}
         }
-        return item;
+        return item
       })
 
     case MOVE_PLAYLIST_ITEM:
@@ -65,7 +65,7 @@ export default function reducer(playlistState : Array<PlaylistItemType> = [], ac
 }
 
 // Action creators
-export function receivePlaylistItems (data) {
+export function receivePlaylistItems (data: Array<PlaylistItemType>) {
   return {
     type: RECEIVE_PLAYLIST_ITEMS,
     data: data,
@@ -73,15 +73,15 @@ export function receivePlaylistItems (data) {
   }
 }
 
-export function removePlaylistItem (item_id) {
+export function removePlaylistItem (itemId: number) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
-    item_id: item_id,
+    item_id: itemId,
     receivedAt: Date.now()
   }
 }
 
-export function archivePlaylistItem (item) {
+export function archivePlaylistItem (item: PlaylistItemType) {
   return {
     type: ARCHIVE_PLAYLIST_ITEM,
     item: item,
@@ -89,14 +89,14 @@ export function archivePlaylistItem (item) {
   }
 }
 
-export function initializePlaylist() {
+export function initializePlaylist () {
   return {
     type: INITIALIZE_PLAYLIST,
     receivedAt: Date.now()
   }
 }
 
-export function movePlaylistItem(from: number, to:number) {
+export function movePlaylistItem (from: number, to: number) {
   return {
     type: MOVE_PLAYLIST_ITEM,
     from: from,
@@ -107,9 +107,9 @@ export function movePlaylistItem(from: number, to:number) {
 
 // Sagas
 
-export function* initializePlaylistItemsSaga(action) {
+export function * initializePlaylistItemsSaga (action: any) {
   // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
-  yield put( fetchingPlaylistItems() )
+  yield put(fetchingPlaylistItems())
 
   try {
     // call async fetchPlaylistItems api function.
@@ -149,8 +149,8 @@ export function* archivePlaylistItemSaga(action) {
   }
 }
 
-export function* movePlaylistItemSaga(action) {
-  yield put ( updatingPlaylistItem (action.item) )
+export function * movePlaylistItemSaga (action: any) {
+  yield put(updatingPlaylistItem(action.item))
 
   try {
     action.item.attributes.after_id = action.toAfter

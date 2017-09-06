@@ -4542,6 +4542,10 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
 
+lodash.throttle@^4.0.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -5296,6 +5300,10 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
+performance-now@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+
 pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -5891,7 +5899,7 @@ prop-types@^15.0.0, prop-types@^15.5.7, prop-types@^15.5.8:
   dependencies:
     fbjs "^0.8.9"
 
-prop-types@^15.5.10:
+prop-types@^15.5.10, prop-types@^15.5.9:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
@@ -5971,6 +5979,12 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
+raf@^3.2.0:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/raf/-/raf-3.3.2.tgz#0c13be0b5b49b46f76d6669248d527cf2b02fe27"
+  dependencies:
+    performance-now "^2.1.0"
+
 rails-erb-loader@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/rails-erb-loader/-/rails-erb-loader-5.1.0.tgz#8043c175e88d600c6f3d7730172c7885a5d24827"
@@ -6012,11 +6026,34 @@ react-code-splitting@^1.1.1:
   dependencies:
     prop-types "^15.5.8"
 
-react-dnd-html5-backend@^2.4.1:
+react-display-name@^0.2.0:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/react-display-name/-/react-display-name-0.2.3.tgz#f50204d430c9ca819bc0bade0306e9175d8d1987"
+
+react-dnd-html5-backend@*, react-dnd-html5-backend@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-2.4.1.tgz#439d2bcaf8bd8b87a51386beb51c128826182ddd"
   dependencies:
     lodash "^4.2.0"
+
+react-dnd-multi-backend@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/react-dnd-multi-backend/-/react-dnd-multi-backend-3.0.3.tgz#01cddcc44b516b99875572c8c12432fbf4f66cf0"
+  dependencies:
+    prop-types "^15.5.8"
+    react-dnd "*"
+    react-dnd-html5-backend "*"
+    react-dnd-touch-backend "^0.3.13"
+
+react-dnd-scrollzone@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-scrollzone/-/react-dnd-scrollzone-4.0.0.tgz#d707170c0cd3b7ab3d991dd6a8cc0b3712454139"
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
+    lodash.throttle "^4.0.1"
+    prop-types "^15.5.9"
+    raf "^3.2.0"
+    react-display-name "^0.2.0"
 
 react-dnd-test-backend@^2.4.0:
   version "2.4.0"
@@ -6024,7 +6061,14 @@ react-dnd-test-backend@^2.4.0:
   dependencies:
     dnd-core "^2.4.0"
 
-react-dnd@^2.4.0:
+react-dnd-touch-backend@^0.3.13:
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.13.tgz#5d577ecba65ef8b37cd92d5342902ae5aace952d"
+  dependencies:
+    invariant "^2.2.2"
+    react-dnd "^2.4.0"
+
+react-dnd@*, react-dnd@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.4.0.tgz#96f0042cd4cd375b4f0c3413f6ec84d267b7d792"
   dependencies:
