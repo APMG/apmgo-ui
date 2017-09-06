@@ -1,10 +1,10 @@
 // @flow
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { Preview } from 'react-dnd-multi-backend'
 
 import ItemSlot from './ItemSlot'
 import PlaylistItem, { PlaylistItemDragPreview } from './PlaylistItem'
-import { DraggableItemTypes } from '../../drag-drop/Constants'
 import VerticalScrollingList from './VerticalScrollingList'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
@@ -16,6 +16,13 @@ type PlaylistProps = {
   playlist: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType,
   playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
+}
+
+function generatePreview (type: string, item: any, style: any) {
+  return <PlaylistItemDragPreview
+    item={item.item}
+    style={style}
+  />
 }
 
 export class PlaylistPresenter extends React.Component {
@@ -41,7 +48,7 @@ export class PlaylistPresenter extends React.Component {
               </ItemSlot>
             )
           }
-          <PlaylistItemDragPreview />
+          <Preview generator={generatePreview} />
         </VerticalScrollingList>
       </div>
     )

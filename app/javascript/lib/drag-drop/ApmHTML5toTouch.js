@@ -6,10 +6,11 @@ import { TouchTransition } from 'react-dnd-multi-backend/lib/Transitions'
 export default {
   backends: [
     {
-      backend: HTML5Backend
+      backend: HTML5Backend,
+      preview: true
     },
     {
-      backend: TouchBackend({enableMouseEvents: true, delay: 500}),
+      backend: TouchBackend({enableMouseEvents: true, delay: 250}),
       preview: true,
       transition: TouchTransition
     }
