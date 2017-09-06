@@ -29,9 +29,6 @@ describe('Playlist Item drag and drop', function () {
     const root = TestUtils.renderIntoDocument(<ItemContext {...testProps} />)
     const backend = root.getManager().getBackend()
 
-    // let div = TestUtils.findRenderedDOMComponentWithTag(root, 'div')
-    // expect(TestUtils.isDOMComponent(div)).toBe(true)
-
     let handler = [TestUtils.findRenderedComponentWithType(root, DraggablePlaylistItem).getHandlerId()]
     let presenter = TestUtils.findRenderedComponentWithType(root, PlaylistItemPresenter)
     expect(presenter.props.isDragging).toBe(false)

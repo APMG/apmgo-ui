@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import withScrolling, { createVerticalStrength } from 'react-dnd-scrollzone'
+import './Playlist.scss'
 
 const ScrollingComponent = withScrolling('ul')
 const linearVerticalStrength = createVerticalStrength(100)
@@ -24,7 +25,7 @@ export default class VerticalScrollingList extends Component {
   }
   render () {
     return (
-      <ScrollingComponent verticalStrength={vStrength}>
+      <ScrollingComponent styleName='c' verticalStrength={vStrength}>
         {this.props.children}
       </ScrollingComponent>
     )
