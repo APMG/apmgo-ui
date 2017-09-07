@@ -24,7 +24,6 @@ class MainMenu extends React.Component {
     this.state = {
       menuIsOpen: false
     }
-    this.menuOpenClass = ''
   }
 
   _toggleMenu () {
@@ -37,12 +36,14 @@ class MainMenu extends React.Component {
 
   _openMenu () {
     this.setState({menuIsOpen: true})
-    this.menuOpenClass = 'menu-visible'
   }
 
   _closeMenu () {
     this.setState({menuIsOpen: false})
-    this.menuOpenClass = ''
+  }
+
+  _menuOpenClass () {
+    return this.state.menuIsOpen ? 'menu-visible' : ''
   }
 
   _rightMenu () {
@@ -55,7 +56,7 @@ class MainMenu extends React.Component {
         >
           {this.props.name} &#9662;
         </button>
-        <ul styleName={`menu ${this.menuOpenClass}`}>
+        <ul styleName={`menu ${this._menuOpenClass()}`}>
           <li>
             <a href={this.props.logoutPath} styleName="link">My Account</a>
           </li>
