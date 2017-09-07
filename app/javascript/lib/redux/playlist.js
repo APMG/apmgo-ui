@@ -14,7 +14,6 @@ import {
   PLAYLIST_ITEM_ARCHIVED,
   PLAYLIST_ITEM_REMOVED
 } from './data'
-import 'array.prototype.move'
 import { put, call } from 'redux-saga/effects'
 
 // Actions
@@ -27,7 +26,7 @@ export const MOVE_PLAYLIST_ITEM : string = 'MOVE_PLAYLIST_ITEM'
 export const ADD_PLAYLIST_ITEM : string = 'ADD_PLAYLIST_ITEM'
 
 // Reducer
-export default function reducer (playlistState : Array<PlaylistItemType> = [], action : ActionType = new ActionType) {
+export default function reducer (playlistState: Array<PlaylistItemType> = [], action: ActionType = new ActionType()) {
   switch (action.type) {
     case RECEIVE_PLAYLIST_ITEMS:
       return action.data
@@ -47,9 +46,11 @@ export default function reducer (playlistState : Array<PlaylistItemType> = [], a
       })
 
     case MOVE_PLAYLIST_ITEM:
-      return playlistState
-        .move(action.from, action.to)
-        .slice()
+      return doMove(
+        playlistState,
+        action.from,
+        action.to
+      )
 
     case ADD_PLAYLIST_ITEM:
       playlistState.push(action.item)
@@ -171,4 +172,26 @@ export function * movePlaylistItemSaga (action: any) {
   } catch (e) {
     yield put(playlistErrorOccured(e.message))
   }
+}
+
+function arrayMove (array: Array<any>, from: number, to: number) {
+  return array.splice(to, 0, array.splice(from, 1)[0])
+}
+
+function doMove (playlist: Array<PlaylistItemType>, from: number, to: number) {
+  playlist = arrayMove(
+    playlist,
+    from,
+    to
+  )
+  let after = playlist[to - 1]
+
+  playlist[to].attributes.after = after ? after.id : null
+
+  let before = playlist[to + 1]
+  if (before) {
+    playlist[to + 1].attributes.after = playlist[to].id
+  }
+
+  return playlist
 }
