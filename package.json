@@ -6,7 +6,6 @@
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.40",
     "actioncable": "^5.0.4",
-    "array.prototype.move": "^0.0.4",
     "autoprefixer": "^7.1.2",
     "axios": "^0.16.1",
     "babel-core": "^6.26.0",
