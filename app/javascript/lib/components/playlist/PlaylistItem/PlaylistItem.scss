@@ -1,16 +1,7 @@
 @import '../../../styles/helpers';
 
-$color-bg: $color-red;
-
 .a {
-  background-color: $color-bg;
 }
 
 .b {
-  composes: a;
-  color: yellow;
-
-  @media (min-width: 800px) {
-    color: white;
-  }
 }

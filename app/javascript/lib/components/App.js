@@ -22,7 +22,7 @@ class AppPresenter extends Component {
   render () {
     return (
       <Provider store={store}>
-        <div>
+        <div className="container">
           <MainMenu
             name={this.props.accountName}
             logoutPath={this.props.logoutPath}

@@ -6,6 +6,8 @@
 
 // Media Queries
 $media-mobile: 20em;
+$media-mobile-1: 22.5em;
+$media-mobile-2: 25em;
 $media-small-tablet: 32em;
 $media-st-t: 40em;
 $media-tablet: 48em;
@@ -14,12 +16,12 @@ $media-desktop: 64em;
 $media-wide: 75em;
 
 // Font Families
-$font-family-sans: 'Roboto Condensed', sans-serif;
-$font-family-serif: 'Libre Baskerville', Georgia, serif;
+//$font-family-sans: 'Montserrat', 'Gotham', 'Proxima Nova', sans-serif;
+$font-family-sans: 'HelveticaNeue', 'Helvetica', 'Arial', sans-serif;
+$font-family-condensed: 'HelveticaNeue-CondensedBold', 'Arial Narrow', 'Roboto Condensed', sans-serif;
 
 $font-family-main: $font-family-sans;
-$font-family-heading: $font-family-sans;
-$font-family-copy: $font-family-serif;
+$font-family-heading: $font-family-condensed;
 
 $font-family-default: $font-family-main;
 
@@ -28,52 +30,31 @@ $font-size-root: 62.5%; // Root size, only for html tag. // 62.5% means that 1re
 $font-size-default: 1.6rem;
 
 // Default Transition Speed
-$transition: .175s;
+$transition-short: .1s;
+$transition: .15s;
+$transition-long: .25s;
 
 // Colors
-$color-red: #d12421;
-$color-yellow: #eaaa00;
+$color-red: #b71224;
 
 $color-white: #ffffff;
 $color-black: #000000;
 
 $color-grey-lightest: #f4f4f4;
-$color-grey-lighter: #eeeeee;
-$color-grey-light: #dddddd;
-$color-grey: #c9c9c9;
-$color-grey-dark: #a9a9a9;
-$color-grey-darker: #6a6a6a;
-$color-grey-darkest: #333333;
+$color-grey-light: #eeeeee;
+$color-grey: #888888;
+$color-grey-dark: #202020;
 // Aliases for spelling variations
 $color-gray-lightest: $color-grey-lightest;
-$color-gray-lighter: $color-grey-lighter;
 $color-gray-light: $color-grey-light;
 $color-gray: $color-grey;
 $color-gray-dark: $color-grey-dark;
-$color-gray-darker: $color-grey-darker;
-$color-gray-darkest: $color-grey-darkest;
 
-$color-bg: #ffffff;
-$color-default: #333333;
-
-$color-disabled: $color-grey-light;
-$color-disabled-bg: #fafafa;
+$color-bg: $color-grey-lightest;
+$color-default: $color-grey-dark;
 
 $color-header: $color-default;
 $color-text: $color-default;
-$color-text-light: $color-grey-darker;
-$color-header-bg: $color-white;
+$color-text-light: $color-grey;
 $color-link: $color-red;
 $color-link-hover: darken($color-red, 20%);
-$color-selection: lighten($color-yellow, 20%);
-$color-screen: rgba($color-black, .7);
-
-$color-shadow: $color-grey-light;
-$color-shadow-hover: $color-grey;
-
-// Social Media
-$color-facebook: #3b5998;
-$color-twitter: #55acee;
-$color-pinterest: #cb2027;
-$color-instagram: #8a3ab9;
-$color-tumblr: #32506d;
