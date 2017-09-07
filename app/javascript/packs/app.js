@@ -37,6 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
       accountName={apmAccount.get_name()}
       logoutPath={apmAccount.log_out_path()}
     />,
-    window.document.body.appendChild(document.createElement('div'))
+    document.getElementById('app')
   )
 })
