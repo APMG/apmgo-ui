@@ -1,15 +1,16 @@
 // @flow
 import React from 'react'
-import { connect } from 'react-redux'
 
-export default function (props: {currentTime: number}) {
-  if (typeof props.currentTime === undefined || isNaN(props.currentTime)) {
+export default function (props: {currentTime?: number}) {
+  let { currentTime } = props
+
+  if (!currentTime || isNaN(props.currentTime)) {
     return (<div>0:00</div>)
   }
 
-  let minutes = Math.floor(props.currentTime / 60),
-      seconds = props.currentTime - (minutes * 60),
-      formatted = minutes + ":" + seconds.toString().padStart(2, '0')
+  let minutes = Math.floor(currentTime / 60)
+  let seconds = currentTime - (minutes * 60)
+  let formatted = minutes + ':' + seconds.toString().padStart(2, '0')
 
   return (<div>{formatted}</div>)
 }

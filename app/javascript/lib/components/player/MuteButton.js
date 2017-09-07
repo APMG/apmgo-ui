@@ -1,7 +1,5 @@
 // @flow
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { muteClick, unmuteClick } from '../../redux/audio-player'
 
 type MuteButtonProps = {
   muted: boolean,

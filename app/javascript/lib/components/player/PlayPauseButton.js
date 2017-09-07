@@ -1,7 +1,5 @@
 // @flow
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { pauseClick, playClick } from '../../redux/audio-player';
+import * as React from 'react'
 
 type PlayPauseProps = {
   paused: boolean,
@@ -10,12 +8,12 @@ type PlayPauseProps = {
   pause: () => {}
 }
 
-export default function PlayPauseButtonPresenter(props: PlayPauseProps) {
-  if(!props.canPlay) {
+export default function PlayPauseButtonPresenter (props: PlayPauseProps) {
+  if (!props.canPlay) {
     return (
       <button
         id="play-pause-loading-button"
-        disabled={true}>
+        disabled>
         Loading ...
       </button>
     )

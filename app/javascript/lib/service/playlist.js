@@ -17,19 +17,10 @@ export function deletePlaylistItem (itemId: number) {
     .catch(handleError)
 }
 
-export async function apiMovePlaylistItem (item: PlaylistItemType, toAfter: number): Promise<*> {
-  item.attributes.after = toAfter
-  let responseCode = await updatePlaylistItem(item)
-
-  if (responseCode === 204) {
-    return item
-  }
-  throw Error('Could not move item')
-}
-
 export function updatePlaylistItem (item: PlaylistItemType) {
   let instance = BragiApiClient.getInstance()
-
+  item.attributes.after_id = item.attributes.after
+  delete item.attributes.after
   return instance.put(`/items/${item.id}`, {data: item})
     .then(response => response.status)
     .catch(handleError)
