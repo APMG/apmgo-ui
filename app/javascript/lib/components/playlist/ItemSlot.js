@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import { findDOMNode } from 'react-dom'
 import { DropTarget } from 'react-dnd'
 import { DraggableItemTypes } from '../../drag-drop/Constants'
 import { movePlaylistItem } from '../../redux/playlist'

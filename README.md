@@ -35,3 +35,17 @@ $ invoker add_http rails 3001
 React components in this project will be written using the Redux approach of "Container" and "Presentational" components (also referred to as "Smart" and "Dumb"). Where possible, container and presentational components will be grouped together in the same file. Additionally, components will be grouped together into directories by domain.
 
 Redux actions and reducers will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case.
+
+We have three ducks, and they all live next door to each other in the `/app/javascript/lib/redux` directory.
+
+### The Audio Player Duck
+The AudioPlayer Duck lives in `audio-player.js`. It manages state and provides action creators related to the audio player itself: which track is playing (just the Id), how long is the track, what is the current playtime, volume, play/pause status, mute status etc.
+
+### The Playlist Duck
+The Playlist Duck lives in `playlist.js`. It manages state and provides action creators related to the app's representation of the playlist and each item in it. For example, when an item plays for a second, the Playlist Duck updates is `currentTime` property.
+
+### The Data Duck
+The Data Duck lives in `/lib/redux/data.js`. The Data duck handles things related to the api layer: when an item is deleted, or archived, or when the app first fetches a user's playlist.
+
+### Ducks work together!
+Some of the ducks have overlapping areas of interest. For example, when the `currentTime` on a playing item changes (once per second, if it's playing), then the Playlist Duck needs to update that playlist item, and the Audio Player duck needs to update its own `currentTime` so it can properly track and display it. When an item is moved, the Playlist Duck reorders its own internal array, and the Data Duck sends out an API call to make sure the move is persisted.

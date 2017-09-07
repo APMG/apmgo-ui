@@ -1,36 +1,37 @@
-import type { PlaylistItemType } from './types';
-import { addItemToPlaylist, fetchPlaylistItems, deletePlaylistItem } from '../service/playlist'
+// @flow
+import type { PlaylistItemType } from './types'
+import { put, call } from 'redux-saga/effects'
+
 import { ActionType } from './defaults'
-import { PAUSE_CLICK, UPDATE_PLAYTIME } from './audio-player'
+import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import {
-  INITIALIZE_PLAYLIST,
+  receivePlaylistItems,
   RECEIVE_PLAYLIST_ITEMS,
   REMOVE_PLAYLIST_ITEM,
   ARCHIVE_PLAYLIST_ITEM,
   UPDATE_PLAYLIST_ITEM
 } from './playlist'
-import { put, takeLatest, call } from 'redux-saga/effects'
 
 // Actions
-export const FETCHING_PLAYLIST_ITEMS : string = 'FETCHING_PLAYLIST_ITEMS'
-export const REMOVING_PLAYLIST_ITEM : string = 'REMOVING_ITEM_FROM_PLAYLIST'
-export const PLAYLIST_ITEM_REMOVED : string = 'PLAYLIST_ITEM_REMOVED'
-export const ARCHIVING_PLAYLIST_ITEM : string = 'ARCHIVING_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_ARCHIVED : string = 'PLAYLIST_ITEM_ARCHIVED'
-export const PLAYLIST_ERROR_OCCURRED : string = 'PLAYLIST_ERROR_OCCURED'
-export const CLEAR_PLAYLIST_ERROR : string = 'CLEAR_PLAYLIST_ERROR'
-export const UPDATING_PLAYLIST_ITEM : string = 'UPDATING_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_UPDATED : string = 'PLAYLIST_ITEM_UPDATED'
-export const PLAYLIST_ITEM_MOVED : string = 'PLAYLIST_ITEM_MOVED'
+export const INITIALIZE_PLAYLIST : string = 'bragi/data/INITIALIZE_PLAYLIST'
+export const FETCHING_PLAYLIST_ITEMS : string = 'bragi/data/FETCHING_PLAYLIST_ITEMS'
+export const REMOVING_PLAYLIST_ITEM : string = 'bragi/data/REMOVING_ITEM_FROM_PLAYLIST'
+export const PLAYLIST_ITEM_REMOVED : string = 'bragi/data/PLAYLIST_ITEM_REMOVED'
+export const ARCHIVING_PLAYLIST_ITEM : string = 'bragi/data/ARCHIVING_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_ARCHIVED : string = 'bragi/data/PLAYLIST_ITEM_ARCHIVED'
+export const PLAYLIST_ERROR_OCCURRED : string = 'bragi/data/PLAYLIST_ERROR_OCCURED'
+export const CLEAR_PLAYLIST_ERROR : string = 'bragi/data/CLEAR_PLAYLIST_ERROR'
+export const UPDATING_PLAYLIST_ITEM : string = 'bragi/data/UPDATING_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_UPDATED : string = 'bragi/data/PLAYLIST_ITEM_UPDATED'
+export const PLAYLIST_ITEM_MOVED : string = 'bragi/data/PLAYLIST_ITEM_MOVED'
+
 // Statuses
-class PlaylistStatuses {
-  ARCHIVING_ITEM : string = 'ARCHIVING_ITEM'
-  REMOVING_ITEM : string = 'REMOVING_ITEM'
-  UPDATING_ITEM : string = 'MOVING_ITEM'
-  FETCHING : string = 'FETCHING'
-  DEFAULT : string = 'DEFAULT'
-  ERROR : string = 'ERROR'
-}
+const ARCHIVING_ITEM_STATUS: string = 'ARCHIVING_ITEM'
+const REMOVING_ITEM_STATUS: string = 'REMOVING_ITEM'
+const UPDATING_ITEM_STATUS: string = 'MOVING_ITEM'
+const FETCHING_STATUS: string = 'FETCHING'
+const DEFAULT_STATUS: string = 'DEFAULT'
+const ERROR_STATUS: string = 'ERROR'
 
 type DataReducerState = {
   status: string,
@@ -38,7 +39,7 @@ type DataReducerState = {
   errorMessage?: string
 }
 
-function updateStatus(state: DataReducerState, newStatus, receivedAt) {
+function updateStatus (state: DataReducerState, newStatus, receivedAt) {
   return {
     ...state,
     status: receivedAt,
@@ -47,9 +48,8 @@ function updateStatus(state: DataReducerState, newStatus, receivedAt) {
 }
 
 // Reducer
-export default function reducer(dataState: DataReducerState = {status: PlaylistStatuses.DEFAULT}, action : ActionType = new ActionType) {
+export default function reducer (dataState: DataReducerState = {status: DEFAULT_STATUS}, action: ActionType = new ActionType()) {
   switch (action.type) {
-
     case INITIALIZE_PLAYLIST:
       return {
         ...dataState,
@@ -59,14 +59,14 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
     case FETCHING_PLAYLIST_ITEMS:
       return updateStatus(
         dataState,
-        PlaylistStatuses.FETCHING,
+        FETCHING_STATUS,
         action.receivedAt
       )
 
     case RECEIVE_PLAYLIST_ITEMS:
       return updateStatus(
         dataState,
-        PlaylistStatuses.DEFAULT,
+        DEFAULT_STATUS,
         action.receivedAt
       )
 
@@ -79,21 +79,21 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
     case REMOVING_PLAYLIST_ITEM:
       return updateStatus(
         dataState,
-        PlaylistStatuses.REMOVING_ITEM,
+        REMOVING_ITEM_STATUS,
         action.receivedAt
       )
 
     case PLAYLIST_ITEM_REMOVED:
       return updateStatus(
         dataState,
-        PlaylistStatuses.DEFAULT,
+        DEFAULT_STATUS,
         action.receivedAt
       )
 
     case ARCHIVING_PLAYLIST_ITEM:
       return updateStatus(
         dataState,
-        PlaylistStatuses.ARCHIVING_ITEM,
+        ARCHIVING_ITEM_STATUS,
         action.receivedAt
       )
 
@@ -106,13 +106,14 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
     case PLAYLIST_ITEM_ARCHIVED:
       return updateStatus(
         dataState,
-        PlaylistStatuses.DEFAULT,
+        DEFAULT_STATUS,
         action.receivedAt
       )
 
     case PLAYLIST_ERROR_OCCURRED:
       return {
         ...dataState,
+        status: ERROR_STATUS,
         errorMessage: action.message,
         receivedAt: action.receivedAt
       }
@@ -134,7 +135,7 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
     case UPDATING_PLAYLIST_ITEM: {
       return updateStatus(
         dataState,
-        PlaylistStatuses.UPDATING_ITEM,
+        UPDATING_ITEM_STATUS,
         action.receivedAt
       )
     }
@@ -143,24 +144,31 @@ export default function reducer(dataState: DataReducerState = {status: PlaylistS
   }
 }
 
-export function removingPlaylistItem(item_id) {
+export function initializePlaylist () {
   return {
-    type: REMOVING_PLAYLIST_ITEM,
-    item_id: item_id,
+    type: INITIALIZE_PLAYLIST,
     receivedAt: Date.now()
   }
 }
 
-export function playlistItemRemoved(item_id) {
+export function removingPlaylistItem (itemId: number) {
+  return {
+    type: REMOVING_PLAYLIST_ITEM,
+    itemId: itemId,
+    receivedAt: Date.now()
+  }
+}
+
+export function playlistItemRemoved (itemId: number) {
   return {
     type: PLAYLIST_ITEM_REMOVED,
-    item_id: item_id,
+    itemId: itemId,
     receivedAt: Date.now()
   }
 }
 
 // Archiving
-export function archivingPlaylistItem(item) {
+export function archivingPlaylistItem (item: PlaylistItemType) {
   return {
     type: ARCHIVING_PLAYLIST_ITEM,
     item: item,
@@ -168,7 +176,7 @@ export function archivingPlaylistItem(item) {
   }
 }
 
-export function playlistItemArchived(item) {
+export function playlistItemArchived (item: PlaylistItemType) {
   return {
     type: PLAYLIST_ITEM_ARCHIVED,
     item: item,
@@ -176,14 +184,14 @@ export function playlistItemArchived(item) {
   }
 }
 
-export function fetchingPlaylistItems() {
+export function fetchingPlaylistItems () {
   return {
     type: FETCHING_PLAYLIST_ITEMS,
     receivedAt: Date.now()
   }
 }
 
-export function playlistErrorOccured(message) {
+export function playlistErrorOccured (message: string) {
   return {
     type: PLAYLIST_ERROR_OCCURRED,
     message: message,
@@ -191,14 +199,14 @@ export function playlistErrorOccured(message) {
   }
 }
 
-export function clearPlaylistError() {
+export function clearPlaylistError () {
   return {
     type: CLEAR_PLAYLIST_ERROR,
     receivedAt: Date.now()
   }
 }
 
-export function updatingPlaylistItem(item: PlaylistItemType) {
+export function updatingPlaylistItem (item: PlaylistItemType) {
   return {
     type: UPDATING_PLAYLIST_ITEM,
     item: item,
@@ -206,7 +214,7 @@ export function updatingPlaylistItem(item: PlaylistItemType) {
   }
 }
 
-export function playlistItemMoved(item: PlaylistItemType, toAfter) {
+export function playlistItemMoved (item: PlaylistItemType, toAfter: number | null) {
   return {
     type: PLAYLIST_ITEM_MOVED,
     item: item,
@@ -215,10 +223,65 @@ export function playlistItemMoved(item: PlaylistItemType, toAfter) {
   }
 }
 
-export function playlistItemUpdated(item: PlaylistItemType) {
+export function playlistItemUpdated (item: PlaylistItemType) {
   return {
     type: PLAYLIST_ITEM_UPDATED,
     item: item,
     receivedAt: Date.now()
+  }
+}
+
+// Sagas
+
+export function * initializePlaylistItemsSaga (action: any): Generator<any, any, any> {
+  // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
+  yield put(fetchingPlaylistItems())
+
+  try {
+    // call async fetchPlaylistItems api function.
+    // when the promise returns, yield that value from the generator
+    // and also store its value to the playlist variable
+    // (noted bc it was confusing to me that both of those things would happen)
+    let playlist = yield call(fetchPlaylistItems)
+
+    // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
+    yield put(receivePlaylistItems(playlist))
+  } catch (e) {
+    yield put(playlistErrorOccured(e.message))
+  }
+}
+
+export function * removePlaylistItemSaga (action: any): Generator<any, any, any> {
+  yield put(removingPlaylistItem(action.itemId))
+  try {
+    yield call(deletePlaylistItem, action.itemId)
+    yield put(playlistItemRemoved(action.itemId))
+  } catch (e) {
+    yield put(playlistErrorOccured(e.message))
+  }
+}
+
+export function * archivePlaylistItemSaga (action: any): Generator<any, any, any> {
+  yield put(archivingPlaylistItem(action.item))
+
+  try {
+    action.item.attributes.status = 'played'
+    action.item.attributes.finished = (new Date().toString())
+
+    let itemResult = yield call(updatePlaylistItem, action.item)
+    yield put(playlistItemArchived(itemResult))
+  } catch (e) {
+    yield put(playlistErrorOccured(e.message))
+  }
+}
+
+export function * movePlaylistItemSaga (action: any): Generator<any, any, any> {
+  yield put(updatingPlaylistItem(action.item))
+
+  try {
+    action.item.attributes.after_id = action.toAfter
+    yield call(updatePlaylistItem, action.item)
+  } catch (e) {
+    yield put(playlistErrorOccured(e.message))
   }
 }

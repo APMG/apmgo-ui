@@ -1,11 +1,16 @@
+// @flow
 import { PlaylistItemType } from './types'
-import AudioPlayerState from '../models/AudioPlayerState'
 
 export class ActionType {
   type: string = 'DEFAULT'
-  data: Array<{}> = []
-  receivedAt: Number
-  item_id : number
-  message: string
+  data: Array<PlaylistItemType> = []
   item: PlaylistItemType
+  itemId: number
+  receivedAt: Number
+  message: string
+  from: number
+  to: number
+  currentTime: number
+  duration: number
+  volume: number
 }

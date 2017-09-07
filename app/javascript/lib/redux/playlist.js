@@ -1,29 +1,19 @@
 // @flow
 import type { PlaylistItemType } from './types'
-import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import { ActionType } from './defaults'
 import { UPDATE_PLAYTIME } from './audio-player'
 import {
-  fetchingPlaylistItems,
-  removingPlaylistItem,
-  playlistErrorOccured,
-  archivingPlaylistItem,
-  playlistItemRemoved,
-  playlistItemArchived,
-  updatingPlaylistItem,
   PLAYLIST_ITEM_ARCHIVED,
   PLAYLIST_ITEM_REMOVED
 } from './data'
-import { put, call } from 'redux-saga/effects'
 
 // Actions
-export const RECEIVE_PLAYLIST_ITEMS : string = 'RECEIVE_PLAYLIST_ITEMS'
-export const INITIALIZE_PLAYLIST : string = 'INITIALIZE_PLAYLIST'
-export const REMOVE_PLAYLIST_ITEM : string = 'REMOVE_PLAYLIST_ITEM'
-export const ARCHIVE_PLAYLIST_ITEM : string = 'ARCHIVE_PLAYLIST_ITEM'
-export const UPDATE_PLAYLIST_ITEM : string = 'UPDATE_PLAYLIST_ITEM'
-export const MOVE_PLAYLIST_ITEM : string = 'MOVE_PLAYLIST_ITEM'
-export const ADD_PLAYLIST_ITEM : string = 'ADD_PLAYLIST_ITEM'
+export const RECEIVE_PLAYLIST_ITEMS : string = 'bragi/playlist/RECEIVE_PLAYLIST_ITEMS'
+export const REMOVE_PLAYLIST_ITEM : string = 'bragi/playlist/REMOVE_PLAYLIST_ITEM'
+export const ARCHIVE_PLAYLIST_ITEM : string = 'bragi/playlist/ARCHIVE_PLAYLIST_ITEM'
+export const UPDATE_PLAYLIST_ITEM : string = 'bragi/playlist/UPDATE_PLAYLIST_ITEM'
+export const MOVE_PLAYLIST_ITEM : string = 'bragi/playlist/MOVE_PLAYLIST_ITEM'
+export const ADD_PLAYLIST_ITEM : string = 'bragi/playlist/ADD_PLAYLIST_ITEM'
 
 // Reducer
 export default function reducer (playlistState: Array<PlaylistItemType> = [], action: ActionType = new ActionType()) {
@@ -32,7 +22,7 @@ export default function reducer (playlistState: Array<PlaylistItemType> = [], ac
       return action.data
 
     case PLAYLIST_ITEM_REMOVED:
-      return playlistState.filter(item => item.id !== action.item_id)
+      return playlistState.filter(item => item.id !== action.itemId)
 
     case PLAYLIST_ITEM_ARCHIVED:
       return playlistState.filter(item => item.id !== action.item.id)
@@ -58,7 +48,7 @@ export default function reducer (playlistState: Array<PlaylistItemType> = [], ac
 
     case UPDATE_PLAYTIME:
       return playlistState.map(item => {
-        if (item.id === action.item_id) {
+        if (item.id === action.itemId) {
           item.attributes.playtime = action.currentTime
           return {...item}
         } else {
@@ -82,7 +72,7 @@ export function receivePlaylistItems (data: Array<PlaylistItemType>) {
 export function removePlaylistItem (itemId: number) {
   return {
     type: REMOVE_PLAYLIST_ITEM,
-    item_id: itemId,
+    itemId: itemId,
     receivedAt: Date.now()
   }
 }
@@ -103,13 +93,6 @@ export function archivePlaylistItem (item: PlaylistItemType) {
   }
 }
 
-export function initializePlaylist () {
-  return {
-    type: INITIALIZE_PLAYLIST,
-    receivedAt: Date.now()
-  }
-}
-
 export function movePlaylistItem (from: number, to: number) {
   return {
     type: MOVE_PLAYLIST_ITEM,
@@ -119,63 +102,10 @@ export function movePlaylistItem (from: number, to: number) {
   }
 }
 
-// Sagas
-
-export function * initializePlaylistItemsSaga (action: any) {
-  // Dispatch the "FETCHING_PLAYLIST_ITEMS" action to update the application status
-  yield put(fetchingPlaylistItems())
-
-  try {
-    // call async fetchPlaylistItems api function.
-    // when the promise returns, yield that value from the generator
-    // and also store its value to the playlist variable
-    // (noted bc it was confusing to me that both of those things would happen)
-    let playlist = yield call(fetchPlaylistItems)
-
-    // Dispatch the RECEIVE_PLAYLIST_ITEMS action with the data from the prior call
-    yield put( receivePlaylistItems(playlist) );
-  } catch (e) {
-    yield put( playlistErrorOccured(e.message) ) ;
-  }
-}
-
-export function* removePlaylistItemSaga(action) {
-  yield put ( removingPlaylistItem(action.item_id) );
-  try {
-    yield call( deletePlaylistItem, action.item_id )
-    yield put ( playlistItemRemoved( action.item_id ) )
-  } catch (e) {
-    yield put( playlistErrorOccured( e.message ) )
-  }
-}
-
-export function* archivePlaylistItemSaga(action) {
-  yield put ( archivingPlaylistItem(action.item) );
-
-  try {
-    action.item.attributes.status = "played"
-    action.item.attributes.finished = (new Date().toString())
-
-    let itemResult = yield call(updatePlaylistItem, action.item)
-    yield put ( playlistItemArchived( itemResult ) )
-  } catch (e) {
-    yield put( playlistErrorOccured( e.message ) )
-  }
-}
-
-export function * movePlaylistItemSaga (action: any) {
-  yield put(updatingPlaylistItem(action.item))
-
-  try {
-    action.item.attributes.after_id = action.toAfter
-    let itemResult = yield call(updatePlaylistItem, action.item)
-  } catch (e) {
-    yield put(playlistErrorOccured(e.message))
-  }
-}
-
 function arrayMove (array: Array<any>, from: number, to: number) {
-  return array.splice(to, 0, array.splice(from, 1)[0])
+  let item = array.splice(from, 1)[0]
+  array.splice(to, 0, item)
+  return array.slice()
 }
 
 function doMove (playlist: Array<PlaylistItemType>, from: number, to: number) {

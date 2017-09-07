@@ -2,17 +2,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { initializePlaylist } from '../lib/redux/playlist'
+import { initializePlaylist } from '../lib/redux/data'
 import { BragiItemChannelSubscription } from '../lib/service/cable'
 import apmAccount from '../lib/service/apm-account'
 import store from '../lib/redux/store'
 import App from '../lib/components/App'
 import '../lib/styles/global.scss'
-
-// Improved tap events
-// http://stackoverflow.com/a/34015469/988941
-import injectTapEventPlugin from 'react-tap-event-plugin'
-injectTapEventPlugin()
 
 // Verify we have a current auth token, then fetch data
 if (apmAccount.get_expires_at() < Date.now()) {

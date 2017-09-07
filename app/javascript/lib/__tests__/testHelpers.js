@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 import configureStore from 'redux-mock-store'
@@ -32,24 +31,24 @@ export const defaultTestState = {
   audioPlayer: new AudioPlayerState({currentTrackId: itemFixtures[0].id})
 }
 
-export function getSnapshotJson (Component: Component<*, *, *>, customTestState?: any = {}) {
+export function getSnapshotJson (Component: Component<*, *, *> | React$Element<*>, customTestState?: any = {}) {
   let renderedComponent = getRenderedComponent(Component, customTestState)
   let tree = renderedComponent.toJSON()
   return tree
 }
 
-export function getRenderedComponent (Component: Component<*, *, *>, customTestState?: any = {}) {
+export function getRenderedComponent (Component: Component<*, *, *> | React$Element<*>, customTestState?: any = {}) {
   let wrappedComponent = getWrappedComponent(Component, customTestState)
 
   return renderer.create(wrappedComponent)
 }
 
-export function getWrappedComponent (Component: Component<*, *, *>, customTestState?: any = {}) {
+export function getWrappedComponent (Component: Component<*, *, *> | React$Element<*>, customTestState?: any = {}) {
   let store = getMockStore(customTestState)
   return wrapComponent(Component, store)
 }
 
-export function wrapComponent (Component: Component<*, *, *>, store: any) {
+export function wrapComponent (Component: Component<*, *, *> | React$Element<*>, store: any) {
   return (
     <Provider store={store}>
       {Component}

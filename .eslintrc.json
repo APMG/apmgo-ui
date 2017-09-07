@@ -9,6 +9,7 @@
   "rules": {
     "jsx-quotes": 0,
     "react/jsx-no-bind": 0,
-    "react/no-unused-prop-types": 0
+    "react/no-unused-prop-types": 0,
+    "handle-callback-err": 0
   }
 }
