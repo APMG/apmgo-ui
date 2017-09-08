@@ -21,9 +21,8 @@ if (apmAccount.get_expires_at() < Date.now()) {
       store.dispatch(initializePlaylist())
     })
     .catch(error => {
-      // TODO: Error handling
-      console.error('Could not refresh access token')
-      throw new Error('Could not refresh access token')
+      // The session has expired, user must log in again
+      window.location.href = apmAccount.log_in_path()
     })
 } else {
   store.dispatch(initializePlaylist())
