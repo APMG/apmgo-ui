@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
-import ApmLogo from './svg/ApmLogo.js'
 
+import ApmLogo from './svg/ApmLogo.js'
 import './MainMenu.scss'
 
 type MainMenuProps = {
