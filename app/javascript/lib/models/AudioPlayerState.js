@@ -1,5 +1,4 @@
 // @flow
-
 type AudioPlayerStateParams = {
   currentTrackId?: number,
   paused?: boolean,

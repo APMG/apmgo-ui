@@ -1,17 +1,12 @@
 // @flow
 import React from 'react'
-import ApmLogo from './svg/ApmLogo.js'
 
+import ApmLogo from './svg/ApmLogo.js'
 import './MainMenu.scss'
 
 type MainMenuProps = {
-  name: string,
-  logoutPath: string
-}
-
-let mainMenuDefaultProps = {
-  name: 'Listener',
-  logoutPath: ''
+  accountName?: string,
+  logoutPath?: string
 }
 
 class MainMenu extends React.Component {
@@ -19,7 +14,7 @@ class MainMenu extends React.Component {
     menuIsOpen: boolean
   }
 
-  constructor (props: MainMenuProps = mainMenuDefaultProps) {
+  constructor (props: MainMenuProps) {
     super(props)
     this.state = {
       menuIsOpen: false
@@ -47,21 +42,23 @@ class MainMenu extends React.Component {
   }
 
   _rightMenu () {
+    const { accountName, logoutPath } = this.props
+    const toggle = this._toggleMenu.bind(this)
     return (
       <div styleName="account">
         <button
           type="button"
           styleName="link"
-          onClick={this._toggleMenu.bind(this)}
+          onClick={toggle}
         >
-          {this.props.name} &#9662;
+          {accountName || 'Listener'} &#9662;
         </button>
         <ul styleName={`menu ${this._menuOpenClass()}`}>
           <li>
-            <a href={this.props.logoutPath} styleName="link">My Account</a>
+            <a href={logoutPath} styleName="link">My Account</a>
           </li>
           <li>
-            <a href={this.props.logoutPath} styleName="link">Log Out</a>
+            <a href={logoutPath} styleName="link">Log Out</a>
           </li>
         </ul>
       </div>

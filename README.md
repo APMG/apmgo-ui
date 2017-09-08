@@ -34,4 +34,21 @@ $ invoker add_http rails 3001
 
 React components in this project will be written using the Redux approach of "Container" and "Presentational" components (also referred to as "Smart" and "Dumb"). Where possible, container and presentational components will be grouped together in the same file. Additionally, components will be grouped together into directories by domain.
 
-Redux actions and reducers will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case.
+### Ducks
+
+Redux actions, reducers, and sagas will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case. The app uses three ducks, located in the `/app/javascript/lib/redux` directory.
+
+* **The Audio Player duck** lives in `audio-player.js`. It manages state and provides action creators related to the audio player itself: which track is playing (just the id), how long the track is, the current playtime, volume, play/pause status, mute status etc.
+
+* **The Data duck** lives in `data.js`. It handles things related to the api layer: when an item is deleted, or archived, or when the app first fetches a user's playlist. Because the Data duck handles all of the app's asynchronous actions, all of the app's [Sagas](https://redux-saga.js.org/) are located here.
+
+* **The Playlist duck** lives in `playlist.js`. It manages state and provides action creators related to the app's representation of the playlist and each item in it. For example, when an item plays for a second, the Playlist duck updates that specific item's `currentTime` property.
+
+#### Ducks work together!
+We take pains to separate concerns and avoid redundancy. But sometimes, ducks will have overlapping areas of interest. For example, when the `currentTime` on a playing item changes (once per second, if it's playing), then the Playlist duck needs to update that playlist item, and the Audio Player duck needs to update its own `currentTime` so it can properly track and display it. When an item is moved, the Playlist Duck reorders its own internal array, and the Data Duck sends out an API call to make sure the move is persisted.
+
+#### Ducks get confused
+
+It is sometimes difficult to determine which action belongs with which duck. When a user drags a `PlaylistItem`, it needs to be moved within the redux state as it is dragged across each `ItemSlot` in order to update the UI. The Playlist duck handles that. But when it is finally dropped in its new position, the Data duck fires an API call. Where should the `movePlaylistItem` action live?
+
+For now the operation is split into two actions: `movePlaylistItem`, an imperative command to reorder the redux playlist, and `playlistItemMoved`, an event signaling the action is complete and it's time to call the api. It does make sense, but it might make just as much sense the other way around, and it's not obvious which action does what just by reading the name. So, naming conventions could be improved for clarity.

@@ -6,7 +6,7 @@ import TimeScrubber from './TimeScrubber'
 describe('Time Scrubber Component', () => {
   describe('Presenter', () => {
     it('Renders', () => {
-      let tree = getSnapshotJson(<TimeScrubber paused={true} />)
+      let tree = getSnapshotJson(<TimeScrubber paused />)
       expect(tree).toMatchSnapshot()
     })
   })

@@ -1,7 +1,11 @@
 // @flow
 
 export interface PlaylistItemAttributes {
+  // seems like the api sends us "after" but wants
+  // to receive "after_id" e.g. in calls to update
+  // until that gets sorted, we have them both
   after: number,
+  after_id: number,
   audio_description: string,
   audio_hosts: string,
   audio_identifier: string,

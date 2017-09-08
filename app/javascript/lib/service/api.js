@@ -1,11 +1,11 @@
 // @flow
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 import apmAccount from './apm-account'
 
 export class BragiApiClient {
-  instance: AxiosInstance
+  instance: any
 
-  static getInstance = function (): AxiosInstance {
+  static getInstance = function (): any {
     if (this.instance) {
       return this.instance
     }

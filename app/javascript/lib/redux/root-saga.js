@@ -1,18 +1,20 @@
-import { all, takeEvery } from "redux-saga/effects"
+// @flow
+import { all, takeEvery } from 'redux-saga/effects'
 import {
-  INITIALIZE_PLAYLIST,
   REMOVE_PLAYLIST_ITEM,
-  ARCHIVE_PLAYLIST_ITEM,
+  ARCHIVE_PLAYLIST_ITEM
+} from './playlist'
+
+import { PLAYLIST_ITEM_MOVED,
+  INITIALIZE_PLAYLIST,
   initializePlaylistItemsSaga,
   removePlaylistItemSaga,
   archivePlaylistItemSaga,
   movePlaylistItemSaga
-} from "./playlist"
-
-import { PLAYLIST_ITEM_MOVED } from './data'
+} from './data'
 
 // Take all the individual sagas and compose them into one root saga to bootstrap onto the saga middleware
-export default function* rootSaga() {
+export default function * rootSaga (): Generator<any, any, any> {
   yield all([
     takeEvery(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga),
     takeEvery(REMOVE_PLAYLIST_ITEM, removePlaylistItemSaga),

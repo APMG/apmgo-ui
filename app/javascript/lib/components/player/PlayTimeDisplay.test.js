@@ -1,4 +1,4 @@
-
+// @flow
 import React from 'react'
 import { getSnapshotJson } from '../../__tests__/testHelpers'
 import PlayTimeDisplay from './PlayTimeDisplay'
