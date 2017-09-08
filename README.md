@@ -40,9 +40,9 @@ Redux actions and reducers will be grouped together in [Ducks](https://github.co
 
 * **The Audio Player duck** lives in `audio-player.js`. It manages state and provides action creators related to the audio player itself: which track is playing (just the id), how long the track is, the current playtime, volume, play/pause status, mute status etc.
 
-* **The Playlist duck** lives in `playlist.js`. It manages state and provides action creators related to the app's representation of the playlist and each item in it. For example, when an item plays for a second, the Playlist duck updates that specific item's `currentTime` property.
-
 * **The Data duck** lives in `data.js`. It handles things related to the api layer: when an item is deleted, or archived, or when the app first fetches a user's playlist. Because the Data duck handles all of the app's asynchronous actions, all of the app's [Sagas](https://redux-saga.js.org/) are located here.
+
+* **The Playlist duck** lives in `playlist.js`. It manages state and provides action creators related to the app's representation of the playlist and each item in it. For example, when an item plays for a second, the Playlist duck updates that specific item's `currentTime` property.
 
 #### Ducks work together!
 We take pains to separate concerns and avoid redundancy. But sometimes, ducks will have overlapping areas of interest. For example, when the `currentTime` on a playing item changes (once per second, if it's playing), then the Playlist duck needs to update that playlist item, and the Audio Player duck needs to update its own `currentTime` so it can properly track and display it. When an item is moved, the Playlist Duck reorders its own internal array, and the Data Duck sends out an API call to make sure the move is persisted.
