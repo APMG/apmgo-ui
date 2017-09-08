@@ -36,7 +36,7 @@ React components in this project will be written using the Redux approach of "Co
 
 ### Ducks
 
-Redux actions and reducers will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case. The app uses three ducks, located in the `/app/javascript/lib/redux` directory.
+Redux actions, reducers, and sagas will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case. The app uses three ducks, located in the `/app/javascript/lib/redux` directory.
 
 * **The Audio Player duck** lives in `audio-player.js`. It manages state and provides action creators related to the audio player itself: which track is playing (just the id), how long the track is, the current playtime, volume, play/pause status, mute status etc.
 
