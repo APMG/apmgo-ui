@@ -28,7 +28,7 @@ const dragSourceSpec = {
 }
 
 // Much like redux `mapStateToProps` and `mapDispatchToProps`
-// the objectreturned from the "collect" function will
+// the object returned from the "collect" function will
 // be assigned to the Drag Source item's props
 function dragSourceCollect (connect, monitor) {
   return {
