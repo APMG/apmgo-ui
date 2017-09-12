@@ -8,10 +8,15 @@ type MainMenuProps = {
   accountPath: string
 }
 
-function insertHeader (selector: string, props: MainMenuProps) {
-  let element = getElement(selector)
+function insertHeader (element: string | HTMLElement, props: MainMenuProps) {
+  if (typeof element === 'string') {
+    element = getElement(element)
+  }
   element.innerHTML = getTemplate(props)
   addDropdownListener(element)
+
+  // returning the element makes testing easier
+  return element
 }
 
 export { insertHeader }
