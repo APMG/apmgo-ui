@@ -1,5 +1,6 @@
 // @flow
 import ApmLogo from './svg/ApmLogo.js'
+import '../styles/modules/_main_menu.scss'
 
 type MainMenuProps = {
   accountName: string,
