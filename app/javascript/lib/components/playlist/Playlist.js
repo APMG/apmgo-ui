@@ -30,7 +30,7 @@ export class PlaylistPresenter extends React.Component {
 
   render () {
     if (!this.props.playlist || !this.props.playlist.length) {
-      return <h1>Loading ...</h1>
+      return <p>Loading YOUR playlist</p>
     }
     return (
       <main role="main">

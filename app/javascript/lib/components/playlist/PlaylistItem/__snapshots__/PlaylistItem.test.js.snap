@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Playlist Component Presenter Renders 1`] = `
-<h1>
-  Loading ...
-</h1>
+<p>
+  Loading YOUR playlist
+</p>
 `;
 
 exports[`Playlist Component Presenter Renders With Empty Data 1`] = `
-<h1>
-  Loading ...
-</h1>
+<p>
+  Loading YOUR playlist
+</p>
 `;

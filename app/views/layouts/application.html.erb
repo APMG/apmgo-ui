@@ -2,16 +2,27 @@
 <html>
   <head>
     <title>BragiUi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <%= stylesheet_pack_tag    'init', media: 'all' %>
     <%= stylesheet_pack_tag    'app', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
 
   <body>
-    <div id="app" class="app">
-      <%= yield %>
+    <div class="container">
+      <div id="header"></div>
+      <div id="app">
+        <div id="loading"></div>
+        <noscript>
+          <div style="border: 1px solid purple; padding: 10px">
+            <span style="color:red">JavaScript is required to access your playlist</span>
+          </div>
+        </noscript>
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>
