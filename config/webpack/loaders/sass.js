@@ -11,7 +11,7 @@ module.exports = {
           minimize: env.NODE_ENV === 'production',
           modules: true,
           sourceMap: true,
-          localIdentName: '[name]'// __[local]___[hash:base64:5]'
+          localIdentName: '[name]__[local]___[hash:base64:5]'
         }
       },
       { loader: 'postcss-loader', options: { sourceMap: true } },
