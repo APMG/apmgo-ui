@@ -21,9 +21,7 @@ class AppPresenter extends Component {
   render () {
     return (
       <Provider store={store}>
-        <div>
-          <Playlist playlist={this.props.playlist} />
-        </div>
+        <Playlist playlist={this.props.playlist} />
       </Provider>
     )
   }
