@@ -12,6 +12,7 @@ export const itemFixtures = [
       'audio_title': 'Test Audio',
       'audio_url': 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
       'playtime': 30,
+      'source': '//mprnews.org/story/2017/09/05/diversity-grows-in-minn-schools-but-not-school-boards',
       'audio_description': 'Nice description you have there ...'
     }
   },
@@ -21,6 +22,7 @@ export const itemFixtures = [
       'audio_title': 'Another Test Audio',
       'audio_url': 'https://play.publicradio.org/api-2.0.1/o/phc/2017/06/17/phc_20170617_128.mp3',
       'playtime': 60,
+      'source': '//mprnews.org/story/2017/09/05/diversity-grows-in-minn-schools-but-not-school-boards',
       'audio_description': 'How shall I describe thee?'
     }
   }

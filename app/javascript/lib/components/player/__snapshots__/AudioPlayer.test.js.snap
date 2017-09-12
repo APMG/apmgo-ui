@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AudioPlayer Component Test Presenter Renders 1`] = `
-<div>
+<div
+  className="AudioPlayer__player___55AvF"
+>
   <h3>
     Now playing: Test Audio
   </h3>
