@@ -66,12 +66,16 @@ function addDropdownListener (element: HTMLElement) {
   if (acctButton) {
     acctButton.addEventListener('click', function () {
       let acctMenu = element.querySelector('.MainMenu_account ul.MainMenu_menu')
-      if (acctMenu) {
-        if (!acctMenu.classList.contains('MainMenu_menu-visible')) {
-          acctMenu.className += ' MainMenu_menu-visible'
-        } else {
-          acctMenu.classList.remove('MainMenu_menu-visible')
-        }
+
+      if (!acctMenu) {
+        return
+      }
+
+      let visible = acctMenu.classList.contains('MainMenu_menu-visible')
+      if (visible) {
+        acctMenu.classList.remove('MainMenu_menu-visible')
+      } else {
+        acctMenu.className += ' MainMenu_menu-visible'
       }
     })
   }
