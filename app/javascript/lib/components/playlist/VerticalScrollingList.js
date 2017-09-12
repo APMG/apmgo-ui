@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import withScrolling, { createVerticalStrength } from 'react-dnd-scrollzone'
 import './Playlist.scss'
 
-const ScrollingComponent = withScrolling('ul')
+const ScrollingComponent = withScrolling('ol')
 const linearVerticalStrength = createVerticalStrength(100)
 
 function ease (val) {
@@ -27,7 +27,7 @@ export default class VerticalScrollingList extends Component {
   }
   render () {
     return (
-      <ScrollingComponent styleName='c' verticalStrength={vStrength}>
+      <ScrollingComponent styleName='list' verticalStrength={vStrength}>
         {this.props.children}
       </ScrollingComponent>
     )

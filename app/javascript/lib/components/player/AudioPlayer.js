@@ -11,6 +11,8 @@ import TimeKeeper from './TimeKeeper'
 import VolumeSlider from './VolumeSlider'
 import PlayTimeDisplay from './PlayTimeDisplay'
 
+import './AudioPlayer.scss'
+
 import {
   audioMetaDataLoaded,
   audioCanPlay,
@@ -107,7 +109,7 @@ export class AudioPlayerPresenter extends React.Component {
 
   render () {
     return (
-      <div>
+      <div styleName="player">
         <h3>
           { this.props.item
             ? 'Now playing: ' + this.props.item.attributes.audio_title

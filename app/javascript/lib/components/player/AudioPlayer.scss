@@ -1,0 +1,16 @@
+@import '../../styles/helpers';
+
+.player {
+  height: $player-height-mobile;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-player;
+  color: $color-white;
+  background-color: $color-grey-dark;
+
+  @include media($media-tablet) {
+    height: $player-height-tablet;
+  }
+}

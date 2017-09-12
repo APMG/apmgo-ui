@@ -1,1 +1,15 @@
 @import '../../styles/helpers';
+
+.list {
+  margin-bottom: $player-height-mobile;
+  position: relative;
+  z-index: $z-playlist;
+
+  @include media($media-tablet) {
+    margin-bottom: $player-height-tablet;
+  }
+
+  > * {
+    padding-bottom: 10px;
+  }
+}

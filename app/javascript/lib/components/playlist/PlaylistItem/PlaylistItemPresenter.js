@@ -56,7 +56,7 @@ export default class PlaylistItemPresenter extends Component {
         <p
           className='hamburger'
           onClick={this._showMenu.bind(this)}>
-          hamburger
+          &bull;&bull;&bull;
         </p>
       )
     }
@@ -66,22 +66,33 @@ export default class PlaylistItemPresenter extends Component {
     const { setTrackAsActive, play, item } = this.props
 
     const rendered = (
-      <div style={{display: 'block', backgroundColor: 'lightgray', marginBottom: '5px', padding: '10px'}}>
+      <div styleName="tile">
+        <div
+          styleName="img"
+          style={{backgroundImage: 'url(//via.placeholder.com/300x200/123456/ffffff?text=Any+size+img)'}}
+          onClick={() => setTrackAsActive(item)}
+          onDoubleClick={play}
+        />
         <div
           onClick={() => setTrackAsActive(item)}
           onDoubleClick={play}
-          style={{display: 'inline-block', width: '66%'}}
-          styleName='a'
+          styleName="content"
         >
-          <h3>{item.attributes.audio_title}</h3>
-          <p>{truncateText(item.attributes.audio_description)}</p>
+          <div styleName="published">Published ■■■■■■ ■■, ■■■■</div>
+          <div styleName="title">
+            <h2 className="hdg hdg-2">{item.attributes.audio_title}</h2>
+          </div>
+          <div styleName="origin">
+            <img styleName="origin_icon" src="//via.placeholder.com/32x32/123456/ffffff" />
+            {item.attributes.source.replace(/^\/\//, '')}
+            <a href={item.attributes.origin_url} styleName="origin_link" target="_blank">Source &raquo;</a>
+          </div>
         </div>
         <div
           onClick={this._showMenu.bind(this)}
           onMouseLeave={this._hideMenu.bind(this)}
-          className='right-menu'
-          styleName='b'
-          style={{display: 'inline-block', width: '33%', verticalAlign: 'top'}}>
+          styleName='menuButton'
+        >
           {this._rightIconMenu()}
         </div>
       </div>

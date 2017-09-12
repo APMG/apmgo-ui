@@ -16,8 +16,8 @@ type ItemSlotProps = {
 
 const ItemSlot = (props: ItemSlotProps) => {
   return props.connectDropTarget(
-    <li style={{height: '90px', maxHeight: '90px', marginBottom: '5px'}}>
-      <div style={{display: props.isOver ? 'none' : 'block'}}>
+    <li style={{opacity: props.isOver ? '0' : '1'}}>
+      <div>
         { props.children }
       </div>
     </li>

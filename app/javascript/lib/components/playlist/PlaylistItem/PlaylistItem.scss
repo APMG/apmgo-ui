@@ -1,7 +1,85 @@
 @import '../../../styles/helpers';
 
-.a {
+.tile {
+  @include tile();
+  position: relative;
+  overflow: hidden;
 }
 
-.b {
+.tile-drag {
+  composes: tile;
+  box-shadow: 0 4px 10px rgba($color-black, .35);
+}
+
+.img {
+  width: 75px;
+  height: 100%;
+  min-height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-position: center center;
+  background-size: cover;
+
+  @include media($media-mobile-2) {
+    width: 100px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  padding-left: 85px;
+  min-height: 100px;
+
+  @include media($media-mobile-2) {
+    padding-left: 112px;
+  }
+}
+
+.published {
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: $color-text-light;
+}
+
+.title {
+  margin-bottom: 6px;
+}
+
+.origin {
+  margin-top: auto;
+  font-size: 12px;
+  color: $color-text-light;
+  vertical-align: middle;
+}
+
+.origin_icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: -3px;
+}
+
+.origin_link {
+  margin-left: 6px;
+  text-decoration: underline;
+  font-style: italic;
+  color: $color-link;
+
+  &:hover {
+    color: $color-link-hover;
+  }
+}
+
+.menuButton {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  cursor: pointer;
+  color: $color-text-light;
 }
