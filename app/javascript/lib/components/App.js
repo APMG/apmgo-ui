@@ -6,8 +6,6 @@ import MultiBackend from 'react-dnd-multi-backend'
 
 import store from '../redux/store'
 import ApmHTML5toTouch from '../drag-drop/ApmHTML5toTouch'
-// import MainMenu from './MainMenu'
-// import './MainMenu.scss'
 import Playlist from './playlist/Playlist'
 import { PlaylistItemType } from '../redux/types'
 
@@ -23,11 +21,7 @@ class AppPresenter extends Component {
   render () {
     return (
       <Provider store={store}>
-        <div className="container">
-          {/* <MainMenu
-            accountName={this.props.accountName}
-            logoutPath={this.props.logoutPath}
-          /> */}
+        <div>
           <Playlist playlist={this.props.playlist} />
         </div>
       </Provider>
