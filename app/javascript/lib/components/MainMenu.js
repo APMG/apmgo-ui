@@ -30,7 +30,7 @@ const getTemplate = (props: MainMenuProps) => {
     <header class="MainMenu_header" role="banner">
       <div class="MainMenu_logo">
         ${ApmLogo()}
-        <span class="MainMenu_invisible">American Public Media</span>
+        <span class="invisible">American Public Media</span>
       </div>
       <nav class="MainMenu_nav" role="navigation">
         <ul class="MainMenu_list">

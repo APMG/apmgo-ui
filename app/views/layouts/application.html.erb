@@ -14,9 +14,12 @@
     <div class="container">
       <div id="header"></div>
       <div id="app">
-        <p>
-          Loading app ...
-        </p>
+        <div id="loading"></div>
+        <noscript>
+          <div style="border: 1px solid purple; padding: 10px">
+            <span style="color:red">JavaScript is required to access your playlist</span>
+          </div>
+        </noscript>
         <%= yield %>
       </div>
     </div>
