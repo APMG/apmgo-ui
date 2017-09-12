@@ -8,11 +8,6 @@ import apmAccount from '../lib/service/apm-account'
 import App from '../lib/components/App'
 import '../lib/styles/global.scss'
 
-// Improved tap events
-// http://stackoverflow.com/a/34015469/988941
-import injectTapEventPlugin from 'react-tap-event-plugin'
-injectTapEventPlugin()
-
 BragiItemChannelSubscription.initiateSubscription(apmAccount.get_token())
 
 const initialize = () => {
