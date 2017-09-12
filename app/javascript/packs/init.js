@@ -25,7 +25,6 @@ function initializeApp () {
   document.querySelector('#loading').innerHTML = '<p>Loading ...</p>'
 
   System.import('./app').then((app) => {
-    console.log(app)
     app.initialize()
   })
 }
