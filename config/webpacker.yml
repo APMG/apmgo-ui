@@ -29,6 +29,8 @@ development:
     port: 9001
     https: true
 
+  compile: true
+
 test:
   <<: *default
 

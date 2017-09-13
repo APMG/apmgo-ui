@@ -79,6 +79,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
     "moxios": "^0.4.0",
+    "offline-plugin": "^4.8.3",
     "postcss-nested": "^2.1.2",
     "postcss-scss": "^1.0.2",
     "react-addons-test-utils": "^15.6.0",
@@ -91,8 +92,7 @@
     "teaspoon": "^6.6.0",
     "typescript": "^2.3.3",
     "webpack-dev-server": "^2.7.1",
-    "webpack-strip-block": "^0.2.0",
-    "workbox-webpack-plugin": "^2.0.1"
+    "webpack-strip-block": "^0.2.0"
   },
   "scripts": {
     "test": "jest --colors",

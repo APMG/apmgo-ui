@@ -14,9 +14,7 @@ const { env, settings, output, loadersDir } = require('./configuration.js')
 const extensionGlob = `**/*{${settings.extensions.join(',')}}*`
 const entryPath = join(settings.source_path, settings.source_entry_path)
 const packPaths = sync(join(entryPath, extensionGlob))
-
-const WorkboxPlugin = require('workbox-webpack-plugin')
-const DIST_DIR = 'dist'
+var OfflinePlugin = require('offline-plugin')
 
 let plugins = [
   new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
@@ -28,11 +26,7 @@ let plugins = [
     publicPath: output.publicPath,
     writeToFileEmit: true
   }),
-  new WorkboxPlugin({
-    globDirectory: DIST_DIR,
-    globPatterns: ['**/*.{html,js,css}'],
-    swDest: output.publicPath
-  })
+  new OfflinePlugin()
 ]
 
 module.exports = {
