@@ -1,5 +1,7 @@
 import apmAccount from '../lib/service/apm-account'
 import { insertHeader } from '../lib/components/MainMenu'
+import * as OfflinePluginRuntime from 'offline-plugin/runtime'
+OfflinePluginRuntime.install()
 
 // Verify we have a current auth token, then fetch data
 if (apmAccount.get_expires_at() < Date.now()) {
@@ -14,6 +16,7 @@ if (apmAccount.get_expires_at() < Date.now()) {
 } else {
   initializeApp()
 }
+
 
 function initializeApp () {
   insertHeader('#header', {
