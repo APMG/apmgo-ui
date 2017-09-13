@@ -7,18 +7,27 @@ type MainMenuProps = {
   accountPath: string
 }
 
-function insertHeader (element: string | HTMLElement, props: MainMenuProps) {
+function insertMenu (element: string | HTMLElement, props: MainMenuProps) {
   if (typeof element === 'string') {
     element = getElement(element)
   }
-  element.innerHTML = getTemplate(props)
+
+  let menu = getMenu(props)
+  element.appendChild(menu)
   addDropdownListener(element)
 
   // returning the element makes testing easier
   return element
 }
 
-export { insertHeader }
+export { insertMenu }
+
+function getMenu (props: MainMenuProps) {
+  let menu = document.createElement('div')
+  menu.className = 'mainMenu_account'
+  menu.innerHTML = getTemplate(props)
+  return menu
+}
 
 function getElement (selector: string) {
   let element = document.querySelector(selector)
@@ -32,34 +41,22 @@ function getElement (selector: string) {
 
 const getTemplate = (props: MainMenuProps) => {
   const template = `
-    <header class="mainMenu_header" role="banner">
-      <div class="mainMenu_logo">
-        ${ApmLogo()}
-        <span class="invisible">American Public Media</span>
-      </div>
-      <nav class="mainMenu_nav" role="navigation">
-        <ul class="mainMenu_list">
-          <li><a class="mainMenu_link mainMenu_link-active mainMenu_link-highlighted" href="#">Playlist</a></li>
-          <li><a class="mainMenu_link" href="#">Archive</a></li>
-        </ul>
-        <div class="mainMenu_account">
-          <button
-            type="button"
-            class="mainMenu_link"
-          >
-            ${props.accountName} &#9662;
-          </button>
-          <ul class='mainMenu_menu'>
-            <li>
-              <a href='${props.accountPath}' class="mainMenu_link" id="account">My Account</a>
-            </li>
-            <li>
-              <a href='${props.logoutPath}' class="mainMenu_link" id='logout'>Log Out</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+     <div class="mainMenu_account">
+       <button
+         type="button"
+         class="mainMenu_link"
+       >
+         ${props.accountName} &#9662;
+       </button>
+       <ul class='mainMenu_menu'>
+         <li>
+           <a href='${props.accountPath}' class="mainMenu_link" id="account">My Account</a>
+         </li>
+         <li>
+           <a href='${props.logoutPath}' class="mainMenu_link" id='logout'>Log Out</a>
+         </li>
+       </ul>
+     </div>
   `
   return template
 }
