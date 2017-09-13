@@ -2,6 +2,7 @@
 
 exports[`VolumeSlider Component Presenter Renders 1`] = `
 <input
+  aria-label="Volume"
   max={1}
   min={0}
   onChange={[Function]}
