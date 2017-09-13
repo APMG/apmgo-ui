@@ -62,14 +62,39 @@ export default class PlaylistItemPresenter extends Component {
     }
   }
 
+  _displayImage (item) {
+    if (item.attributes.audio_image_url) {
+      return item.attributes.audio_image_url
+    } else {
+      return '//via.placeholder.com/300x200/123456/ffffff?text=Placeholder'
+    }
+  }
+
+  _publishDate (item) {
+    if (item.attributes.audio_publish_datetime) {
+      let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      let date = new Date(item.attributes.audio_publish_datetime)
+      let month = months[date.getMonth()]
+      let day = date.getDate()
+      let year = date.getFullYear()
+      let dateString = `${month} ${day}, ${year}`
+
+      return (
+        <div styleName="published">Published {dateString}</div>
+      )
+    }
+  }
+
   render () {
     const { setTrackAsActive, play, item } = this.props
+
+    console.log(item);
 
     const rendered = (
       <div styleName="tile">
         <div
           styleName="img"
-          style={{backgroundImage: 'url(//via.placeholder.com/300x200/123456/ffffff?text=Any+size+img)'}}
+          style={{backgroundImage: `url(${this._displayImage(item)})`}}
           onClick={() => setTrackAsActive(item)}
           onDoubleClick={play}
         />
@@ -78,7 +103,7 @@ export default class PlaylistItemPresenter extends Component {
           onDoubleClick={play}
           styleName="content"
         >
-          <div styleName="published">Published ■■■■■■ ■■, ■■■■</div>
+          {this._publishDate(item)}
           <div styleName="title">
             <h2 className="hdg hdg-2">{item.attributes.audio_title}</h2>
           </div>

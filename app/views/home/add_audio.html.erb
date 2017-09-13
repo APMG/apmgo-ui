@@ -1,4 +1,12 @@
+<ol>
 <% @entries.each do |entry| %>
+  <li style="clear: both;">
+  <% if entry.images.present? %>
+  <% image_url = entry.images.first.fallback %>
+  <% end %>
+  <% if image_url.present? %>
+    <img src="<%= image_url %>" alt="" style="float:left; width:100px; margin-right: 10px;">
+  <% end %>
   <h2><%= entry.headline %></h2>
   <p><%= entry.teaser %></p>
   <p><%= entry.slug %></p>
@@ -7,10 +15,13 @@
     <% entry.audio.each do |audio| %>
       <% audio_data = audio.apm_api.stream %>
       <% duration = audio_data.duration_time.split(':') %>
-      <li>
+      <li style="clear: both;">
         <script data-bragi-audio=true type="application/ld+json">
         {
           "@type": "AudioObject",
+          <% if image_url.present? %>
+          "imageUrl": "<%= image_url %>",
+          <% end %>
           "contentUrl": "<%= audio_data.http_file_path.sub(/^http/, 'https') %>",
           "description": "<%= audio_data.description %>",
           <% # Rolling my own iso8601 duration converter %>
@@ -34,12 +45,13 @@
         <h3>Listen: <%= audio_data.title %></h3>
         <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
       </li>
+      <% end %>
+    <% else %>
     <% end %>
-  <% else %>
-   <% binding.pry %>
-  <% end %>
-  </ol>
-  <hr />
+    </ol>
+    <hr />
+  </li>
 <% end %>
+</ol>
 
 <%= javascript_include_tag 'add_audio' %>

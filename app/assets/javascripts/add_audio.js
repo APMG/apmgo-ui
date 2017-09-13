@@ -60,22 +60,20 @@ function postAudioData(apiEndpoint, requestHeaders, audioMetadataJSON) {
       // Success!
       var resp = request.responseText;
       console.log("Request success")
-      debugger
     } else {
       // We reached our target server, but it returned an error
       console.error("Server error")
-      debugger
     }
   };
 
   request.onerror = function() {
     // There was a connection error of some sort
     console.error("Connection failed")
-    debugger
   };
 }
 
 function buildPayload(metadata) {
+  console.log(metadata);
   var payload = {
     data: {
         attributes: {
@@ -83,7 +81,9 @@ function buildPayload(metadata) {
             audio_description: metadata.description,
             audio_hosts: metadata.creator.name,
             audio_identifier: metadata.identifier,
+            audio_image_url: metadata.imageUrl,
             audio_program: null,
+            audio_publish_datetime: metadata.uploadDate,
             audio_title: metadata.name,
             audio_url: metadata.contentUrl,
             finished: null,
