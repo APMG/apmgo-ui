@@ -15,6 +15,26 @@ const extensionGlob = `**/*{${settings.extensions.join(',')}}*`
 const entryPath = join(settings.source_path, settings.source_entry_path)
 const packPaths = sync(join(entryPath, extensionGlob))
 
+const WorkboxPlugin = require('workbox-webpack-plugin')
+const DIST_DIR = 'dist'
+
+let plugins = [
+  new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
+  new ExtractTextPlugin({
+    filename: env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css',
+    allChunks: true
+  }),
+  new ManifestPlugin({
+    publicPath: output.publicPath,
+    writeToFileEmit: true
+  }),
+  new WorkboxPlugin({
+    globDirectory: DIST_DIR,
+    globPatterns: ['**/*.{html,js,css}'],
+    swDest: output.publicPath
+  })
+]
+
 module.exports = {
   entry: packPaths.reduce(
     (map, entry) => {
@@ -35,17 +55,7 @@ module.exports = {
     rules: sync(join(loadersDir, '*.js')).map(loader => require(loader))
   },
 
-  plugins: [
-    new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    new ExtractTextPlugin({
-      filename: env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css',
-      allChunks: true
-    }),
-    new ManifestPlugin({
-      publicPath: output.publicPath,
-      writeToFileEmit: true
-    })
-  ],
+  plugins: plugins,
 
   resolve: {
     extensions: settings.extensions,
