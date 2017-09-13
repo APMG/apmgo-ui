@@ -34,15 +34,15 @@ describe('MainMenu', function () {
 
   it('toggles visible class on click', function () {
     let rendered = insertHeader(testEl, testProps)
-    let acctButton = rendered.querySelector('button.MainMenu_link')
-    let acctMenu = rendered.querySelector('ul.MainMenu_menu')
+    let acctButton = rendered.querySelector('button.mainMenu_link')
+    let acctMenu = rendered.querySelector('ul.mainMenu_menu')
 
     expect(acctButton).not.toBe(null)
     expect(acctMenu).not.toBe(null)
 
-    expect(acctMenu.classList.contains('MainMenu_menu-visible')).toBe(false)
+    expect(acctMenu.classList.contains('is-visible')).toBe(false)
     acctButton.click()
-    expect(acctMenu.classList.contains('MainMenu_menu-visible')).toBe(true)
+    expect(acctMenu.classList.contains('is-visible')).toBe(true)
   })
 })
 
