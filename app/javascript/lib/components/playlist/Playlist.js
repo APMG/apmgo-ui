@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Preview } from 'react-dnd-multi-backend'
 
 import ItemSlot from './ItemSlot'
-import PlaylistItem from './PlaylistItem'
+import PlaylistItem, { type PlaylistItemProps } from './PlaylistItem'
+import { type PlaylistItemBeingDragged } from './PlaylistItem/DraggablePlaylistItem'
 import PlaylistItemPresenter from './PlaylistItem/PlaylistItemPresenter'
 import VerticalScrollingList from './VerticalScrollingList'
 import type { PlaylistItemType } from '../../redux/types'
@@ -19,11 +20,23 @@ type PlaylistProps = {
   playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
 }
 
+function makePreviewProps (item: PlaylistItemBeingDragged, style: any): PlaylistItemProps {
+  const stubFunk = (item: PlaylistItemType) => {}
+  return {
+    item: item.item,
+    style: style,
+    index: item.origIndex,
+    deleteTrack: stubFunk,
+    play: () => {},
+    archiveTrack: stubFunk,
+    playlistItemMoved: stubFunk,
+    setTrackAsActive: stubFunk
+  }
+}
+
 function generatePreview (type: string, item: any, style: any) {
-  return <PlaylistItemPresenter
-    item={item.item}
-    style={style}
-  />
+  const props = makePreviewProps(item, style)
+  return <PlaylistItemPresenter {...props} />
 }
 
 export class PlaylistPresenter extends React.Component {

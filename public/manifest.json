@@ -1,0 +1,8 @@
+{
+  "name": "BragiUI",
+  "short_name": "Bragi",
+  "start_url": "https://bragi.dev",
+  "display": "standalone",
+  "background_color": "#f4f4f4",
+  "description": "Your customizable audio queue from MPR radio and podcasts"
+}
