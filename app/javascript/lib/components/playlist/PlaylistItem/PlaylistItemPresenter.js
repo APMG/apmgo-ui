@@ -4,22 +4,6 @@ import { type PlaylistItemProps } from './PlaylistItem'
 
 import './PlaylistItem.scss'
 
-function removeLastWord (text: string) {
-  let lastSpace = text.lastIndexOf(' ')
-  return text.substr(0, lastSpace).trim()
-}
-
-function truncateText (text: string, maxLength: number = 200) {
-  if (text.length < maxLength) {
-    return text
-  }
-  text = removeLastWord(text.substr(0, maxLength)) + '...'
-
-  return text.length <= maxLength
-    ? text
-    : removeLastWord(text) + '...'
-}
-
 export default class PlaylistItemPresenter extends Component {
   props: PlaylistItemProps
   state: {
