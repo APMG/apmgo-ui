@@ -73,7 +73,6 @@ function postAudioData(apiEndpoint, requestHeaders, audioMetadataJSON) {
 }
 
 function buildPayload(metadata) {
-  console.log(metadata);
   var payload = {
     data: {
         attributes: {

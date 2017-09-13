@@ -4,6 +4,7 @@
   @include tile();
   position: relative;
   overflow: hidden;
+  z-index: $z-playlist-item;
 }
 
 .tile-drag {

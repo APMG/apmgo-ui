@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Preview } from 'react-dnd-multi-backend'
 
 import ItemSlot from './ItemSlot'
-import PlaylistItem, { PlaylistItemDragPreview } from './PlaylistItem'
+import PlaylistItem from './PlaylistItem'
+import PlaylistItemPresenter from './PlaylistItem/PlaylistItemPresenter'
 import VerticalScrollingList from './VerticalScrollingList'
 import type { PlaylistItemType } from '../../redux/types'
 import AudioPlayer from '../player/AudioPlayer'
@@ -19,7 +20,7 @@ type PlaylistProps = {
 }
 
 function generatePreview (type: string, item: any, style: any) {
-  return <PlaylistItemDragPreview
+  return <PlaylistItemPresenter
     item={item.item}
     style={style}
   />
@@ -48,8 +49,8 @@ export class PlaylistPresenter extends React.Component {
               </ItemSlot>
             )
           }
-          <Preview generator={generatePreview} />
         </VerticalScrollingList>
+        <Preview generator={generatePreview} />
       </main>
     )
   }

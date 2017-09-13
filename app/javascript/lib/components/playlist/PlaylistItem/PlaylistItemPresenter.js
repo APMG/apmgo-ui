@@ -86,12 +86,10 @@ export default class PlaylistItemPresenter extends Component {
   }
 
   render () {
-    const { setTrackAsActive, play, item } = this.props
-
-    console.log(item);
+    const { setTrackAsActive, play, item, style } = this.props
 
     const rendered = (
-      <div styleName="tile">
+      <div styleName="tile" style={style}>
         <div
           styleName="img"
           style={{backgroundImage: `url(${this._displayImage(item)})`}}
