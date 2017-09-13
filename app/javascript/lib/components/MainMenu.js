@@ -1,6 +1,5 @@
 // @flow
 import ApmLogo from './svg/ApmLogo.js'
-import '../styles/modules/_main_menu.scss'
 
 type MainMenuProps = {
   accountName: string,
@@ -33,29 +32,29 @@ function getElement (selector: string) {
 
 const getTemplate = (props: MainMenuProps) => {
   const template = `
-    <header class="MainMenu_header" role="banner">
-      <div class="MainMenu_logo">
+    <header class="mainMenu_header" role="banner">
+      <div class="mainMenu_logo">
         ${ApmLogo()}
         <span class="invisible">American Public Media</span>
       </div>
-      <nav class="MainMenu_nav" role="navigation">
-        <ul class="MainMenu_list">
-          <li><a class="MainMenu_link MainMenu_active MainMenu_highlighted" href="#">Playlist</a></li>
-          <li><a class="MainMenu_link" href="#">Archive</a></li>
+      <nav class="mainMenu_nav" role="navigation">
+        <ul class="mainMenu_list">
+          <li><a class="mainMenu_link mainMenu_link-active mainMenu_link-highlighted" href="#">Playlist</a></li>
+          <li><a class="mainMenu_link" href="#">Archive</a></li>
         </ul>
-        <div class="MainMenu_account">
+        <div class="mainMenu_account">
           <button
             type="button"
-            class="MainMenu_link"
+            class="mainMenu_link"
           >
             ${props.accountName} &#9662;
           </button>
-          <ul class='MainMenu_menu'>
+          <ul class='mainMenu_menu'>
             <li>
-              <a href='${props.accountPath}' class="MainMenu_link" id="account">My Account</a>
+              <a href='${props.accountPath}' class="mainMenu_link" id="account">My Account</a>
             </li>
             <li>
-              <a href='${props.logoutPath}' class="MainMenu_link" id='logout'>Log Out</a>
+              <a href='${props.logoutPath}' class="mainMenu_link" id='logout'>Log Out</a>
             </li>
           </ul>
         </div>
@@ -66,21 +65,21 @@ const getTemplate = (props: MainMenuProps) => {
 }
 
 function addDropdownListener (element: HTMLElement) {
-  let acctButton = element.querySelector('.MainMenu_account button')
+  let acctButton = element.querySelector('.mainMenu_account button')
 
   if (acctButton) {
     acctButton.addEventListener('click', function () {
-      let acctMenu = element.querySelector('.MainMenu_account ul.MainMenu_menu')
+      let acctMenu = element.querySelector('.mainMenu_account ul.mainMenu_menu')
 
       if (!acctMenu) {
         return
       }
 
-      let visible = acctMenu.classList.contains('MainMenu_menu-visible')
+      let visible = acctMenu.classList.contains('is-visible')
       if (visible) {
-        acctMenu.classList.remove('MainMenu_menu-visible')
+        acctMenu.classList.remove('is-visible')
       } else {
-        acctMenu.className += ' MainMenu_menu-visible'
+        acctMenu.className += ' is-visible'
       }
     })
   }

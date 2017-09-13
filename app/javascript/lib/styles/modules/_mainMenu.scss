@@ -1,15 +1,19 @@
-@import '../helpers';
+// --------------------------------------------
+// Main Menu / Nav
+// --------------------------------------------
 
-.MainMenu_header {
+.mainMenu_header {
   display: flex;
   height: 50px;
+  position: relative;
+  z-index: $z-header;
 
   @include media($media-small-tablet) {
     height: 70px;
   }
 }
 
-.MainMenu_logo {
+.mainMenu_logo {
   fill: $color-red;
   flex-grow: 0;
   margin-right: 10px;
@@ -28,12 +32,12 @@
   }
 }
 
-.MainMenu_nav {
+.mainMenu_nav {
   display: flex;
   flex-grow: 1;
 }
 
-.MainMenu_list {
+.mainMenu_list {
   display: block;
   list-style: none;
   white-space: nowrap;
@@ -54,7 +58,7 @@
   }
 }
 
-.MainMenu_link {
+.mainMenu_link {
   display: inline-block;
   padding: 4px 0 12px;
   margin: 0;
@@ -94,13 +98,11 @@
   }
 }
 
-.MainMenu_highlighted {
-  // composes: link;
+.mainMenu_link-highlighted {
   color: $color-red;
 }
 
-.MainMenu_active {
-  // composes: highlighted;
+.mainMenu_link-active {
 
   &:focus {
     color: lighten($color-red, 10%);
@@ -111,12 +113,12 @@
   }
 }
 
-.MainMenu_account {
+.mainMenu_account {
   margin-left: auto;
   position: relative;
 }
 
-.MainMenu_menu {
+.mainMenu_menu {
   @include tile();
   padding-top: 8px;
   position: absolute;
@@ -128,12 +130,11 @@
   transition: transform $transition,
     opacity $transition,
     visibility 0s linear $transition;
-}
 
-.MainMenu_menu-visible {
-  // composes: menu;
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
+  &.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
 }
