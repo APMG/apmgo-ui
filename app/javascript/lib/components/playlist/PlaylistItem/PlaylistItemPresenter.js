@@ -18,6 +18,7 @@ export default class PlaylistItemPresenter extends Component {
   _showMenu () {
     this.setState({showingMenu: true})
   }
+
   _hideMenu () {
     this.setState({showingMenu: false})
   }
