@@ -24,7 +24,7 @@ const PlaylistItem = (props: PlaylistItemProps) => {
 
 const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps) => {
   return {
-    setTrackAsActive: (event) => {
+    setTrackAsActive: () => {
       dispatch(changeTrack(ownProps.item))
     },
     archiveTrack: () => {
