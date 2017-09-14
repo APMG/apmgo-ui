@@ -26,7 +26,6 @@
   // * Ideally this wouldn't be how we do it but webpack is blowing up
   //   when trying to use scss files in a `composes` css-modules statement
   // * Keep in alphabetical order
-  @import 'modules/accessibility';
   @import 'modules/hdg';
   @import 'modules/mainMenu';
 }
