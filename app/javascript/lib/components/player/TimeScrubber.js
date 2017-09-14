@@ -65,7 +65,6 @@ export default class TimeScrubberPresenter extends React.Component {
     return (
       <div>
         <input
-          id="timescrubber"
           type="range"
           max={this.props.duration}
           min={0}
