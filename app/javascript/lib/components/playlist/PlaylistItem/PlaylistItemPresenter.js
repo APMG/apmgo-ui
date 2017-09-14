@@ -18,7 +18,6 @@ export default class PlaylistItemPresenter extends Component {
   _showMenu () {
     this.setState({showingMenu: true})
   }
-
   _hideMenu () {
     this.setState({showingMenu: false})
   }
@@ -70,11 +69,7 @@ export default class PlaylistItemPresenter extends Component {
   }
 
   render () {
-<<<<<<< HEAD
     const { setTrackAsActive, play, item, style } = this.props
-=======
-    const { setTrackAsActive, play, item } = this.props
->>>>>>> f2ae7cc37bc1539416848094861e0ba7a0f2ae9d
 
     const rendered = (
       <div styleName="tile" style={style}>
