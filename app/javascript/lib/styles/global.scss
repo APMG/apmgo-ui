@@ -1,7 +1,7 @@
-// ------------------------------------------------
+// -----------------------------------------------
 // global.js -- Contains base styles used globally.
 // *** Import only once in the app.
-// ------------------------------------------------
+// -----------------------------------------------
 
 :global {
 
@@ -27,5 +27,11 @@
   //   when trying to use scss files in a `composes` css-modules statement
   // * Keep in alphabetical order
   @import 'modules/hdg';
-  @import 'modules/mainMenu';
+
+  // Landmarks
+  // Non-reusable regions that get styled
+  //   with global css
+  // * Keep in alphabetical order
+  @import 'landmarks/footer';
+  @import 'landmarks/mainMenu';
 }

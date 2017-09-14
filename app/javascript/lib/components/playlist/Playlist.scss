@@ -1,13 +1,9 @@
 @import '../../styles/helpers';
 
 .list {
-  margin-bottom: $player-height-mobile;
+  margin-bottom: 20px;
   position: relative;
   z-index: $z-playlist;
-
-  @include media($media-tablet) {
-    margin-bottom: $player-height-tablet;
-  }
 
   > * {
     padding-bottom: 10px;

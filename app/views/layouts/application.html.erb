@@ -15,7 +15,7 @@
   <body>
     <div class="container">
       <%= render "layouts/header" %>
-      <div id="app">
+      <main id="app" role="main">
         <div id="loading"></div>
         <noscript>
           <div style="border: 1px solid purple; padding: 10px">
@@ -23,7 +23,8 @@
           </div>
         </noscript>
         <%= yield %>
-      </div>
+      </main>
+      <%= render "layouts/footer" %>
     </div>
   </body>
 </html>
