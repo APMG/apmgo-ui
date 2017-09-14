@@ -6,6 +6,13 @@ import PlaylistItemPresenter from './PlaylistItemPresenter'
 import { DraggableItemTypes } from '../../../drag-drop/Constants'
 import { PlaylistItemType } from '../../../redux/types'
 
+export type PlaylistItemBeingDragged = {
+  item: PlaylistItemType,
+  style: any,
+  index: number,
+  origIndex: number
+}
+
 // In the spec here, specify how the Drag Source
 // i.e., the "thing being dragged", should
 // respond to various dragging events

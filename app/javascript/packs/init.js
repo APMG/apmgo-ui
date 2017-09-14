@@ -1,5 +1,7 @@
 import apmAccount from '../lib/service/apm-account'
-import { insertHeader } from '../lib/components/MainMenu'
+import { insertMenu } from '../lib/components/MainMenu'
+import * as OfflinePluginRuntime from 'offline-plugin/runtime'
+OfflinePluginRuntime.install()
 
 // Verify we have a current auth token, then fetch data
 if (apmAccount.get_expires_at() < Date.now()) {
@@ -16,7 +18,7 @@ if (apmAccount.get_expires_at() < Date.now()) {
 }
 
 function initializeApp () {
-  insertHeader('#header', {
+  insertMenu('nav.mainMenu_nav', {
     accountName: apmAccount.get_name(),
     logoutPath: apmAccount.log_out_path(),
     accountPath: 'https://accounts.publicradio.org'

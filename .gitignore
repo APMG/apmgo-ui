@@ -22,6 +22,7 @@
 .byebug_history
 /public/packs
 /public/assets
+/public/packs-test
 /node_modules
 /flow-typed
 
@@ -37,3 +38,4 @@
 # Vim
 *~
 *.swp
+/node_modules

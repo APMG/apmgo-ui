@@ -29,6 +29,7 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
   </div>
   <div>
     <input
+      aria-label="Time Scrubber"
       max={undefined}
       min={0}
       onInput={[Function]}
@@ -41,6 +42,7 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
     Volume Control
   </h3>
   <input
+    aria-label="Volume"
     max={1}
     min={0}
     onChange={[Function]}

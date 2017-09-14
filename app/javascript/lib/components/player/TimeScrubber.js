@@ -71,6 +71,7 @@ export default class TimeScrubberPresenter extends React.Component {
           value={this.timeScrubberValue()}
           onInput={this._timeChange.bind(this)}
           onMouseUp={this._timeChangeDragStop.bind(this)}
+          aria-label="Time Scrubber"
         />
       </div>
     )

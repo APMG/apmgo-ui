@@ -1,24 +1,8 @@
 // @flow
 import React, { Component } from 'react'
 import { type PlaylistItemProps } from './PlaylistItem'
-
+import { type PlaylistItemType } from '../../../redux/types'
 import './PlaylistItem.scss'
-
-function removeLastWord (text: string) {
-  let lastSpace = text.lastIndexOf(' ')
-  return text.substr(0, lastSpace).trim()
-}
-
-function truncateText (text: string, maxLength: number = 200) {
-  if (text.length < maxLength) {
-    return text
-  }
-  text = removeLastWord(text.substr(0, maxLength)) + '...'
-
-  return text.length <= maxLength
-    ? text
-    : removeLastWord(text) + '...'
-}
 
 export default class PlaylistItemPresenter extends Component {
   props: PlaylistItemProps
@@ -62,7 +46,7 @@ export default class PlaylistItemPresenter extends Component {
     }
   }
 
-  _displayImage (item) {
+  _displayImage (item: PlaylistItemType) {
     if (item.attributes.audio_image_url) {
       return item.attributes.audio_image_url
     } else {
@@ -70,7 +54,7 @@ export default class PlaylistItemPresenter extends Component {
     }
   }
 
-  _publishDate (item) {
+  _publishDate (item: PlaylistItemType) {
     if (item.attributes.audio_publish_datetime) {
       let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
       let date = new Date(item.attributes.audio_publish_datetime)
@@ -106,9 +90,19 @@ export default class PlaylistItemPresenter extends Component {
             <h2 className="hdg hdg-2">{item.attributes.audio_title}</h2>
           </div>
           <div styleName="origin">
-            <img styleName="origin_icon" src="//via.placeholder.com/32x32/123456/ffffff" />
+            <img
+              styleName="origin_icon"
+              src="//via.placeholder.com/32x32/123456/ffffff"
+              alt={item.attributes.audio_title}
+            />
             {item.attributes.source.replace(/^\/\//, '')}
-            <a href={item.attributes.origin_url} styleName="origin_link" target="_blank">Source &raquo;</a>
+            <a
+              href={item.attributes.origin_url}
+              styleName="origin_link"
+              target="_blank"
+              rel="noopener">
+              Source &raquo;
+            </a>
           </div>
         </div>
         <div

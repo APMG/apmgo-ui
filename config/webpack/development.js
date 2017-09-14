@@ -1,32 +1,19 @@
-// Note: You must restart bin/webpack-dev-server for changes to take effect
-
+const environment = require('./environment')
 const merge = require('webpack-merge')
-const sharedConfig = require('./shared.js')
-const { settings, output } = require('./configuration.js')
+const env = require('process')
 
-module.exports = merge(sharedConfig, {
-  devtool: 'cheap-eval-source-map',
-
-  stats: {
-    errorDetails: true
-  },
-
-  output: {
-    pathinfo: true
-  },
-
-  devServer: {
-    clientLogLevel: 'none',
-    https: settings.dev_server.https,
-    host: settings.dev_server.host,
-    port: settings.dev_server.port,
-    contentBase: output.path,
-    publicPath: output.publicPath,
-    compress: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    historyApiFallback: true,
-    watchOptions: {
-      ignored: /node_modules/
-    }
-  }
+const CSSLoader = environment.loaders.get('style').use.find(el => el.loader === 'css-loader')
+CSSLoader.options = merge(CSSLoader.options, {
+  minimize: env.NODE_ENV === 'production',
+  modules: true,
+  sourceMap: true,
+  localIdentName: '[name]__[local]___[hash:base64:5]'
 })
+
+let extractText = environment.plugins.get('ExtractText')
+extractText.options = merge(extractText.options, {
+  filename: '[name]-[contenthash].css',
+  allChunks: true
+})
+
+module.exports = environment.toWebpackConfig()

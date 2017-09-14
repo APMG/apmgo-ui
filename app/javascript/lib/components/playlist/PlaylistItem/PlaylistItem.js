@@ -14,7 +14,8 @@ export type PlaylistItemProps = {
   archiveTrack: (item: PlaylistItemType) => {},
   deleteTrack: (item: PlaylistItemType) => {},
   play: () => {},
-  playlistItemMoved: (item: PlaylistItemType, newIndex: number) => {}
+  playlistItemMoved: (item: PlaylistItemType, newIndex: number) => {},
+  style?: any
 }
 
 const PlaylistItem = (props: PlaylistItemProps) => {

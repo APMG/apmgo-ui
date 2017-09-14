@@ -20,6 +20,7 @@ export default function (props: VolumeSliderProps) {
       min={0}
       max={1}
       step={0.01}
+      aria-label="Volume"
     />
   )
 }
