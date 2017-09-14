@@ -4,7 +4,6 @@ exports[`Time Scrubber Component Presenter Renders 1`] = `
 <div>
   <input
     aria-label="Time Scrubber"
-    id="timescrubber"
     max={undefined}
     min={0}
     onInput={[Function]}
