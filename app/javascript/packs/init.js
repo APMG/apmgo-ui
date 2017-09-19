@@ -1,7 +1,7 @@
 import apmAccount from '../lib/service/apm-account'
 import { insertMenu } from '../lib/components/MainMenu'
-import * as OfflinePluginRuntime from 'offline-plugin/runtime'
-OfflinePluginRuntime.install()
+// import * as OfflinePluginRuntime from 'offline-plugin/runtime'
+// OfflinePluginRuntime.install()
 
 // Verify we have a current auth token, then fetch data
 if (apmAccount.get_expires_at() < Date.now()) {
