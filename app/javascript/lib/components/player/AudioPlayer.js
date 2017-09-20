@@ -10,6 +10,10 @@ import TimeScrubber from './TimeScrubber'
 import TimeKeeper from './TimeKeeper'
 import VolumeSlider from './VolumeSlider'
 import PlayTimeDisplay from './PlayTimeDisplay'
+import DurationDisplay from './DurationDisplay'
+
+import SkipBack from '../svg/SkipBack'
+import SkipFwd from '../svg/SkipFwd'
 
 import './AudioPlayer.scss'
 
@@ -110,47 +114,75 @@ export class AudioPlayerPresenter extends React.Component {
   render () {
     return (
       <div styleName="player">
-        <h3>
-          { this.props.item
-            ? 'Now playing: ' + this.props.item.attributes.audio_title
-            : 'Loading ...' }
-        </h3>
+        <h2 className="invisible">Now Playing</h2>
 
         <audio ref={(ref) => { this.audio = ref }} />
 
-        <PlayPauseButton
-          paused={this.props.audioPlayer.paused}
-          canPlay={this.props.audioPlayer.canPlay}
-          pause={this.props.pause}
-          play={this.props.play}
-        />
-        <MuteButton
-          muted={this.props.audioPlayer.muted}
-          mute={this.props.mute}
-          unmute={this.props.unmute}
-        />
+        <div styleName="progress">
+          <h3 className="invisible">Time Control</h3>
+          <TimeKeeper // this component is invisible
+            audio={this.audio}
+            updatePlayTime={this.props.updatePlayTimeTimeKeeper}
+          />
+          <div styleName="timestamps">
+            <PlayTimeDisplay
+              currentTime={this.props.audioPlayer.currentTime}
+            />
+            <DurationDisplay
+              duration={this.props.audioPlayer.duration}
+            />
+          </div>
+          <TimeScrubber
+            updatePlayTime={this.props.updatePlayTimeTimeScrubber}
+            timeScrubberChange={this.props.timeScrubberChange}
+            paused={this.props.audioPlayer.paused}
+            duration={this.props.audioPlayer.duration}
+            currentTime={this.props.audioPlayer.currentTime}
+          />
+        </div>
 
-        <h3>Time Control</h3>
-        <TimeKeeper // this component is invisible
-          audio={this.audio}
-          updatePlayTime={this.props.updatePlayTimeTimeKeeper}
-        />
-        <PlayTimeDisplay
-          currentTime={this.props.audioPlayer.currentTime}
-        />
-        <TimeScrubber
-          updatePlayTime={this.props.updatePlayTimeTimeScrubber}
-          timeScrubberChange={this.props.timeScrubberChange}
-          paused={this.props.audioPlayer.paused}
-          duration={this.props.audioPlayer.duration}
-          currentTime={this.props.audioPlayer.currentTime}
-        />
+        <h3 styleName="title">
+          { this.props.item
+            ? this.props.item.attributes.audio_title
+            : 'Loading ...' }
+        </h3>
 
-        <h3>Volume Control</h3>
-        <VolumeSlider
-          volume={this.props.audioPlayer.volume}
-          updateVolume={this.props.updateVolume}
-        />
+        <div styleName="controls">
+          <button styleName="skipBack">
+            <SkipBack />
+            <span className="invisible">Skip back </span>
+            15
+            <span className="invisible">seconds</span>
+          </button>
+          <PlayPauseButton
+            paused={this.props.audioPlayer.paused}
+            canPlay={this.props.audioPlayer.canPlay}
+            pause={this.props.pause}
+            play={this.props.play}
+          />
+          <button styleName="skipFwd">
+            <SkipFwd />
+            <span className="invisible">Skip forward </span>
+            15
+            <span className="invisible">seconds</span>
+          </button>
+        </div>
+
+        <div styleName="volume">
+          <MuteButton
+            muted={this.props.audioPlayer.muted}
+            mute={this.props.mute}
+            unmute={this.props.unmute}
+          />
+
+          <h3>Volume Control</h3>
+
+          <VolumeSlider
+            volume={this.props.audioPlayer.volume}
+            updateVolume={this.props.updateVolume}
+          />
+        </div>
+
       </div>
     )
   }

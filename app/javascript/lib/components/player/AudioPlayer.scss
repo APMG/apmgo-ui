@@ -2,15 +2,129 @@
 
 .player {
   height: $player-height-mobile;
+  padding: 20px;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: $z-player;
+  text-align: center;
   color: $color-white;
   background-color: $color-grey-dark;
+
+  @include media($media-small-tablet) {
+    height: $player-height-small-tablet;
+  }
 
   @include media($media-tablet) {
     height: $player-height-tablet;
   }
+}
+
+.title {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include media($media-small-tablet) {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+
+  @include media($media-tablet) {
+    font-size: 2.6rem;
+    margin-bottom: 30px;
+  }
+}
+
+.controls {
+  margin-bottom: 10px;
+}
+
+.playPause {
+  margin-bottom: 10px;
+}
+
+.playPauseBtn {
+  height: 48px;
+  width: 48px;
+  margin: 0 60px;
+  padding: 0 4px;
+  border: 0;
+  fill: $color-white;
+  vertical-align: middle;
+  background: transparent;
+  transition: background-color $transition;
+
+  &:focus {
+    outline: 0;
+    background-color: rgba($color-white, .1);
+  }
+}
+
+.skipBtn {
+  height: 35px;
+  width: 35px;
+  position: relative;
+  background: transparent;
+  border: 0;
+  padding: 12px 10px 8px;
+  font-size: 1.3rem;
+  vertical-align: middle;
+  fill: $color-white;
+  transition: background-color $transition;
+
+  &:focus {
+    outline: 0;
+    background-color: rgba($color-white, .1);
+  }
+
+  svg {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.skipBack {
+  composes: skipBtn;
+}
+
+.skipFwd {
+  composes: skipBtn;
+}
+
+.progress {
+  margin-bottom: 15px;
+
+  @include media($media-small-tablet) {
+    margin-bottom: 20px;
+  }
+}
+
+.timestamps {
+  @include clearfix();
+  margin-bottom: 10px;
+}
+
+.currentTime {
+  float: left;
+}
+
+.duration {
+  float: right;
+}
+
+.scrubber {
+  width: 100%;
+}
+
+.volume {
+  display: none;
 }

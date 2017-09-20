@@ -1,5 +1,9 @@
 // @flow
 import * as React from 'react'
+import PlayIcon from '../svg/PlayIcon'
+import PauseIcon from '../svg/PauseIcon'
+
+import './AudioPlayer.scss'
 
 type PlayPauseProps = {
   paused: boolean,
@@ -13,7 +17,9 @@ export default function PlayPauseButtonPresenter (props: PlayPauseProps) {
     return (
       <button
         id="play-pause-loading-button"
-        disabled>
+        disabled
+        styleName="playPauseBtn"
+      >
         Loading ...
       </button>
     )
@@ -21,16 +27,22 @@ export default function PlayPauseButtonPresenter (props: PlayPauseProps) {
     return (
       <button
         id="play-button"
-        onClick={props.play}>
-        Play
+        onClick={props.play}
+        styleName="playPauseBtn"
+      >
+        <span className="invisible">Play</span>
+        <PlayIcon />
       </button>
     )
   } else {
     return (
       <button
         id="pause-button"
-        onClick={props.pause}>
-        Pause
+        onClick={props.pause}
+        styleName="playPauseBtn"
+      >
+        <span className="invisible">Pause</span>
+        <PauseIcon />
       </button>
     )
   }

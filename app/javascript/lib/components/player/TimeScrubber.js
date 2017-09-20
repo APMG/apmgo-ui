@@ -1,6 +1,8 @@
 // @flow
 import React from 'react'
 
+import './AudioPlayer.scss'
+
 type TimeScrubberProps = {
   paused: boolean,
   currentTime: number,
@@ -72,6 +74,7 @@ export default class TimeScrubberPresenter extends React.Component {
           onInput={this._timeChange.bind(this)}
           onMouseUp={this._timeChangeDragStop.bind(this)}
           aria-label="Time Scrubber"
+          styleName="scrubber"
         />
       </div>
     )
