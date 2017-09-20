@@ -268,8 +268,8 @@ export function * archivePlaylistItemSaga (action: any): Generator<any, any, any
     action.item.attributes.status = 'played'
     action.item.attributes.finished = (new Date().toString())
 
-    let itemResult = yield call(updatePlaylistItem, action.item)
-    yield put(playlistItemArchived(itemResult))
+    yield call(updatePlaylistItem, action.item)
+    yield put(playlistItemArchived(action.item))
   } catch (e) {
     yield put(playlistErrorOccured(e.message))
   }

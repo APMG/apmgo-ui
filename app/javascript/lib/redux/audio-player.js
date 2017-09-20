@@ -3,7 +3,8 @@
 import { ActionType } from './defaults'
 import type { PlaylistItemType } from './types'
 import AudioPlayerState from '../models/AudioPlayerState'
-import { RECEIVE_PLAYLIST_ITEMS } from './playlist'
+import { RECEIVE_PLAYLIST_ITEMS, archivePlaylistItem } from './playlist'
+import { put } from 'redux-saga/effects'
 
 export const AUDIO_META_DATA_LOADED: string = 'bragi/audio-player/AUDIO_META_DATA_LOADED'
 export const AUDIO_CAN_PLAY: string = 'bragi/audio-player/AUDIO_CAN_PLAY'
@@ -15,6 +16,7 @@ export const VOLUME_CHANGE: string = 'bragi/audio-player/VOLUME_CHANGE'
 export const TIME_SCRUBBER_CHANGE: string = 'bragi/audio-player/TIME_SCRUBBER_CHANGE'
 export const CHANGE_TRACK: string = 'bragi/audio-player/CHANGE_TRACK'
 export const UPDATE_PLAYTIME: string = 'bragi/audio-player/UPDATE_PLAYTIME'
+export const TRACK_ENDED: string = 'bragi/audio-player/TRACK_ENDED'
 
 const defaultProps = {
   paused: true,
@@ -162,4 +164,17 @@ export function changeTrack (item: PlaylistItemType) {
     type: CHANGE_TRACK,
     item: item
   }
+}
+
+export function trackEnded (item: PlaylistItemType, next: PlaylistItemType) {
+  return {
+    type: TRACK_ENDED,
+    item: item,
+    next: next
+  }
+}
+
+export function * trackEndedSaga (action: any): Generator<any, any, any> {
+  yield put(changeTrack(action.next))
+  yield put(archivePlaylistItem(action.item))
 }

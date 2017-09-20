@@ -5,6 +5,11 @@ import {
   ARCHIVE_PLAYLIST_ITEM
 } from './playlist'
 
+import {
+  TRACK_ENDED,
+  trackEndedSaga
+} from './audio-player'
+
 import { PLAYLIST_ITEM_MOVED,
   INITIALIZE_PLAYLIST,
   initializePlaylistItemsSaga,
@@ -19,6 +24,7 @@ export default function * rootSaga (): Generator<any, any, any> {
     takeEvery(INITIALIZE_PLAYLIST, initializePlaylistItemsSaga),
     takeEvery(REMOVE_PLAYLIST_ITEM, removePlaylistItemSaga),
     takeEvery(ARCHIVE_PLAYLIST_ITEM, archivePlaylistItemSaga),
-    takeEvery(PLAYLIST_ITEM_MOVED, movePlaylistItemSaga)
+    takeEvery(PLAYLIST_ITEM_MOVED, movePlaylistItemSaga),
+    takeEvery(TRACK_ENDED, trackEndedSaga)
   ])
 }

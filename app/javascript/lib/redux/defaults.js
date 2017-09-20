@@ -13,4 +13,5 @@ export class ActionType {
   currentTime: number
   duration: number
   volume: number
+  next: PlaylistItemType
 }

@@ -3,8 +3,8 @@ import type { PlaylistItemType } from './types'
 import { ActionType } from './defaults'
 import { UPDATE_PLAYTIME } from './audio-player'
 import {
-  PLAYLIST_ITEM_ARCHIVED,
-  PLAYLIST_ITEM_REMOVED
+  PLAYLIST_ITEM_REMOVED,
+  PLAYLIST_ITEM_ARCHIVED
 } from './data'
 
 // Actions
@@ -21,11 +21,9 @@ export default function reducer (playlistState: Array<PlaylistItemType> = [], ac
     case RECEIVE_PLAYLIST_ITEMS:
       return action.data
 
+    case PLAYLIST_ITEM_ARCHIVED:
     case PLAYLIST_ITEM_REMOVED:
       return playlistState.filter(item => item.id !== action.itemId)
-
-    case PLAYLIST_ITEM_ARCHIVED:
-      return playlistState.filter(item => item.id !== action.item.id)
 
     case UPDATE_PLAYLIST_ITEM:
       return playlistState.map(item => {

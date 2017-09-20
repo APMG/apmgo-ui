@@ -27,13 +27,15 @@ import {
   updatePlayTime,
   timeScrubberChange,
   volumeChange,
-  changeTrack
+  changeTrack,
+  trackEnded
 } from '../../redux/audio-player'
 
-import { archivePlaylistItem } from '../../redux/playlist'
+// import { archivePlaylistItem } from '../../redux/playlist'
 
 type AudioPlayerProps = {
   item: PlaylistItemType,
+  nextItem: PlaylistItemType,
   audioPlayer: AudioPlayerState,
   audioCanPlay: () => {},
   audioMetaDataLoaded: (duration: number) => {},
@@ -73,16 +75,13 @@ export class AudioPlayerPresenter extends React.Component {
     this._setPlayPaused(newProps.audioPlayer.paused)
     this.audio.muted = newProps.audioPlayer.muted
     this.audio.volume = newProps.audioPlayer.volume
+    this.audio.onended = newProps.onEnded
 
     if (newProps.item.id !== this.props.item.id) {
       this.audio.src = newProps.item.attributes.audio_url
       if (this.audio.canPlay && !this.props.audioPlayer.paused) {
         this.audio.play()
       }
-    }
-
-    if (newProps.item.id !== newProps.audioPlayer.currentTrackId) {
-      this.props.changeTrack(newProps.item)
     }
 
     if (newProps.audioPlayer.updateAudioElementTime) {
@@ -221,7 +220,7 @@ export const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps: Audi
       dispatch(volumeChange(newVolume))
     },
     onEnded: () => {
-      dispatch(archivePlaylistItem(ownProps.item))
+      dispatch(trackEnded(ownProps.item, ownProps.nextItem))
     },
     changeTrack: (item: PlaylistItemType) => {
       dispatch(changeTrack(item))
