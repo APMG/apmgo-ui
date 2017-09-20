@@ -10,6 +10,10 @@
   font-size: 1.2rem;
   color: $color-grey;
 
+  @include media($media-small-tablet) {
+    padding-bottom: $player-height-small-tablet;
+  }
+
   @include media($media-tablet) {
     padding-bottom: $player-height-tablet;
   }

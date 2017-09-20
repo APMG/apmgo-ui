@@ -4,52 +4,150 @@ exports[`AudioPlayer Component Test Presenter Renders 1`] = `
 <div
   className="AudioPlayer__player___55AvF"
 >
-  <h3>
-    Now playing: Test Audio
-  </h3>
+  <h2
+    className="invisible"
+  >
+    Now Playing
+  </h2>
   <audio />
-  <button
-    disabled={true}
-    id="play-pause-loading-button"
+  <div
+    className="AudioPlayer__progress___-QYfn"
   >
-    Loading ...
-  </button>
-  <button
-    id="mute-button"
-    onClick={undefined}
-  >
-    Mute
-  </button>
-  <h3>
-    Time Control
-  </h3>
-  <div />
-  <div>
-    0:00
+    <h3
+      className="invisible"
+    >
+      Time Control
+    </h3>
+    <div />
+    <div
+      className="AudioPlayer__timestamps___3iXPU"
+    >
+      <span
+        className="AudioPlayer__currentTime___2CUk7"
+      >
+        0:00
+      </span>
+      <span
+        className="AudioPlayer__duration___2Ss-f"
+      >
+        0:00
+      </span>
+    </div>
+    <div>
+      <input
+        aria-label="Time Scrubber"
+        className="AudioPlayer__scrubber___2VRHx"
+        max={undefined}
+        min={0}
+        onInput={[Function]}
+        onMouseUp={[Function]}
+        type="range"
+        value={0}
+      />
+    </div>
   </div>
-  <div>
+  <h3
+    className="AudioPlayer__title___1hJbf"
+  >
+    Test Audio
+  </h3>
+  <div
+    className="AudioPlayer__controls___1S5g_"
+  >
+    <button
+      className="AudioPlayer__skipBack___1HFfH AudioPlayer__skipBtn___gkURa"
+    >
+      <svg
+        height="35"
+        viewBox="0 0 30 35"
+        width="30"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <g
+          fillRule="nonzero"
+          stroke="none"
+          strokeWidth="1"
+        >
+          <path
+            d="M29.98 20.03C29.98 28.28 23.27 34.99 15.02 34.99 6.77 34.99 0.05 28.28 0.05 20.03 0.05 19.54 0.45 19.14 0.94 19.14 1.43 19.14 1.83 19.54 1.83 20.03 1.83 27.3 7.74 33.22 15.02 33.22 22.29 33.22 28.2 27.3 28.2 20.03 28.2 12.76 22.29 6.84 15.02 6.84L13.48 6.84 15.68 9.3C16 9.67 15.97 10.23 15.61 10.56 15.24 10.88 14.68 10.85 14.35 10.49L11.21 6.96C10.69 6.39 10.69 5.52 11.21 4.94L14.35 1.42C14.53 1.22 14.77 1.12 15.02 1.12 15.23 1.12 15.44 1.2 15.61 1.35 15.97 1.67 16 2.24 15.68 2.6L13.48 5.07 15.02 5.07C23.27 5.07 29.98 11.78 29.98 20.03Z"
+          />
+        </g>
+      </svg>
+      <span
+        className="invisible"
+      >
+        Skip back 
+      </span>
+      15
+      <span
+        className="invisible"
+      >
+        seconds
+      </span>
+    </button>
+    <button
+      className="AudioPlayer__playPauseBtn___1BAhn"
+      disabled={true}
+      id="play-pause-loading-button"
+    >
+      Loading ...
+    </button>
+    <button
+      className="AudioPlayer__skipFwd___eUhyE AudioPlayer__skipBtn___gkURa"
+    >
+      <svg
+        height="35"
+        viewBox="0 0 30 35"
+        width="30"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <g
+          fillRule="nonzero"
+          stroke="none"
+          strokeWidth="1"
+        >
+          <path
+            d="M0.02 20.03C0.02 28.28 6.73 34.99 14.98 34.99 23.23 34.99 29.95 28.28 29.95 20.03 29.95 19.54 29.55 19.14 29.06 19.14 28.57 19.14 28.17 19.54 28.17 20.03 28.17 27.3 22.26 33.22 14.98 33.22 7.71 33.22 1.8 27.3 1.8 20.03 1.8 12.76 7.71 6.84 14.98 6.84L16.52 6.84 14.32 9.3C14 9.67 14.03 10.23 14.39 10.56 14.76 10.88 15.32 10.85 15.65 10.49L18.79 6.96C19.31 6.39 19.31 5.52 18.79 4.94L15.65 1.42C15.47 1.22 15.23 1.12 14.98 1.12 14.77 1.12 14.56 1.2 14.39 1.35 14.03 1.67 14 2.24 14.32 2.6L16.52 5.07 14.98 5.07C6.73 5.07 0.02 11.78 0.02 20.03Z"
+          />
+        </g>
+      </svg>
+      <span
+        className="invisible"
+      >
+        Skip forward 
+      </span>
+      15
+      <span
+        className="invisible"
+      >
+        seconds
+      </span>
+    </button>
+  </div>
+  <div
+    className="AudioPlayer__volume___1Kdd1"
+  >
+    <button
+      id="mute-button"
+      onClick={undefined}
+    >
+      Mute
+    </button>
+    <h3>
+      Volume Control
+    </h3>
     <input
-      aria-label="Time Scrubber"
-      max={undefined}
+      aria-label="Volume"
+      max={1}
       min={0}
+      onChange={[Function]}
       onInput={[Function]}
-      onMouseUp={[Function]}
+      step={0.01}
       type="range"
-      value={0}
+      value={1}
     />
   </div>
-  <h3>
-    Volume Control
-  </h3>
-  <input
-    aria-label="Volume"
-    max={1}
-    min={0}
-    onChange={[Function]}
-    onInput={[Function]}
-    step={0.01}
-    type="range"
-    value={1}
-  />
 </div>
 `;
