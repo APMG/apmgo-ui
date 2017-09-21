@@ -8,6 +8,7 @@
   position: relative;
   z-index: $z-footer;
   font-size: 1.2rem;
+  text-align: center;
   color: $color-grey;
 
   @include media($media-small-tablet) {
@@ -23,11 +24,17 @@
   }
 }
 
-.footer_left {
-  float: left;
+.footer_copy {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
 }
 
-.footer_right {
-  float: right;
-  text-align: right;
+.footer_tools {
+  display: block;
+
+  > * {
+    display: inline-block;
+    margin: 0 5px;
+  }
 }

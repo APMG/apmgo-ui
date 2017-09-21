@@ -20,6 +20,7 @@
   // Layout
   // Columns, Grids, App Container, etc.
   @import 'layout/container';
+  @import 'layout/main';
 
   // Modules
   // Global classes
@@ -27,6 +28,7 @@
   //   when trying to use scss files in a `composes` css-modules statement
   // * Keep in alphabetical order
   @import 'modules/hdg';
+  @import 'modules/link';
 
   // Landmarks
   // Non-reusable regions that get styled
