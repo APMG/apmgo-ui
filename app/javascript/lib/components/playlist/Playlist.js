@@ -17,6 +17,7 @@ import './Playlist.scss'
 type PlaylistProps = {
   playlist: Array<PlaylistItemType>,
   activeItem?: PlaylistItemType,
+  nextItem?: PlaylistItemType,
   playlistItemMoved: (item: PlaylistItemType, newPosition: number) => {}
 }
 
@@ -48,7 +49,10 @@ export class PlaylistPresenter extends React.Component {
     }
     return (
       <div>
-        <AudioPlayer item={this.props.activeItem} />
+        <AudioPlayer
+          item={this.props.activeItem}
+          nextItem={this.props.nextItem}
+        />
         <VerticalScrollingList>
           {this.props.playlist
             .filter(item => !item.attributes.finished)
@@ -71,6 +75,7 @@ export class PlaylistPresenter extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   let activeItem = ownProps.playlist.find(item => item.id === state.audioPlayer.currentTrackId)
+  let nextItem
 
   if (!activeItem) {
     activeItem = ownProps.playlist.find((item: PlaylistItemType) => {
@@ -78,8 +83,15 @@ const mapStateToProps = (state, ownProps) => {
     })
   }
 
+  if (activeItem) {
+    nextItem = ownProps.playlist.find((item: PlaylistItemType) => {
+      return !item.attributes.finished && (item.id !== activeItem.id)
+    })
+  }
+
   return {
-    activeItem: Object.assign({}, activeItem)
+    activeItem: activeItem,
+    nextItem: nextItem
   }
 }
 
