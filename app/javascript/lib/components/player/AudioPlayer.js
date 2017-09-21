@@ -31,8 +31,6 @@ import {
   trackEnded
 } from '../../redux/audio-player'
 
-// import { archivePlaylistItem } from '../../redux/playlist'
-
 type AudioPlayerProps = {
   item: PlaylistItemType,
   nextItem: PlaylistItemType,
