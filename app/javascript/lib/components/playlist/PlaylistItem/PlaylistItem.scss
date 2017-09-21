@@ -77,10 +77,68 @@
   }
 }
 
+.menuContainer {
+
+}
+
 .menuButton {
+  border: 0;
+  padding: 6px 10px;
   position: absolute;
-  right: 10px;
-  bottom: 6px;
+  right: 0;
+  bottom: 0;
+  z-index: $z-playlist-menu-button;
   cursor: pointer;
+  font-size: 2.2rem;
   color: $color-text-light;
+  background: transparent;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+
+  &.menu-visible {
+    color: $color-white;
+  }
+}
+
+.menuLayer {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: $z-playlist-menu;
+  background-color: $color-red;
+
+  &.menu-visible {
+    display: block;
+  }
+}
+
+.menu {
+  text-align: center;
+  margin-top: 15px;
+
+  > * {
+    display: inline-block;
+    margin: 0 10px;
+  }
+}
+
+.action {
+  display: inline-block;
+  border: 0;
+  margin: 0;
+  padding: 10px;
+  background: transparent;
+  color: $color-white;
+  fill: $color-white;
+}
+
+.action_icon {
+  display: block;
+  margin-bottom: 5px;
 }

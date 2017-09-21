@@ -2,6 +2,9 @@
 import React, { Component } from 'react'
 import { type PlaylistItemProps } from './PlaylistItem'
 import { type PlaylistItemType } from '../../../redux/types'
+import TrashIcon from '../../svg/TrashIcon'
+import FolderIcon from '../../svg/FolderIcon'
+
 import './PlaylistItem.scss'
 
 export default class PlaylistItemPresenter extends Component {
@@ -15,6 +18,14 @@ export default class PlaylistItemPresenter extends Component {
     this.state = {showingMenu: false}
   }
 
+  _toggleMenu () {
+    if (this.state.showingMenu === true) {
+      this._hideMenu()
+    } else {
+      this._showMenu()
+    }
+  }
+
   _showMenu () {
     this.setState({showingMenu: true})
   }
@@ -23,27 +34,41 @@ export default class PlaylistItemPresenter extends Component {
     this.setState({showingMenu: false})
   }
 
-  _rightIconMenu () {
-    if (this.state.showingMenu) {
-      return (
-        <ul className='menu'>
-          <li onClick={this.props.archiveTrack} >
-            Mark as played
-          </li>
-          <li onClick={this.props.deleteTrack}>
-            Delete
-          </li>
-        </ul>
-      )
-    } else {
-      return (
-        <p
-          className='hamburger'
-          onClick={this._showMenu.bind(this)}>
+  _menuOpenClass () {
+    return this.state.showingMenu ? 'menu-visible' : ''
+  }
+
+  _contextMenu () {
+    return (
+      <div styleName="menuContainer">
+        <button
+          onClick={this._toggleMenu.bind(this)}
+          styleName={`menuButton ${this._menuOpenClass()}`}
+        >
           &bull;&bull;&bull;
-        </p>
-      )
-    }
+        </button>
+        <div styleName={`menuLayer ${this._menuOpenClass()}`}>
+          <ul styleName='menu'>
+            <li>
+              <button styleName="action" onClick={this.props.archiveTrack}>
+                <div styleName="action_icon">
+                  <FolderIcon />
+                </div>
+                Archive
+              </button>
+            </li>
+            <li>
+              <button styleName="action" onClick={this.props.deleteTrack}>
+                <div styleName="action_icon">
+                  <TrashIcon />
+                </div>
+                Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    )
   }
 
   _displayImage (item: PlaylistItemType) {
@@ -101,17 +126,11 @@ export default class PlaylistItemPresenter extends Component {
               styleName="origin_link"
               target="_blank"
               rel="noopener">
-              Source &raquo;
+              Source  &raquo;
             </a>
           </div>
         </div>
-        <div
-          onClick={this._showMenu.bind(this)}
-          onMouseLeave={this._hideMenu.bind(this)}
-          styleName='menuButton'
-        >
-          {this._rightIconMenu()}
-        </div>
+        {this._contextMenu()}
       </div>
     )
     return rendered
