@@ -50,6 +50,8 @@ type AudioPlayerProps = {
   changeTrack: (item: PlaylistItemType) => {}
 }
 
+const skipSeconds = 15
+
 export class AudioPlayerPresenter extends React.Component {
   audio: HTMLAudioElement
   props: AudioPlayerProps
@@ -115,11 +117,11 @@ export class AudioPlayerPresenter extends React.Component {
   }
 
   _skipFwd (seconds: number) {
-    this.props.seekTo(this.props.audioPlayer.currentTime + this.skipSeconds)
+    this.props.seekTo(this.props.audioPlayer.currentTime + skipSeconds)
   }
 
   _skipBack (seconds: number) {
-    this.props.seekTo(this.props.audioPlayer.currentTime - this.skipSeconds)
+    this.props.seekTo(this.props.audioPlayer.currentTime - skipSeconds)
   }
 
   render () {
@@ -162,7 +164,7 @@ export class AudioPlayerPresenter extends React.Component {
           <button styleName="skipBack" onClick={this._skipBack.bind(this)}>
             <SkipBack />
             <span className="invisible">Skip back </span>
-            {this.skipSeconds}
+            {skipSeconds}
             <span className="invisible">seconds</span>
           </button>
           <PlayPauseButton
@@ -174,7 +176,7 @@ export class AudioPlayerPresenter extends React.Component {
           <button styleName="skipFwd" onClick={this._skipFwd.bind(this)}>
             <SkipFwd />
             <span className="invisible">Skip forward </span>
-            {this.skipSeconds}
+            {skipSeconds}
             <span className="invisible">seconds</span>
           </button>
         </div>
