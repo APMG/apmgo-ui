@@ -44,6 +44,7 @@ type AudioPlayerProps = {
   updatePlayTimeTimeKeeper: () => {},
   updatePlayTimeTimeScrubber: () => {},
   timeScrubberChange: () => {},
+  seekTo: () => {},
   updateVolume: () => {},
   onEnded: () => {},
   changeTrack: (item: PlaylistItemType) => {}
@@ -52,6 +53,11 @@ type AudioPlayerProps = {
 export class AudioPlayerPresenter extends React.Component {
   audio: HTMLAudioElement
   props: AudioPlayerProps
+
+  constructor (props) {
+    super(props: AudioPlayerProps)
+    this.skipSeconds = 15
+  }
 
   componentDidMount () {
     // by now, this.audio is an HTMLAudioElement ref
@@ -108,6 +114,14 @@ export class AudioPlayerPresenter extends React.Component {
     }
   }
 
+  _skipFwd (seconds: number) {
+    this.props.seekTo(this.props.audioPlayer.currentTime + this.skipSeconds)
+  }
+
+  _skipBack (seconds: number) {
+    this.props.seekTo(this.props.audioPlayer.currentTime - this.skipSeconds)
+  }
+
   render () {
     return (
       <div styleName="player">
@@ -145,10 +159,10 @@ export class AudioPlayerPresenter extends React.Component {
         </h3>
 
         <div styleName="controls">
-          <button styleName="skipBack">
+          <button styleName="skipBack" onClick={this._skipBack.bind(this)}>
             <SkipBack />
             <span className="invisible">Skip back </span>
-            15
+            {this.skipSeconds}
             <span className="invisible">seconds</span>
           </button>
           <PlayPauseButton
@@ -157,10 +171,10 @@ export class AudioPlayerPresenter extends React.Component {
             pause={this.props.pause}
             play={this.props.play}
           />
-          <button styleName="skipFwd">
+          <button styleName="skipFwd" onClick={this._skipFwd.bind(this)}>
             <SkipFwd />
             <span className="invisible">Skip forward </span>
-            15
+            {this.skipSeconds}
             <span className="invisible">seconds</span>
           </button>
         </div>
@@ -213,6 +227,9 @@ export const mapDispatchToProps = (dispatch: (action: any) => {}, ownProps: Audi
     },
     timeScrubberChange: (currentTime: number) => {
       dispatch(timeScrubberChange(ownProps.item.id, Math.ceil(currentTime)))
+    },
+    seekTo: (currentTime: number) => {
+      dispatch(timeScrubberChange(ownProps.item.id, currentTime))
     },
     updateVolume: (newVolume: number) => {
       dispatch(volumeChange(newVolume))
