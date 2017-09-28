@@ -1,5 +1,19 @@
 const { environment } = require('@rails/webpacker')
-// const OfflinePlugin = require('offline-plugin')
+const merge = require('webpack-merge')
+const env = require('process')
 
-// environment.plugins.set('OfflinePlugin', new OfflinePlugin())
+const CSSLoader = environment.loaders.get('style').use.find(el => el.loader === 'css-loader')
+CSSLoader.options = merge(CSSLoader.options, {
+  minimize: env.NODE_ENV === 'production',
+  modules: true,
+  sourceMap: true,
+  localIdentName: '[name]__[local]___[hash:base64:5]'
+})
+
+let extractText = environment.plugins.get('ExtractText')
+extractText.options = merge(extractText.options, {
+  filename: '[name]-[contenthash].css',
+  allChunks: true
+})
+
 module.exports = environment
