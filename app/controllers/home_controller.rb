@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'meekerclient'
 require 'faraday'
@@ -5,11 +7,10 @@ require 'faraday_middleware'
 require 'pry'
 
 class HomeController < ApplicationController
-  def show
-  end
+  def show; end
 
   def add_audio
-    @entries = Rails.cache.fetch("mprnews_audio_collection", expires_in: 1.hours) do
+    @entries = Rails.cache.fetch('mprnews_audio_collection', expires_in: 1.hour) do
       flatten_stories
     end
   end
@@ -23,17 +24,17 @@ class HomeController < ApplicationController
       collection = new_collection(page)
       process_items(collection.items)
     end
-    @entries.sort! { |a, b| a.pubDate <=> b.pubDate  }
+    @entries.sort! { |a, b| a.pubDate <=> b.pubDate }
   end
 
-  def process_items(items)
-    slugs = items.map { |item| item.json[:slug]  }
+  def process_items(items) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    slugs = items.map { |item| item.json[:slug] }
 
     conn = Faraday.new(url: 'http://mprstory.publicradio.org') do |faraday|
-      #faraday.use FaradayMiddleware::Gzip
+      # faraday.use FaradayMiddleware::Gzip
       faraday.request :json
       faraday.use FaradayMiddleware::Mashify
-      faraday.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
+      faraday.use FaradayMiddleware::ParseJson, content_type: /\bjson$/
       faraday.adapter :net_http
     end
     stories = []
@@ -42,7 +43,7 @@ class HomeController < ApplicationController
     end
     stories.each do |item|
       next if item.body.respond_to?(:error)
-      next if item.body.audio.empty? or item.body.audio.first.apm_api.nil?
+      next if item.body.audio.empty? || item.body.audio.first.apm_api.nil?
       json = cleanup_item(item.body)
       @entries << json
     end
