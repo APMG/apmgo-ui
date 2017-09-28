@@ -26,7 +26,6 @@
 /public/packs
 /public/assets
 /public/packs-test
-/node_modules
 /flow-typed
 
 # Ignore sensitive data
@@ -41,4 +40,3 @@
 # Vim
 *~
 *.swp
-/node_modules
