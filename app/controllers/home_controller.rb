@@ -4,7 +4,6 @@ require 'json'
 require 'meekerclient'
 require 'faraday'
 require 'faraday_middleware'
-require 'pry'
 
 class HomeController < ApplicationController
   def show; end
