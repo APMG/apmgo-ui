@@ -40,3 +40,5 @@
 # Vim
 *~
 *.swp
+
+.rubocop-https*
