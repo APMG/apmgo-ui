@@ -5,7 +5,7 @@ import store from '../redux/store'
 
 export class BragiItemChannelSubscription {
   static initiateSubscription = function (accessToken: string) {
-    var cable = ActionCable.createConsumer('wss://bragi-api-dev.publicradio.org/cable')
+    var cable = ActionCable.createConsumer('wss://bragi-api.publicradio.org/cable')
     var itemSub = cable.subscriptions.create(
       {
         channel: 'ItemsChannel',

@@ -13,7 +13,7 @@ export class BragiApiClient {
     let accessToken = apmAccount.get_token()
 
     this.instance = axios.create({
-      baseURL: 'https://bragi-api-dev.publicradio.org',
+      baseURL: 'https://bragi-api.publicradio.org',
       timeout: 10000,
       headers: {'Authorization': `Bearer ${accessToken}`}
     })

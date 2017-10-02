@@ -20,7 +20,7 @@ function setupAudioInteraction(authToken) {
   addButton.innerHTML = 'Add to Playlist'
   addButton.classList += 'add-audio-button'
 
-  var apiEndpoint = '//bragi-api-dev.publicradio.org/items'
+  var apiEndpoint = '//bragi-api.publicradio.org/items'
 
   var requestHeaders = [
     {'Content-Type': 'application/json; charset=UTF-8'},
