@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { type PlaylistItemProps } from './PlaylistItem'
 import { type PlaylistItemType } from '../../../redux/types'
+import SourceIcon from './SourceIcon'
 import TrashIcon from '../../svg/TrashIcon'
 import FolderIcon from '../../svg/FolderIcon'
 
@@ -115,10 +116,8 @@ export default class PlaylistItemPresenter extends Component {
             <h2 className="hdg hdg-2">{item.attributes.audio_title}</h2>
           </div>
           <div styleName="origin">
-            <img
-              styleName="origin_icon"
-              src="//via.placeholder.com/32x32/123456/ffffff"
-              alt={item.attributes.audio_title}
+            <SourceIcon
+              source={item.attributes.source}
             />
             {item.attributes.source.replace(/^\/\//, '')}
             <a
