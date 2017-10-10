@@ -17,18 +17,34 @@ export default class SourceIcon extends Component {
   props: SourceIconProps
 
   _imgSrc () {
-    switch (this.props.source) {
-      case '//apmreports.org':
+    switch (true) {
+      case this._matchOriginUrl('apmreports.org').test(this.props.source):
         return iconApmreports
-      case '//mprnews.org':
+      case this._matchOriginUrl('mprnews.org').test(this.props.source):
         return iconMpr
-      case '//prairiehome.org':
+      case this._matchOriginUrl('prairiehome.org').test(this.props.source):
         return iconAphc
-      case '//thecurrent.org':
+      case this._matchOriginUrl('thecurrent.org').test(this.props.source):
         return iconThecurrent
       default:
         return iconApm
     }
+  }
+  
+  // TODO: handle beyond SLD
+  _matchOriginUrl(urlToMatch: string): RegExp {
+    var domain, sld, tld
+    domain = urlToMatch.split('.')
+    tld = domain.pop()
+    sld = domain.pop()
+    let matcher = new RegExp(
+      "^" +
+      "(https?:)?" + // Optional protocol, http or https
+      "(\/\/)?" + // Optional double slash, with or without protocol
+      "(www\.[a-z\.]*)?" + // Matches www subdomain, and env subdomains e.g. www.dev
+      sld + "\." + tld
+    )
+    return matcher
   }
 
   render () {

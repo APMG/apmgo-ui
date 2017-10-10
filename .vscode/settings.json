@@ -1,5 +1,7 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "typescript.validate.enable": false,
-  "javascript.validate.enable": true
+  // Use Flowtype intellisense instead of the default
+  // https://github.com/Microsoft/vscode-react-native/blob/master/doc/intellisense.md
+  "javascript.validate.enable": false,
+  "flow.useNPMPackagedFlow": true
 }
