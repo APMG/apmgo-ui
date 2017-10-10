@@ -81,6 +81,15 @@
     outline: 0;
   }
 
+  &.mainMenu_link-disabled {
+    padding-bottom: 6px;
+    cursor: not-allowed;
+    &:hover, &:focus {
+      color: $color-grey;
+      cursor: not-allowed;
+    }
+  }
+
   &:after {
     content: '';
     height: 0;
@@ -96,6 +105,15 @@
       right: 10px;
     }
   }
+}
+
+.mainMenu_link-disabled + sub {
+  padding-bottom: 6px;
+  text-align: center;
+  font-weight: normal;
+  display: block;
+  color: $color-grey;
+  cursor: not-allowed;
 }
 
 .mainMenu_link-highlighted {

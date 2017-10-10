@@ -50,6 +50,7 @@ export default class PlaylistItemPresenter extends Component {
         </button>
         <div styleName={`menuLayer ${this._menuOpenClass()}`}>
           <ul styleName='menu'>
+            {/*
             <li>
               <button styleName="action" onClick={this.props.archiveTrack}>
                 <div styleName="action_icon">
@@ -58,6 +59,7 @@ export default class PlaylistItemPresenter extends Component {
                 Archive
               </button>
             </li>
+            */}
             <li>
               <button styleName="action" onClick={this.props.deleteTrack}>
                 <div styleName="action_icon">
