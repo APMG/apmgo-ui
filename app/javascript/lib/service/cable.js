@@ -2,18 +2,23 @@
 import ActionCable from 'actioncable'
 import { addPlaylistItem } from '../redux/playlist.js'
 import store from '../redux/store'
+import apmgoConfig from '../config'
 
 export class BragiItemChannelSubscription {
   static initiateSubscription = function (accessToken: string) {
-    var cable = ActionCable.createConsumer('wss://bragi-api.publicradio.org/cable')
+    var cable = ActionCable.createConsumer(apmgoConfig.actionCableEndpoint)
     var itemSub = cable.subscriptions.create(
       {
         channel: 'ItemsChannel',
         access_token: accessToken
       },
       {
-        connected: function () { console.info('CONNECTED') },
-        disconnected: function () { console.warn('DISCONNECTED') },
+        connected: function () {
+          // WebSocket connection successfully established
+        },
+        disconnected: function () {
+          // WebSocket connection broken
+        },
         received: function (data) {
           console.log(data)
           if (data.action === 'create') {

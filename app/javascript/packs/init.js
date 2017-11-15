@@ -1,17 +1,18 @@
-import apmAccount from '../lib/service/apm-account'
+import authLayer from '../lib/service/auth-layer'
 import { insertMenu } from '../lib/components/MainMenu'
+import apmgoConfig from '../lib/config'
 // import * as OfflinePluginRuntime from 'offline-plugin/runtime'
 // OfflinePluginRuntime.install()
 
 // Verify we have a current auth token, then fetch data
-if (apmAccount.get_expires_at() < Date.now()) {
-  apmAccount.refresh()
+if (authLayer.getExpiresAt() < Date.now()) {
+  authLayer.refresh()
     .then(function (token) {
       initializeApp()
     })
     .catch(error => {
       // The session has expired, user must log in again
-      window.location.href = apmAccount.log_in_path()
+      window.location.href = authLayer.logInPath()
     })
 } else {
   initializeApp()
@@ -19,9 +20,9 @@ if (apmAccount.get_expires_at() < Date.now()) {
 
 function initializeApp () {
   insertMenu('nav.mainMenu_nav', {
-    accountName: apmAccount.get_name(),
-    logoutPath: apmAccount.log_out_path(),
-    accountPath: 'https://accounts.publicradio.org'
+    accountName: authLayer.getName(),
+    logoutPath: authLayer.logOutPath(),
+    accountPath: apmgoConfig.accountPath
   })
 
   document.querySelector('#loading').innerHTML = '<p>Loading ...</p>'

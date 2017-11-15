@@ -35,7 +35,7 @@ development:
 
   dev_server:
     https: true
-    host: bragijs.dev
+    host: apmgojs.dev
     port: 9001
     # hmr: false
 

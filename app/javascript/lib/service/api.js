@@ -1,6 +1,7 @@
 // @flow
 import axios from 'axios'
-import apmAccount from './apm-account'
+import authLayer from './auth-layer'
+import apmgoConfig from '../config'
 
 export class BragiApiClient {
   instance: any
@@ -10,10 +11,10 @@ export class BragiApiClient {
       return this.instance
     }
 
-    let accessToken = apmAccount.get_token()
+    let accessToken = authLayer.getToken()
 
     this.instance = axios.create({
-      baseURL: 'https://bragi-api.publicradio.org',
+      baseURL: apmgoConfig.apiEndpoint,
       timeout: 10000,
       headers: {'Authorization': `Bearer ${accessToken}`}
     })

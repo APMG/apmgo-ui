@@ -29,6 +29,8 @@
 /flow-typed
 
 # Ignore sensitive data
+/app/javascript/lib/config.js
+/app/javascript/lib/service/auth-layer.js
 /config/initializers/apm_accounts_component.rb
 
 # Ignore files used to source env data.

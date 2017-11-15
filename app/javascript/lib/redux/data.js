@@ -13,17 +13,17 @@ import {
 } from './playlist'
 
 // Actions
-export const INITIALIZE_PLAYLIST : string = 'bragi/data/INITIALIZE_PLAYLIST'
-export const FETCHING_PLAYLIST_ITEMS : string = 'bragi/data/FETCHING_PLAYLIST_ITEMS'
-export const REMOVING_PLAYLIST_ITEM : string = 'bragi/data/REMOVING_ITEM_FROM_PLAYLIST'
-export const PLAYLIST_ITEM_REMOVED : string = 'bragi/data/PLAYLIST_ITEM_REMOVED'
-export const ARCHIVING_PLAYLIST_ITEM : string = 'bragi/data/ARCHIVING_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_ARCHIVED : string = 'bragi/data/PLAYLIST_ITEM_ARCHIVED'
-export const PLAYLIST_ERROR_OCCURRED : string = 'bragi/data/PLAYLIST_ERROR_OCCURED'
-export const CLEAR_PLAYLIST_ERROR : string = 'bragi/data/CLEAR_PLAYLIST_ERROR'
-export const UPDATING_PLAYLIST_ITEM : string = 'bragi/data/UPDATING_PLAYLIST_ITEM'
-export const PLAYLIST_ITEM_UPDATED : string = 'bragi/data/PLAYLIST_ITEM_UPDATED'
-export const PLAYLIST_ITEM_MOVED : string = 'bragi/data/PLAYLIST_ITEM_MOVED'
+export const INITIALIZE_PLAYLIST : string = 'apmgo/data/INITIALIZE_PLAYLIST'
+export const FETCHING_PLAYLIST_ITEMS : string = 'apmgo/data/FETCHING_PLAYLIST_ITEMS'
+export const REMOVING_PLAYLIST_ITEM : string = 'apmgo/data/REMOVING_ITEM_FROM_PLAYLIST'
+export const PLAYLIST_ITEM_REMOVED : string = 'apmgo/data/PLAYLIST_ITEM_REMOVED'
+export const ARCHIVING_PLAYLIST_ITEM : string = 'apmgo/data/ARCHIVING_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_ARCHIVED : string = 'apmgo/data/PLAYLIST_ITEM_ARCHIVED'
+export const PLAYLIST_ERROR_OCCURRED : string = 'apmgo/data/PLAYLIST_ERROR_OCCURED'
+export const CLEAR_PLAYLIST_ERROR : string = 'apmgo/data/CLEAR_PLAYLIST_ERROR'
+export const UPDATING_PLAYLIST_ITEM : string = 'apmgo/data/UPDATING_PLAYLIST_ITEM'
+export const PLAYLIST_ITEM_UPDATED : string = 'apmgo/data/PLAYLIST_ITEM_UPDATED'
+export const PLAYLIST_ITEM_MOVED : string = 'apmgo/data/PLAYLIST_ITEM_MOVED'
 
 // Statuses
 const ARCHIVING_ITEM_STATUS: string = 'ARCHIVING_ITEM'

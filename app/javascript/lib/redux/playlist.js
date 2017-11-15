@@ -8,12 +8,12 @@ import {
 } from './data'
 
 // Actions
-export const RECEIVE_PLAYLIST_ITEMS : string = 'bragi/playlist/RECEIVE_PLAYLIST_ITEMS'
-export const REMOVE_PLAYLIST_ITEM : string = 'bragi/playlist/REMOVE_PLAYLIST_ITEM'
-export const ARCHIVE_PLAYLIST_ITEM : string = 'bragi/playlist/ARCHIVE_PLAYLIST_ITEM'
-export const UPDATE_PLAYLIST_ITEM : string = 'bragi/playlist/UPDATE_PLAYLIST_ITEM'
-export const MOVE_PLAYLIST_ITEM : string = 'bragi/playlist/MOVE_PLAYLIST_ITEM'
-export const ADD_PLAYLIST_ITEM : string = 'bragi/playlist/ADD_PLAYLIST_ITEM'
+export const RECEIVE_PLAYLIST_ITEMS : string = 'apmgo/playlist/RECEIVE_PLAYLIST_ITEMS'
+export const REMOVE_PLAYLIST_ITEM : string = 'apmgo/playlist/REMOVE_PLAYLIST_ITEM'
+export const ARCHIVE_PLAYLIST_ITEM : string = 'apmgo/playlist/ARCHIVE_PLAYLIST_ITEM'
+export const UPDATE_PLAYLIST_ITEM : string = 'apmgo/playlist/UPDATE_PLAYLIST_ITEM'
+export const MOVE_PLAYLIST_ITEM : string = 'apmgo/playlist/MOVE_PLAYLIST_ITEM'
+export const ADD_PLAYLIST_ITEM : string = 'apmgo/playlist/ADD_PLAYLIST_ITEM'
 
 // Reducer
 export default function reducer (playlistState: Array<PlaylistItemType> = [], action: ActionType = new ActionType()) {

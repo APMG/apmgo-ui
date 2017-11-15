@@ -3,11 +3,7 @@ import React, { Component } from 'react'
 
 import './PlaylistItem.scss'
 
-import iconAphc from '../../../../images/icon-aphc.png'
-import iconApm from '../../../../images/icon-apm.png'
-import iconApmreports from '../../../../images/icon-apmreports.png'
-import iconMpr from '../../../../images/icon-mprnews.png'
-import iconThecurrent from '../../../../images/icon-thecurrent.png'
+import apmgoConfig from '../../../config'
 
 type SourceIconProps = {
   source: string
@@ -17,18 +13,14 @@ export default class SourceIcon extends Component {
   props: SourceIconProps
 
   _imgSrc () {
-    switch (true) {
-      case this._matchOriginUrl('apmreports.org').test(this.props.source):
-        return iconApmreports
-      case this._matchOriginUrl('mprnews.org').test(this.props.source):
-        return iconMpr
-      case this._matchOriginUrl('prairiehome.org').test(this.props.source):
-        return iconAphc
-      case this._matchOriginUrl('thecurrent.org').test(this.props.source):
-        return iconThecurrent
-      default:
-        return iconApm
-    }
+    let matchIcon = apmgoConfig.propertyIcons.get('default')
+    apmgoConfig.propertyIcons.forEach(function(icon, url) {
+      if(this._matchOriginUrl(url).test(this.props.source)) {
+        matchIcon = icon
+      }
+    }.bind(this))
+
+    return matchIcon
   }
   
   // TODO: handle beyond SLD
