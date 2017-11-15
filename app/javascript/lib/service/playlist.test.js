@@ -2,6 +2,8 @@ import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from './pl
 import * as moxios from 'moxios'
 import { itemFixtures } from '../__tests__/testHelpers'
 
+jest.mock('./auth-layer')
+
 describe('Playlist API suite', () => {
   beforeEach(function () {
     moxios.install()

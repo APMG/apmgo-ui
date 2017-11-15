@@ -18,6 +18,8 @@ import {
 import { fetchPlaylistItems, deletePlaylistItem, updatePlaylistItem } from '../service/playlist'
 import { itemFixtures } from '../__tests__/testHelpers'
 
+jest.mock('../service/auth-layer')
+
 describe('initialize playlist saga', () => {
   const saga = initializePlaylistItemsSaga(initializePlaylist())
 

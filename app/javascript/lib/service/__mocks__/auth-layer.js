@@ -6,6 +6,7 @@ class AuthLayer {
   getName() {
   }
   getToken() {
+    return 'test_token'
   }
   isLoggedIn() {
   }

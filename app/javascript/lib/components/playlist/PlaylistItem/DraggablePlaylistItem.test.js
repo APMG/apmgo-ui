@@ -7,6 +7,8 @@ import TestUtils from 'react-dom/test-utils'
 import { DragDropContext } from 'react-dnd'
 import TestBackend from 'react-dnd-test-backend'
 
+jest.mock('../../../service/auth-layer')
+
 const initialState = getInitialState()
 
 describe('Playlist Item drag and drop', function () {

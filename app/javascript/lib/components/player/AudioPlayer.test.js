@@ -18,6 +18,8 @@ import AudioPlayerState from '../../models/AudioPlayerState'
 let audioMockRef
 let getAudioMockRef = () => audioMockRef
 
+jest.mock('../../service/auth-layer')
+
 class TestAudioPlayerPresenter extends AudioPlayerPresenter {
   componentDidMount () {
     this.audio = getAudioMockRef()

@@ -2,6 +2,8 @@ import React from 'react'
 import { PlaylistPresenter } from './Playlist'
 import { getSnapshotJson } from '../../__tests__/testHelpers'
 
+jest.mock('../../service/auth-layer')
+
 describe('Playlist Component', () => {
   describe('Presenter', () => {
     it('Renders', () => {
