@@ -1,6 +1,6 @@
 # Audio Metadata Hook
 
-This Javascript uses schema.org metadata for AudioObject implemented with JSON-LD.
+The script in `app/assets/javascripts/add_audio.js` uses schema.org metadata for an AudioObject implemented with JSON-LD.
 
 A typical JSON-LD block will look like this:
 

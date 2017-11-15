@@ -1,18 +1,32 @@
-var apm_account = new ApmAccount('/apm_accounts')
-if(!apm_account.is_logged_in()) {
-  window.location.href = apm_account.log_in_path()
-}
-// Verify we have a current auth token, then fetch data
-if(apm_account.get_expires_at() < Date.now()) {
-  apm_account.refresh()
-    .then(function (token) {
-      setupAudioInteraction(apm_account.get_token())
-    })
-    .catch(function (error) {
-      console.error('Could not refresh access token')
-    })
-} else {
-  setupAudioInteraction(apm_account.get_token())
+var authLayer = new AuthLayer()
+
+// A valid OAuth2 Bearer Token must be passed to setupAudioInteraction
+// This is an example using the same interface as app/javascript/lib/service/auth-layer.js
+
+ready(function() {
+  if(!authLayer.isLoggedIn()) {
+    window.location.href = authLayer.logInPath()
+  }
+  // Verify we have a current auth token, then fetch data
+  if(authLayer.getExpiresAt() < Date.now()) {
+    authLayer.refresh()
+      .then(function (token) {
+        setupAudioInteraction(authLayer.getToken())
+      })
+      .catch(function (error) {
+        console.error('Could not refresh access token')
+      })
+  } else {
+    setupAudioInteraction(authLayer.getToken())
+  }
+})
+
+function ready(fn) {
+  if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
 }
 
 function setupAudioInteraction(authToken) {
@@ -20,7 +34,7 @@ function setupAudioInteraction(authToken) {
   addButton.innerHTML = 'Add to Playlist'
   addButton.classList += 'add-audio-button'
 
-  var apiEndpoint = '//bragi-api.publicradio.org/items'
+  var apiEndpoint = '//apmgo-api.example.org/items'
 
   var requestHeaders = [
     {'Content-Type': 'application/json; charset=UTF-8'},

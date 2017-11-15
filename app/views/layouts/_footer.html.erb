@@ -1,12 +1,12 @@
 <footer class="footer" role="contentinfo">
-  <small class="footer_copy">&copy; <%= Time.zone.today.year %> Minnesota Public Radio. All Rights Reserved.</small>
+  <small class="footer_copy"><%= Rails.application.config.x.apmgo['template']['copyright_notice'] %></small>
   <small>
     <ul class="footer_tools">
       <li>
-        <a href="http://www.americanpublicmedia.org/terms/" class="link link-plain" target="_blank">Terms and Conditions</a>
+        <a href="<%= Rails.application.config.x.apmgo['template']['terms_and_conditions'] %>" class="link link-plain" target="_blank">Terms and Conditions</a>
       </li>
       <li>
-        <a href="http://www.americanpublicmedia.org/privacy/" class="link link-plain" target="_blank">Privacy Policy</a>
+        <a href="<%= Rails.application.config.x.apmgo['template']['privacy_policy'] %>" class="link link-plain" target="_blank">Privacy Policy</a>
       </li>
     </ul>
   </small>

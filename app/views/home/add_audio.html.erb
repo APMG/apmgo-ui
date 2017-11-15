@@ -1,39 +1,25 @@
 <ol>
-<% @entries.each do |entry| %>
-  <li style="clear: both;">
-  <% if entry.images.present? %>
-  <% image_url = entry.images.first.fallback %>
-  <% end %>
-  <% if image_url.present? %>
-    <img src="<%= image_url %>" alt="" style="float:left; width:100px; margin-right: 10px;">
-  <% end %>
-  <h2><%= entry.headline %></h2>
-  <p><%= entry.teaser %></p>
-  <p><%= entry.slug %></p>
-  <ol class="audiosList" aria-label="List of audio">
-  <% if entry.respond_to?(:audio) %>
-    <% entry.audio.each do |audio| %>
-      <% audio_data = audio.apm_api.stream %>
-      <% duration = audio_data.duration_time.split(':') %>
+<li style="clear: both;">
+    <img src="https://img.apmcdn.org/374a74f8bf2d653430d73a68f7862ca18ca927f5/uncropped/97828d-20171108-appetites.jpg" alt="" style="float:left; width:100px; margin-right: 10px;">
+    <h2>Appetites: Oh deer! Venison meatballs with cherry BBQ sauce</h2>
+    <p>Do you know what you're going to do with your deer after hunting season is over? Chef Jon Wipfli has some suggestions.</p>
+    <ol class="audiosList" aria-label="List of audio">
       <li style="clear: both;">
-        <script data-bragi-audio=true type="application/ld+json">
+        <script data-bragi-audio="true" type="application/ld+json">
         {
           "@type": "AudioObject",
-          <% if image_url.present? %>
-          "imageUrl": "<%= image_url %>",
-          <% end %>
-          "contentUrl": "<%= audio_data.http_file_path.sub(/^http/, 'https') %>",
-          "description": "<%= audio_data.description %>",
-          <% # Rolling my own iso8601 duration converter %>
-          "duration": "PT<%= duration.zip(%w(H M S)).flatten.join %>",
-          "encodingFormat": "<%= audio_data.http_file_path.split('.').last %>",
-          "name": "<%= audio_data.title %>",
-          "identifier": "<%= audio_data.filename %>",
-          "uploadDate": "<%= DateTime.strptime(audio_data.pub_date.concat(Time.now.getlocal.formatted_offset), '%Y-%m-%d %H:%M:%S %Z').rfc3339() %>",
+          "imageUrl": "https://img.apmcdn.org/374a74f8bf2d653430d73a68f7862ca18ca927f5/uncropped/97828d-20171108-appetites.jpg",
+          "contentUrl": "https://play.publicradio.org/mprstory/o/minnesota/news/features/2017/11/08/appetites_venison_20171108_128.mp3",
+          "description": "Do you know what you&#39;re going to do with your deer after hunting season is over? Chef Jon Wipfli has some suggestions.",
+          "duration": "PT00H04M50S",
+          "encodingFormat": "mp3",
+          "name": "Appetites: Oh deer! Venison meatballs with cherry BBQ sauce",
+          "identifier": "/minnesota/news/features/2017/11/08/appetites_venison_20171108_128.mp3",
+          "uploadDate": "2017-11-08T00:00:00-06:00",
           "isPartOf": {
             "@type": "Article",
-            "url": "//mprnews.org/story/<%= entry.slug %>",
-            "headline": "<%= entry.headline %>"
+            "url": "//mprnews.org/story/2017/11/08/oh-deer-venison-meatballs-appetites",
+            "headline": "Appetites: Oh deer! Venison meatballs with cherry BBQ sauce"
           },
           "creator": {
             "@type": "Organization",
@@ -42,16 +28,11 @@
           }
         }
         </script>
-        <h3>Listen: <%= audio_data.title %></h3>
-        <audio preload="metadata" controls="controls" src="<%= audio.apm_api.stream.http_file_path.sub(/^http/, 'https') %>"></audio>
+        <h3>Listen: Appetites: Oh deer! Venison meatballs with cherry BBQ sauce</h3>
+        <audio preload="metadata" controls="controls" src="https://play.publicradio.org/mprstory/o/minnesota/news/features/2017/11/08/appetites_venison_20171108_128.mp3"></audio>
       </li>
-      <% end %>
-    <% else %>
-    <% end %>
     </ol>
-    <hr />
   </li>
-<% end %>
 </ol>
 
 <%= javascript_include_tag 'add_audio' %>

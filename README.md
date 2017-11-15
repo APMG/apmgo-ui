@@ -32,7 +32,11 @@ $ invoker add_http rails 3001
 
 ## Configuration
 
-The API and WebSocket endpoints must be configured in `app/javascript/lib/config.js` (copy `app/javascript/lib/config.example.js` to get started)
+The API and WebSocket endpoints, along with a few other items, must be configured in `app/javascript/lib/config.js` (copy `app/javascript/lib/config.example.js` to get started)
+
+Rails configuration should also be modified to fit your needs, and copied from `config/apmgo.example.yml` to `config/apmgo.yml`
+
+Logo should be copied from `app/views/partials/_logo.example.html.erb` to `app/views/partials/_logo.html.erb`
 
 ## Authentication
 
@@ -52,6 +56,12 @@ APMGo was designed to support OAuth2. A shim around your authentication solution
   * Returns the URL that the user must visit to log out
 * `authLayer.refresh()` - Promise.<string|Error>
   * Returns a promises that receives an OAuth2 token when fulfilled
+
+## Sample Client Implementation
+
+In Rails development environment, you can visit `apmgo.dev/add_audio` to see a sample implementation of what's needed to add audio to an APMGo playlist. The relevant source code for this implementation lives in `app/views/home/add_audio.html.erb` and `app/assets/javascripts/add_audio.js`, with a non-functional example OAuth2 implementation.
+
+The template contains the schema.org data necessary for creating a playlist item. For more information, see `AUDIO_METADATA.md`
 
 ## Code Structure
 

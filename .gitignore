@@ -28,8 +28,10 @@
 /public/packs-test
 /flow-typed
 
-# Ignore sensitive data
+# Ignore sensitive data and configuration
 /app/javascript/lib/config.js
+/config/apmgo.yml
+/app/views/partials/_logo.html.erb
 /app/javascript/lib/service/auth-layer.js
 /config/initializers/apm_accounts_component.rb
 

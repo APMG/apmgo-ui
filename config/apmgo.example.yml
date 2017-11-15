@@ -1,0 +1,5 @@
+template:
+  organization_name: "Your Organization Name"
+  terms_and_conditions: "http://www.example.org/terms/"
+  privacy_policy: "http://www.example.org/privacy/"
+  copyright_notice: "© 2017 Example Organization. All Rights Reserved."
