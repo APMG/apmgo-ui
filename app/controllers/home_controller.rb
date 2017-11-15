@@ -3,6 +3,5 @@
 class HomeController < ApplicationController
   def show; end
 
-  def add_audio
-  end
+  def add_audio; end
 end

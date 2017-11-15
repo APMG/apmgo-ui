@@ -30,6 +30,6 @@ module BragiUi
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.x.apmgo = YAML.load_file(Rails.root.join('config/apmgo.yml'))
+    config.x.apmgo = YAML.load_file(Rails.root.join('config', 'apmgo.yml'))
   end
 end
