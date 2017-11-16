@@ -67,6 +67,10 @@ The template contains the schema.org data necessary for creating a playlist item
 
 React components in this project will be written using the Redux approach of "Container" and "Presentational" components (also referred to as "Smart" and "Dumb"). Where possible, container and presentational components will be grouped together in the same file. Additionally, components will be grouped together into directories by domain.
 
+## Flow
+
+Some syntax may appear unfamiliar. That's because this code is written using the static type checker [Flow](https://flow.org). Babel's [flow preset](https://babeljs.io/docs/plugins/preset-flow/) is configured in `.babelrc-apm` to strip out flow syntax during Webpack compilation.
+
 ### Ducks
 
 Redux actions, reducers, and sagas will be grouped together in [Ducks](https://github.com/erikras/ducks-modular-redux) by use case. The app uses three ducks, located in the `/app/javascript/lib/redux` directory.

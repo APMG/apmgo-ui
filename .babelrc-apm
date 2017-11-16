@@ -1,14 +1,13 @@
 {
   presets: [
     { "plugins": [ "transform-runtime" ] },
-    "flow",
-    "stage-1"
+    "stage-1",
+    "flow"
   ],
   "env": {
     "test": {
       "plugins": [
         "transform-es2015-modules-commonjs",
-        "transform-flow-strip-types",
         "transform-regenerator"
       ]
     }
