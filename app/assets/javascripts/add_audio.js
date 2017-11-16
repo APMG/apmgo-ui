@@ -1,7 +1,8 @@
-var authLayer = new AuthLayer()
-
+// NOTE: This example code is non-functional until authentication has been implmented
 // A valid OAuth2 Bearer Token must be passed to setupAudioInteraction
 // This is an example using the same interface as app/javascript/lib/service/auth-layer.js
+
+var authLayer = new AuthLayer()
 
 ready(function() {
   if(!authLayer.isLoggedIn()) {
